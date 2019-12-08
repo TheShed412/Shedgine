@@ -2,5 +2,6 @@
 Camera/main
 test
 main
-bin
+/bin
+/obj
 .vscode
