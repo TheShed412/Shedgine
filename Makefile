@@ -10,5 +10,5 @@ $(OBJDIR)/%.o: %.cpp
 outs:
 	$(MKDIR) obj bin
 
-main: $(OBJDIR)/main.o $(LIBMEMBERS)
+main: $(OBJDIR)/main.o
 	g++ -std=c++11 -g -o $(OUT)/main main.cpp $(LIBFLAGS)
