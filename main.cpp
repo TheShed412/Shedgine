@@ -59,6 +59,8 @@ int main(int argc, char **argv)
     glutDisplayFunc(renderScene);
     glutCloseFunc(closeCallback);
     glutMainLoop();
+
+    delete gameModels;
     glDeleteProgram(program);
     return 0;
 }
