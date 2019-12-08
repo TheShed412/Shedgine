@@ -1,7 +1,8 @@
 #version 300 es
-out mediump vec4 color;
+layout(location = 0) out mediump vec4 out_color;
+in mediump vec4 color;
  
-void main(void)
+void main()
 {
-  color = vec4(0.0, 1.0, 0.0, 1.0);
+  out_color = color;
 }
