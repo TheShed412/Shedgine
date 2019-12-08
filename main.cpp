@@ -17,6 +17,14 @@ int main(int argc, char **argv)
     glutInitWindowSize(800, 600); //optional
     glutCreateWindow("Lol not my first window");
 
+    glewInit();
+    if (glewIsSupported("GL_VERSION_3_0")) {
+        std::cout << " GLEW Version is 3.0\n ";
+    }
+    else {
+        std::cout << "GLEW not supported\n ";
+    }
+
     glEnable(GL_DEPTH_TEST);
  
     // register callbacks
