@@ -5,27 +5,36 @@
 #include<vector>
 
 #include "Core/ShaderLoader.hpp"
+#include "Core/GameModels.hpp"
 
 using namespace Core;
- 
+
+Models::GameModels* gameModels;
 GLuint program;
 
 void renderScene(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    //use the created program
+    glBindVertexArray(gameModels->GetModel("triangle1"));
     glUseProgram(program);
- 
-    //draw 3 vertices as triangles
     glDrawArrays(GL_TRIANGLES, 0, 3);
  
     glutSwapBuffers();
 }
 
+void closeCallback()
+{
+ 
+    std::cout << "GLUT:\t Finished" << std::endl;
+    glutLeaveMainLoop();
+}
+
 void init() 
 {
     glEnable(GL_DEPTH_TEST);
+
+    gameModels = new Models::GameModels();
+    gameModels->CreateTriangleModel("triangle1");
  
     //load and compile shaders
     ShaderLoader shaderLoader;
@@ -48,6 +57,7 @@ int main(int argc, char **argv)
  
     // register callbacks
     glutDisplayFunc(renderScene);
+    glutCloseFunc(closeCallback);
     glutMainLoop();
     glDeleteProgram(program);
     return 0;
