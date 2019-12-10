@@ -6,8 +6,11 @@
 
 #include "Core/ShaderLoader.hpp"
 #include "Core/GameModels.hpp"
+#include "Manager/ShaderManager.hpp"
 
 using namespace Core;
+
+Managers::ShaderManager* shaderManager;
 
 Models::GameModels* gameModels;
 GLuint program;
@@ -35,11 +38,12 @@ void init()
 
     gameModels = new Models::GameModels();
     gameModels->CreateTriangleModel("triangle1");
- 
-    //load and compile shaders
-    ShaderLoader shaderLoader;
-    program = shaderLoader.CreateProgram("shaders/vertex_shader.glsl",
-                                         "shaders/fragment_shader.glsl");
+
+    shaderManager = new Managers::ShaderManager();
+    shaderManager->CreateProgram("colorShader",
+                                "shaders/vertex_shader.glsl",
+                                "shaders/fragment_shader.glsl");
+    program = shaderManager->GetShader("colorShader");
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glClearColor(1.0, 0.0, 0.0, 1.0);//clear red
