@@ -1,4 +1,5 @@
 #include "ShaderManager.hpp"
+#include <iostream>
  
 using namespace Managers;
  
@@ -52,7 +53,6 @@ GLuint ShaderManager::CreateShader(GLenum shaderType,
  //same, nothing modified
  //use c_str() to convert to const char* whre is required
     int compile_result = 0;
- 
     GLuint shader = glCreateShader(shaderType);
     const char *shader_code_ptr = source.c_str();
     const int shader_code_size = source.size();
@@ -87,7 +87,7 @@ void ShaderManager::CreateProgram(const std::string& shaderName,
     //read the shader files and save the code
     std::string vertex_shader_code = ReadShader(vertexShaderFilename);
     std::string fragment_shader_code = ReadShader(fragmentShaderFilename);
- 
+
     GLuint vertex_shader = CreateShader(GL_VERTEX_SHADER, vertex_shader_code, "vertex shader");
     GLuint fragment_shader = CreateShader(GL_FRAGMENT_SHADER, fragment_shader_code, "fragment shader");
  

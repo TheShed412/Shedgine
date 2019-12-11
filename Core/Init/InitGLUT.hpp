@@ -6,11 +6,15 @@
 #include "FrameBufferInfo.hpp"
 #include "WindowInfo.hpp"
 #include "InitGLEW.hpp"
+#include "IListener.hpp"
  
 namespace Core {
    namespace Init{//two namespaces
  
-       class InitGLUT{
+      class InitGLUT{
+      private:
+            static Core::IListener* listener;
+            static Core::WindowInfo windowInformation;
  
        public:             //use the structures from Part II
          static void init(const Core::WindowInfo& window,
@@ -18,11 +22,12 @@ namespace Core {
                           const Core::FramebufferInfo& framebufferInfo);
  
       public:
-          static void run();//called from outside
-          static void close();
+         static void run();//called from outside
+         static void close();
+         static void setListener(Core::IListener*& iListener);
  
-          void enterFullscreen();
-          void exitFullscreen();
+         void enterFullscreen();
+         void exitFullscreen();
  
          //used to print info about GL
          static void printOpenGLInfo(const Core::WindowInfo& windowInfo,

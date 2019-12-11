@@ -8,7 +8,9 @@
 
 #include "Core/ShaderLoader.hpp"
 #include "Core/GameModels.hpp"
+
 #include "Manager/ShaderManager.hpp"
+#include "Manager/SceneManager.hpp"
 
 using namespace Core;
 using namespace Init;
@@ -62,6 +64,8 @@ int main(int argc, char **argv)
     ContextInfo context(4, 5, true);
     FramebufferInfo frameBufferInfo(true, true, true, true);
     InitGLUT::init(window, context, frameBufferInfo);
+    IListener* scene = new Managers::SceneManager();
+    InitGLUT::setListener(scene);
     
     InitGLUT::run();
     return 0;
