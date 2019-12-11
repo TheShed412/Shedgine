@@ -1,12 +1,13 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <iostream>
-#include<fstream>
-#include<vector>
+#include <fstream>
+#include <vector>
 
 #include "Core/Init/ContextInfo.hpp"
 #include "Core/Init/FrameBufferInfo.hpp"
 #include "Core/Init/WindowInfo.hpp"
+#include "Core/Init/InitGLEW.hpp"
 
 #include "Core/ShaderLoader.hpp"
 #include "Core/GameModels.hpp"
