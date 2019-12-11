@@ -28,8 +28,7 @@ std::string ShaderLoader::ReadShader(char *filename)
    return shaderCode;
 }
  
-GLuint ShaderLoader::CreateShader(GLenum shaderType, std::string
-                                   source, char* shaderName)
+GLuint ShaderLoader::CreateShader(GLenum shaderType, std::string source, char* shaderName)
 {
  
      int compile_result = 0;

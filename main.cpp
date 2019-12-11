@@ -4,6 +4,10 @@
 #include<fstream>
 #include<vector>
 
+#include "Core/Init/ContextInfo.hpp"
+#include "Core/Init/FrameBufferInfo.hpp"
+#include "Core/Init/WindowInfo.hpp"
+
 #include "Core/ShaderLoader.hpp"
 #include "Core/GameModels.hpp"
 #include "Manager/ShaderManager.hpp"
