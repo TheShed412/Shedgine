@@ -7,7 +7,7 @@ namespace Core{
        //notice that I added another namespace here(optional)
      namespace Init{ 
  
-           class Init_GLEW
+           class InitGLEW
           {
              public:
                 static void Init();

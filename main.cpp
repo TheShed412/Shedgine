@@ -4,16 +4,14 @@
 #include <fstream>
 #include <vector>
 
-#include "Core/Init/ContextInfo.hpp"
-#include "Core/Init/FrameBufferInfo.hpp"
-#include "Core/Init/WindowInfo.hpp"
-#include "Core/Init/InitGLEW.hpp"
+#include "Core/Init/InitGLUT.hpp"
 
 #include "Core/ShaderLoader.hpp"
 #include "Core/GameModels.hpp"
 #include "Manager/ShaderManager.hpp"
 
 using namespace Core;
+using namespace Init;
 
 Managers::ShaderManager* shaderManager;
 
@@ -56,20 +54,15 @@ void init()
 
 int main(int argc, char **argv)
 {
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-    glutInitWindowPosition(500, 500);//optional
-    glutInitWindowSize(800, 600); //optional
-    glutCreateWindow("Lol not my first window");
-    glewInit();
-    init();
- 
-    // register callbacks
-    glutDisplayFunc(renderScene);
-    glutCloseFunc(closeCallback);
-    glutMainLoop();
-
-    delete gameModels;
-    glDeleteProgram(program);
+    WindowInfo window(std::string("in2gpu OpenGL Beginner Tutorial "),
+                            400, 200,//position
+                            800, 600, //size
+                            true);//reshape
+    
+    ContextInfo context(4, 5, true);
+    FramebufferInfo frameBufferInfo(true, true, true, true);
+    InitGLUT::init(window, context, frameBufferInfo);
+    
+    InitGLUT::run();
     return 0;
 }

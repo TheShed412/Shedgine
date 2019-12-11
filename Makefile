@@ -5,7 +5,7 @@ INITDIR=$(LIBDIR)/Init
 MANDIR=Manager
 MKDIR=mkdir -p
 LIBFLAGS=-lXi -lXmu -lglfw -lGLEW -lGLU -lm -lGL -lglut
-LIBMEMBERS=$(LIBDIR)/ShaderLoader.cpp $(LIBDIR)/GameModels.cpp $(MANDIR)/ShaderManager.cpp $(INITDIR)/InitGLEW.cpp
+LIBMEMBERS=$(LIBDIR)/ShaderLoader.cpp $(LIBDIR)/GameModels.cpp $(MANDIR)/ShaderManager.cpp $(INITDIR)/InitGLEW.cpp $(INITDIR)/InitGLUT.cpp
 
 $(OBJDIR)/%.o: %.cpp
 	g++ -std=c++11 -g -c -o $@ $<

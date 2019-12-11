@@ -2,7 +2,7 @@
 using namespace Core;
 using namespace Core::Init;
  
-void Init_GLEW::Init(){
+void InitGLEW::Init(){
  
     glewExperimental = true;
     if (glewInit() == GLEW_OK)
