@@ -49,6 +49,6 @@ void ModelsManager::Draw()
    //auto -it's a map iterator
    for (auto model : gameModelList)
    {
-     model.second->Draw();
+      model.second->Draw();
    }
 }

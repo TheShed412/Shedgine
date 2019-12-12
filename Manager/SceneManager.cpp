@@ -9,7 +9,7 @@ SceneManager::SceneManager()
     shader_manager->CreateProgram("colorShader",
                                     "shaders/vertex_shader.glsl",
                                     "shaders/fragment_shader.glsl");
-    glClearColor(1.0, 0.0, 0.0, 1.0);
+    models_manager = new ModelsManager();
 }
  
 SceneManager::~SceneManager()
@@ -25,6 +25,7 @@ void SceneManager::notifyBeginFrame()
  
 void SceneManager::notifyDisplayFrame()
 {
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     models_manager->Draw();
 }

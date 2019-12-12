@@ -45,9 +45,6 @@ void InitGLUT::init(const Core::WindowInfo& windowInfo,
    
    //init GLEW, this can be called in main.cpp
    Init::InitGLEW::Init();
-
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   glClearColor(0.0, 0.0, 0.0, 1);
    
    //cleanup
    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,

@@ -45,7 +45,6 @@ void Triangle::Create()
         //here we assign the values
     this->vao = vao;
     this->vbos.push_back(vbo);
- 
 }
  
 void Triangle::Update()
