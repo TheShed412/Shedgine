@@ -7,6 +7,7 @@
 #include "WindowInfo.hpp"
 #include "InitGLEW.hpp"
 #include "IListener.hpp"
+#include "DebugOutput.hpp"
  
 namespace Core {
    namespace Init{//two namespaces
