@@ -7,7 +7,7 @@ MODELDIR=$(RENDDIR)/Models
 MANDIR=Manager
 MKDIR=mkdir -p
 INC=-I$(INITDIR)
-LIBFLAGS=-lXi -lXmu -lglfw -lGLEW -lGLU -lm -lGL -lglut
+LIBFLAGS=-lGLEW -lGLU -lm -lGL -lglut
 LIBMEMBERS=$(MODELDIR)/Model.cpp $(MANDIR)/ModelsManager.cpp $(MODELDIR)/Triangle.cpp $(LIBDIR)/ShaderLoader.cpp $(LIBDIR)/GameModels.cpp $(MANDIR)/ShaderManager.cpp $(MANDIR)/SceneManager.cpp $(INITDIR)/InitGLEW.cpp $(INITDIR)/InitGLUT.cpp
 
 $(OBJDIR)/%.o: %.cpp
