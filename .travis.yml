@@ -9,5 +9,8 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - g++-7
+    - libglu1-mesa-dev
+    - freeglut3-dev
+    - mesa-common-dev
 script:
   - make outs
