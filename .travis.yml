@@ -14,3 +14,4 @@ addons:
     - mesa-common-dev
 script:
   - make outs
+  - make main
