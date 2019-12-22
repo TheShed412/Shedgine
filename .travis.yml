@@ -12,6 +12,7 @@ addons:
     - libglu1-mesa-dev
     - freeglut3-dev
     - mesa-common-dev
+    - libglew-dev
 script:
   - make outs
   - make main
