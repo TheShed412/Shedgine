@@ -9,3 +9,5 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - g++-7
+script:
+  - make outs
