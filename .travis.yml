@@ -1,0 +1,11 @@
+sudo: false
+language: cpp
+compiler:
+  - gcc
+addons:
+  apt:
+    update: true
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-7
