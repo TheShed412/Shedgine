@@ -6,10 +6,10 @@ using namespace Rendering;
 ModelsManager::ModelsManager()
 {
  //triangle game object
-  Models::Triangle* triangle = new Models::Triangle();
-  triangle->SetProgram(ShaderManager::GetShader("colorShader"));
-  triangle->Create();
-  gameModelList["triangle"] = triangle;
+  // Models::Triangle* triangle = new Models::Triangle();
+  // triangle->SetProgram(ShaderManager::GetShader("colorShader"));
+  // triangle->Create();
+  // gameModelList["triangle"] = triangle;
 
   Models::Torus* torus = new Models::Torus();
   torus->SetProgram(ShaderManager::GetShader("colorShader"));
