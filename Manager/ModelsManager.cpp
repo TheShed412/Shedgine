@@ -10,6 +10,11 @@ ModelsManager::ModelsManager()
   triangle->SetProgram(ShaderManager::GetShader("colorShader"));
   triangle->Create();
   gameModelList["triangle"] = triangle;
+
+  Models::Torus* torus = new Models::Torus();
+  torus->SetProgram(ShaderManager::GetShader("colorShader"));
+  torus->Create();
+  gameModelList["torus"] = torus;
  
 }
  
