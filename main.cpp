@@ -17,7 +17,7 @@ GLuint program;
 
 int main(int argc, char **argv)
 {
-    WindowInfo window(std::string("in2gpu OpenGL Beginner Tutorial "),
+    WindowInfo window(std::string("Project Reimplimentations"),
                             400, 200,//position
                             800, 600, //size
                             true);//reshape

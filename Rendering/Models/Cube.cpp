@@ -21,19 +21,34 @@ void Cube::Create()
     glBindVertexArray(vao);
  
     std::vector<VertexFormat> vertices;
+    vertices.push_back(VertexFormat(glm::vec3(0.25, 0.25, 0.0),
+        glm::vec4(1, 0, 0, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(-0.25, -0.25, 0.0),
+        glm::vec4(1, 0, 0, 1)));
     vertices.push_back(VertexFormat(glm::vec3(0.25, -0.25, 0.0),
         glm::vec4(1, 0, 0, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(-0.25, -0.25, 0.0),
-        glm::vec4(1, 0, 0, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(0.25, 0.25, 0.0),
-        glm::vec4(1, 0, 0, 1)));
 
+    vertices.push_back(VertexFormat(glm::vec3(-0.25, -0.25, 0.0),
+        glm::vec4(0, 1, 0, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(0.25, 0.25, 0.0),
+        glm::vec4(0, 1, 0, 1)));
     vertices.push_back(VertexFormat(glm::vec3(-0.25, 0.25, 0.0),
         glm::vec4(0, 1, 0, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(0.25, 0.25, 0.0),
-        glm::vec4(0, 1, 0, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(-0.25, -0.25, 0.0),
-        glm::vec4(0, 1, 0, 1)));
+
+    // BACK FACE
+    vertices.push_back(VertexFormat(glm::vec3(0.25, -0.25, -0.25),
+        glm::vec4(1, 1, 0, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(-0.25, -0.25, -0.25),
+        glm::vec4(1, 1, 0, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(0.25, 0.25, -0.25),
+        glm::vec4(1, 1, 0, 1)));
+
+    vertices.push_back(VertexFormat(glm::vec3(-0.25, 0.25, -0.25),
+        glm::vec4(0, 0, 1, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(0.25, 0.25, -0.25),
+        glm::vec4(0, 0, 1, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(-0.25, -0.25, -0.25),
+        glm::vec4(0, 0, 1, 1)));
 
  
     glGenBuffers(1, &vbo);
