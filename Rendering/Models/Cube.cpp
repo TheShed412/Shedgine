@@ -25,7 +25,7 @@ void Cube::Create()
  
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * 6, &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * vectors, &vertices[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexFormat),
                            (void*)0);
@@ -49,7 +49,7 @@ void Cube::Draw()
 {
     glUseProgram(program);
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDrawArrays(GL_TRIANGLES, 0, vectors);
 }
 
 std::vector<VertexFormat> Cube::makeCube(GLfloat size) {
@@ -83,6 +83,8 @@ std::vector<VertexFormat> Cube::makeCube(GLfloat size) {
         glm::vec4(0, 0, 1, 1)));
     vertices.push_back(VertexFormat(glm::vec3(-size, -size, -size),
         glm::vec4(0, 0, 1, 1)));
+    
+    vectors = vertices.size();
     
     return vertices;
 }

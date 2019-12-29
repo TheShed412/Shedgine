@@ -16,6 +16,7 @@ namespace Rendering
         virtual void Draw() override final;
 
       private:
+        int vectors;
         std::vector<VertexFormat> makeCube(GLfloat size);
     };
   }
