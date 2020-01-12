@@ -21,8 +21,7 @@ void Cube::Create()
     glBindVertexArray(vao);
  
     std::vector<VertexFormat> vertices = makeCube(0.25);
-
- 
+    
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * vectors, &vertices[0], GL_STATIC_DRAW);
