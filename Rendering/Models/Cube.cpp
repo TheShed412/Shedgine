@@ -45,7 +45,7 @@ void Cube::Create()
 void Cube::Update()
 {
     //for triangle there is nothing to update for now
-    ctm = glm::rotate(ctm, glm::radians(1.0f), glm::vec3(0,1,0));
+    ctm = glm::rotate(ctm, glm::radians(1.0f), glm::vec3(1,0,0));
 }
  
 void Cube::Draw()
@@ -60,34 +60,37 @@ std::vector<VertexFormat> Cube::makeCube(GLfloat size) {
     std::vector<VertexFormat> vertices;
 
     // FRONT FACE
-    vertices.push_back(VertexFormat(glm::vec3(size, size, 0.0),
-        glm::vec4(1, 0, 0, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(-size, -size, 0.0),
-        glm::vec4(1, 0, 0, 1)));
     vertices.push_back(VertexFormat(glm::vec3(size, -size, 0.0),
         glm::vec4(1, 0, 0, 1)));
-
     vertices.push_back(VertexFormat(glm::vec3(-size, -size, 0.0),
+        glm::vec4(1, 0, 0, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(size, size, 0.0),
+        glm::vec4(1, 0, 0, 1)));
+    
+
+    vertices.push_back(VertexFormat(glm::vec3(-size, size, 0.0),
         glm::vec4(0, 1, 0, 1)));
     vertices.push_back(VertexFormat(glm::vec3(size, size, 0.0),
         glm::vec4(0, 1, 0, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(-size, size, 0.0),
+    vertices.push_back(VertexFormat(glm::vec3(-size, -size, 0.0),
         glm::vec4(0, 1, 0, 1)));
+    
 
     // BACK FACE
+    vertices.push_back(VertexFormat(glm::vec3(size, size, -size),
+        glm::vec4(1, 1, 0, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(-size, -size, -size),
+        glm::vec4(1, 1, 0, 1)));
     vertices.push_back(VertexFormat(glm::vec3(size, -size, -size),
         glm::vec4(1, 1, 0, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(-size, -size, -size),
-        glm::vec4(1, 1, 0, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(size, size, -size),
-        glm::vec4(1, 1, 0, 1)));
 
+    vertices.push_back(VertexFormat(glm::vec3(-size, -size, -size),
+        glm::vec4(0, 0, 1, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(size, size, -size),
+        glm::vec4(0, 0, 1, 1)));
     vertices.push_back(VertexFormat(glm::vec3(-size, size, -size),
         glm::vec4(0, 0, 1, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(size, size, -size),
-        glm::vec4(0, 0, 1, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(-size, -size, -size),
-        glm::vec4(0, 0, 1, 1)));
+
 
     // TOP FACE
     vertices.push_back(VertexFormat(glm::vec3(-size, size, -size),
@@ -98,19 +101,19 @@ std::vector<VertexFormat> Cube::makeCube(GLfloat size) {
         glm::vec4(1, 0, 1, 1)));
 
     vertices.push_back(VertexFormat(glm::vec3(size, size, 0.0),
-        glm::vec4(0, 1, 0, 1)));
+        glm::vec4(0, 1, 1, 1)));
     vertices.push_back(VertexFormat(glm::vec3(-size, size, 0.0),
-        glm::vec4(0, 1, 0, 1)));
+        glm::vec4(0, 1, 1, 1)));
     vertices.push_back(VertexFormat(glm::vec3(size, size, -size),
-        glm::vec4(0, 1, 0, 1)));
+        glm::vec4(0, 1, 1, 1)));
 
     // BOTTOM FACE
-    vertices.push_back(VertexFormat(glm::vec3(-size, -size, -size),
-        glm::vec4(0, 0, 1, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(size, -size, -size),
-        glm::vec4(0, 0, 1, 1)));
     vertices.push_back(VertexFormat(glm::vec3(-size, -size, 0.0),
-        glm::vec4(0, 0, 1, 1)));
+        glm::vec4(1, 0, 1, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(size, -size, -size),
+        glm::vec4(1, 0, 1, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(-size, -size, -size),
+        glm::vec4(1, 0, 1, 1)));
 
     vertices.push_back(VertexFormat(glm::vec3(-size, -size, 0.0),
         glm::vec4(0, 1, 0, 1)));
@@ -119,7 +122,7 @@ std::vector<VertexFormat> Cube::makeCube(GLfloat size) {
     vertices.push_back(VertexFormat(glm::vec3(size, -size, -size),
         glm::vec4(0, 1, 0, 1)));
 
-    // LEFT FACE
+    // RIGHT FACE
     vertices.push_back(VertexFormat(glm::vec3(-size, size, -size),
         glm::vec4(1, 0, 0, 1)));
     vertices.push_back(VertexFormat(glm::vec3(-size, size, 0.0),
@@ -127,27 +130,27 @@ std::vector<VertexFormat> Cube::makeCube(GLfloat size) {
     vertices.push_back(VertexFormat(glm::vec3(-size, -size, -size),
         glm::vec4(1, 0, 0, 1)));
 
-    vertices.push_back(VertexFormat(glm::vec3(-size, size, 0.0),
-        glm::vec4(0, 1, 0, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(-size, -size, -size),
-        glm::vec4(0, 1, 0, 1)));
     vertices.push_back(VertexFormat(glm::vec3(-size, -size, 0.0),
-        glm::vec4(0, 1, 0, 1)));
+        glm::vec4(0, 1, 1, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(-size, -size, -size),
+        glm::vec4(0, 1, 1, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(-size, size, 0.0),
+        glm::vec4(0, 1, 1, 1)));
 
-    // RIGHT FACE
+    // LEFT FACE
     vertices.push_back(VertexFormat(glm::vec3(size, size, 0.0),
-        glm::vec4(1, 0, 0, 1)));
+        glm::vec4(1, 0, 1, 1)));
     vertices.push_back(VertexFormat(glm::vec3(size, size, -size),
-        glm::vec4(1, 0, 0, 1)));
+        glm::vec4(1, 0, 1, 1)));
     vertices.push_back(VertexFormat(glm::vec3(size, -size, 0.0),
-        glm::vec4(1, 0, 0, 1)));
+        glm::vec4(1, 0, 1, 1)));
 
     vertices.push_back(VertexFormat(glm::vec3(size, size, -size),
-        glm::vec4(0, 1, 0, 1)));
+        glm::vec4(0, 1, 1, 1)));
+    vertices.push_back(VertexFormat(glm::vec3(size, -size, -size),
+        glm::vec4(0, 1, 1, 1)));
     vertices.push_back(VertexFormat(glm::vec3(size, -size, 0.0),
-        glm::vec4(0, 1, 0, 1)));
-    vertices.push_back(VertexFormat(glm::vec3(size, -size, size),
-        glm::vec4(0, 1, 0, 1)));
+        glm::vec4(0, 1, 1, 1)));
     
     vectors = vertices.size();
     
