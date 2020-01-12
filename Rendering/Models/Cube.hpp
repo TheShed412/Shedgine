@@ -16,6 +16,8 @@ namespace Rendering
         virtual void Draw() override final;
 
       private:
+        GLuint ctm_location;
+        glm::mat4 ctm;
         int vectors;
         std::vector<VertexFormat> makeCube(GLfloat size);
     };

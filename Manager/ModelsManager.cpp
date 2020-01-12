@@ -23,12 +23,12 @@ ModelsManager::ModelsManager()
  
 ModelsManager::~ModelsManager()
 {
-  //auto -it's a map iterator
-  for (auto model: gameModelList)
-  {
-    delete model.second;
-  }
-  gameModelList.clear();
+    //auto -it's a map iterator
+    for (auto model: gameModelList)
+    {
+      delete model.second;
+    }
+    gameModelList.clear();
 }
  
 void ModelsManager::DeleteModel(const std::string& gameModelName)
@@ -49,7 +49,7 @@ void ModelsManager::Update()
   for (auto model: gameModelList)
   {
     model.second->Update();
-   }
+  }
 }
  
 void ModelsManager::Draw()
