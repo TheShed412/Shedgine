@@ -14,9 +14,16 @@ Cube::~Cube()
  
 void Cube::Create()
 {
+    glm::vec3 eyes = {0, 0, -2};// starting point {-10, 11, -10, 1}
+    glm::vec3 look_at_pos = {0, 0, 0};// starting point {0, 11, -10, 1}
+    glm::vec3 up_vec = {0, 1, 0};
+
     ctm = glm::mat4(1.0);
     GLuint vao;
     GLuint vbo;
+    projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
+    model_view = glm::lookAt(eyes, look_at_pos, up_vec);
+    //projection = glm::mat4(1.0);
  
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -36,6 +43,8 @@ void Cube::Create()
     glBindVertexArray(0);
 
     ctm_location = glGetUniformLocation(program, "ctm");
+    projection_location = glGetUniformLocation(program, "projection");
+    model_view_location = glGetUniformLocation(program, "modelView");
  
     //here we assign the values
     this->vao = vao;
@@ -45,7 +54,7 @@ void Cube::Create()
 void Cube::Update()
 {
     //for triangle there is nothing to update for now
-    ctm = glm::rotate(ctm, glm::radians(1.0f), glm::vec3(1,0,0));
+    //ctm = glm::rotate(ctm, glm::radians(1.0f), glm::vec3(1,1,0));
 }
  
 void Cube::Draw()
@@ -53,6 +62,8 @@ void Cube::Draw()
     glUseProgram(program);
     glBindVertexArray(vao);
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ctm);
+    glUniformMatrix4fv(projection_location, 1, GL_FALSE, (GLfloat *) &projection);
+    glUniformMatrix4fv(model_view_location, 1, GL_FALSE, (GLfloat *) &model_view);
     glDrawArrays(GL_TRIANGLES, 0, vectors);
 }
 

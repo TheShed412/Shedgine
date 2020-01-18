@@ -17,7 +17,11 @@ namespace Rendering
 
       private:
         GLuint ctm_location;
+        GLuint projection_location;
+        GLuint model_view_location;
         glm::mat4 ctm;
+        glm::mat4 projection;
+        glm::mat4 model_view;
         int vectors;
         std::vector<VertexFormat> makeCube(GLfloat size);
     };
