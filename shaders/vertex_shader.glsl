@@ -10,5 +10,5 @@ void main()
 {
   color = in_color;
   vec4 tmp_pos = vec4(in_position, 1);
-  gl_Position = projection * modelView * ctm * tmp_pos;
+  gl_Position = projection * modelView * ctm * tmp_pos / tmp_pos.w;
 }
