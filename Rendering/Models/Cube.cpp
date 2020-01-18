@@ -14,7 +14,7 @@ Cube::~Cube()
  
 void Cube::Create()
 {
-    // Pull this camera logic out in to it's own object
+    //TODO: pull this camera logic out in to it's own object
     glm::vec3 eyes = {0, 0, -1.5};// starting point {-10, 11, -10, 1}
     glm::vec3 look_at_pos = {0, 0, 0};// starting point {0, 11, -10, 1}
     glm::vec3 up_vec = {0, 1, 0};
