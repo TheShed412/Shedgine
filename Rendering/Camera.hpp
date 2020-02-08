@@ -16,6 +16,7 @@ namespace Rendering {
             Camera(glm::vec3 _position, glm::vec3 _worldUp, GLfloat _mouseSensitivity, GLfloat _movementSpeed);
             void processMouseMovement(float xoffset, float yoffset);
             void processKeyboard(CameraMovement direction, float deltaTime);
+            glm::mat4 getModelView();
 
         private:
             glm::vec3 position;// current location, WASD
@@ -25,6 +26,8 @@ namespace Rendering {
             glm::vec3 worldUpVec;
             GLfloat movementSpeed;
             GLfloat mouseSensitivity;
+            GLfloat yaw;
+            GLfloat pitch;
             void updateVectors();
     };
 

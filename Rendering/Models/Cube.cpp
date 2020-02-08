@@ -1,4 +1,7 @@
 #include "Cube.hpp"
+#include "../Camera.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/string_cast.hpp"
 
 using namespace Rendering;
 using namespace Models;
@@ -19,11 +22,14 @@ void Cube::Create()
     glm::vec3 look_at_pos = {0, 0, 0};// starting point {0, 11, -10, 1}
     glm::vec3 up_vec = {0, 1, 0};
 
+    Camera* camera = new Camera(eyes, up_vec, 1, 1);
+
     ctm = glm::mat4(1.0);
     GLuint vao;
     GLuint vbo;
     projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
-    model_view = glm::lookAt(eyes, look_at_pos, up_vec);
+    model_view = camera->getModelView();
+    std::cout << glm::to_string(model_view) << std::endl;
     //projection = glm::mat4(1.0);
  
     glGenVertexArrays(1, &vao);
