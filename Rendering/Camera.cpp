@@ -17,6 +17,10 @@ Camera::Camera(glm::vec3 _position, glm::vec3 _worldUp, GLfloat _mouseSensitivit
     updateVectors();
 }
 
+void Camera::setProgram(GLuint program) {
+    this->program = program;
+}
+
 Camera::~Camera() {
     // idk what goes here yet lol 
 }
@@ -26,11 +30,11 @@ glm::mat4 Camera::getModelView() {
 }
 
 void Camera::processMouseMovement(float xoffset, float yoffset){
-
+    // TODO: probably using the leran opengl implementation
 }
 
 void Camera::processKeyboard(CameraMovement direction, float deltaTime) {
-
+    // TODO: probably using the leran opengl implementation
 }
 
 void Camera::updateVectors() {

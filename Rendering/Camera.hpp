@@ -17,6 +17,7 @@ namespace Rendering {
             void processMouseMovement(float xoffset, float yoffset);
             void processKeyboard(CameraMovement direction, float deltaTime);
             glm::mat4 getModelView();
+            void setProgram(GLuint program);
 
         private:
             glm::vec3 position;// current location, WASD
@@ -28,6 +29,7 @@ namespace Rendering {
             GLfloat mouseSensitivity;
             GLfloat yaw;
             GLfloat pitch;
+            GLuint program;
             void updateVectors();
     };
 

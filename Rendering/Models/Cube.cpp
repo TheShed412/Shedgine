@@ -18,18 +18,17 @@ Cube::~Cube()
 void Cube::Create()
 {
     //TODO: pull this camera logic out in to it's own object
-    glm::vec3 eyes = {0, 1, -1.5};// starting point {-10, 11, -10, 1}
-    glm::vec3 look_at_pos = {0, 0, 0};// starting point {0, 11, -10, 1}
-    glm::vec3 up_vec = {0, 1, 0};
+    // glm::vec3 eyes = {0, 1, -1.5};// starting point {-10, 11, -10, 1}
+    // glm::vec3 look_at_pos = {0, 0, 0};// starting point {0, 11, -10, 1}
+    // glm::vec3 up_vec = {0, 1, 0};
 
-    Camera* camera = new Camera(eyes, up_vec, 1, 1);
+    // Camera* camera = new Camera(eyes, up_vec, 1, 1);
 
     ctm = glm::mat4(1.0);
     GLuint vao;
     GLuint vbo;
-    projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
-    model_view = camera->getModelView();
-    std::cout << glm::to_string(model_view) << std::endl;
+    // projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
+    // model_view = camera->getModelView();
     //projection = glm::mat4(1.0);
  
     glGenVertexArrays(1, &vao);

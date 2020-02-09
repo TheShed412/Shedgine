@@ -23,6 +23,16 @@ void Model::SetProgram(GLuint program)
 {
   this->program = program;
 }
+
+void Model::SetModelView(glm::mat4 modelView)
+{
+  this->model_view = modelView;
+}
+
+void Model::SetProjection(glm::mat4 projection)
+{
+  this->projection = projection;
+}
  
 GLuint Model::GetVao() const
 {
