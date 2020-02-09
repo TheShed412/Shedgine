@@ -1,6 +1,16 @@
 #include "SceneManager.hpp"
 using namespace Managers;
  
+/*
+    TODO: maybe put the projection and camera in here since those
+    make sense to be part of the scene and not models
+
+    Though, I guess I will just be passing them from here to the model manager
+    but I do want to be able to control the camera easier
+
+    For the projection matrix, it might be done in the camera later since
+    that makes sense to me
+*/
 SceneManager::SceneManager()
 {
     glEnable(GL_CULL_FACE);
