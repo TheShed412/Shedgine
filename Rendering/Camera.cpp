@@ -42,9 +42,9 @@ void Camera::updateVectors() {
     lookDirection = glm::normalize(position - glm::vec3(0,0,0));// temp for testing
     glm::vec3 rightVecTmp = glm::cross(lookDirection, worldUpVec);  
 
-    // if it's 0, I don't need to normalize
+    // if it's 0, throw error
     if (glm::length(rightVecTmp) < 0.00001 * 0.00001) {
-        rightVec = rightVecTmp;
+        throw "Vector error: right vector is a zero vector";
     } else {
         rightVec = glm::normalize(rightVecTmp);
     }
@@ -53,7 +53,7 @@ void Camera::updateVectors() {
 
     // this should throw an error
     if (glm::length(upVecTmp) < 0.00001 * 0.00001) {
-        upVec = upVecTmp;
+        throw "Vector error: up is a zero vector";
     } else {
         upVec = glm::normalize(upVecTmp);
     }
