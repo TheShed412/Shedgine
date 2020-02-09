@@ -3,6 +3,7 @@
 #include "ShaderManager.hpp"
 #include "../Rendering/IGameObject.hpp"
 #include "../Rendering/Models/Triangle.hpp"
+#include "../Rendering/Models/Cube.hpp"
  
 using namespace Rendering;
 namespace Managers

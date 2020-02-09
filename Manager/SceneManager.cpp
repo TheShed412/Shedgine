@@ -3,9 +3,12 @@ using namespace Managers;
  
 SceneManager::SceneManager()
 {
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
     shader_manager = new ShaderManager();
-    models_manager = new ModelsManager();
+    //models_manager = new ModelsManager();
     shader_manager->CreateProgram("colorShader",
                                     "shaders/vertex_shader.glsl",
                                     "shaders/fragment_shader.glsl");
