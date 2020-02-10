@@ -53,7 +53,18 @@ void SceneManager::notifyEndFrame()
 }
 
 void SceneManager::notifyKeyboardInput(unsigned char key) {
-    std::cout<< "KEYBOARD: " << key << std::endl;
+    if(key == 'w') {
+        camera->processKeyboard(FORWARD, 1);
+    }
+    if(key == 's') {
+        camera->processKeyboard(BACKWARD, 1);
+    }
+    if(key == 'a') {
+        camera->processKeyboard(LEFT, 1);
+    }
+    if(key == 'd') {
+        camera->processKeyboard(RIGHT, 1);
+    }
 }
 
 void SceneManager::notifyMouseInput(float x, float y) {
