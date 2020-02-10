@@ -15,7 +15,8 @@ namespace Managers
       virtual void notifyBeginFrame();
       virtual void notifyDisplayFrame();
       virtual void notifyKeyboardInput(unsigned char key);
-      virtual void notifyMouseInput(float x, float y);
+      virtual void notifyMouseInput(int button, int state, int x, int y);
+      virtual void notifyMouseMovementInput(int x, int y);
       virtual void notifyEndFrame();
       virtual void notifyReshape(int width,
                                  int height,

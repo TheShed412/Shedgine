@@ -67,8 +67,12 @@ void SceneManager::notifyKeyboardInput(unsigned char key) {
     }
 }
 
-void SceneManager::notifyMouseInput(float x, float y) {
+void SceneManager::notifyMouseInput(int button, int state, int x, int y) {
     std::cout<< "MOUSE X: " << x << " Y: " << y << std::endl;
+}
+
+void SceneManager::notifyMouseMovementInput(int x, int y) {
+    std::cout<< "MOUSE PASSIVE X: " << x << " Y: " << y << std::endl;
 }
  
 void SceneManager::notifyReshape(int width,
