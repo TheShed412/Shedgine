@@ -21,5 +21,6 @@ namespace Managers
  
      private:
         std::map<std::string, IGameObject*> gameModelList;
+        Camera camera;
    };
 }

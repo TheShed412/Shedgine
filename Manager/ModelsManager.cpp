@@ -20,14 +20,14 @@ ModelsManager::ModelsManager()
     glm::vec3 look_at_pos = {0, 0, 0};// starting point {0, 11, -10, 1}
     glm::vec3 up_vec = {0, 1, 0};
 
-    Camera* camera = new Camera(eyes, up_vec, 1, 1);
+    camera = Camera(eyes, up_vec, 1, 1);
     GLuint program = ShaderManager::GetShader("colorShader");
-    camera->setProgram(program);
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     Models::Cube* cube = new Models::Cube();
     cube->SetProgram(program);
     cube->SetProjection(projection);
-    cube->SetModelView(camera->getModelView());
+    cube->SetModelView(camera.getModelView());
+    cube->SetCamera(&camera);
     cube->Create();
     gameModelList["cube"] = cube;
 }

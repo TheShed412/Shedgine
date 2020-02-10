@@ -29,6 +29,11 @@ void Model::SetModelView(glm::mat4 modelView)
   this->model_view = modelView;
 }
 
+void Model::SetCamera(Camera* camera)
+{
+  this->camera = camera;
+}
+
 void Model::SetProjection(glm::mat4 projection)
 {
   this->projection = projection;

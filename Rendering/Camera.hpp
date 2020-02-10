@@ -3,15 +3,17 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 namespace Rendering {
-    class Camera {
+
         enum CameraMovement {
             FORWARD,
             BACKWARD,
             LEFT,
             RIGHT
         };
+    class Camera {
 
         public:
+            Camera();
             ~Camera();
             Camera(glm::vec3 _position, glm::vec3 _worldUp, GLfloat _mouseSensitivity, GLfloat _movementSpeed);
             void processMouseMovement(float xoffset, float yoffset);

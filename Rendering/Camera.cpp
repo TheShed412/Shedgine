@@ -7,6 +7,10 @@
 
 using namespace Rendering;
 
+float thing = 0.1;
+
+Camera::Camera() {}
+
 Camera::Camera(glm::vec3 _position, glm::vec3 _worldUp, GLfloat _mouseSensitivity, GLfloat _movementSpeed) {
     position = _position;
     worldUpVec = _worldUp;
@@ -31,10 +35,12 @@ glm::mat4 Camera::getModelView() {
 
 void Camera::processMouseMovement(float xoffset, float yoffset){
     // TODO: probably using the leran opengl implementation
+    updateVectors();
 }
 
 void Camera::processKeyboard(CameraMovement direction, float deltaTime) {
     // TODO: probably using the leran opengl implementation
+    updateVectors();
 }
 
 void Camera::updateVectors() {

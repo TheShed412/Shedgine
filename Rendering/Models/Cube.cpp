@@ -50,7 +50,8 @@ void Cube::Create()
 void Cube::Update()
 {
     //for triangle there is nothing to update for now
-    ctm = glm::rotate(ctm, glm::radians(1.0f), glm::vec3(1,1,0));
+    model_view = camera->getModelView();
+    //ctm = glm::rotate(ctm, glm::radians(1.0f), glm::vec3(1,1,0));
 }
  
 void Cube::Draw()

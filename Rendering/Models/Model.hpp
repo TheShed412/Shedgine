@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "../IGameObject.hpp"
+#include "../Camera.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 namespace Rendering
 {
@@ -17,12 +18,14 @@ namespace Rendering
          virtual void SetProgram(GLuint shaderName) override;
          virtual void SetModelView(glm::mat4 modelView);
          virtual void SetProjection(glm::mat4 projection);
+         virtual void SetCamera(Camera* camera);
          virtual void Destroy() override;
  
          virtual GLuint GetVao() const override;
          virtual const std::vector<GLuint>& GetVbos() const override;
  
       protected:
+        Camera* camera;
         GLuint ctm_location;
         GLuint projection_location;
         GLuint model_view_location;
