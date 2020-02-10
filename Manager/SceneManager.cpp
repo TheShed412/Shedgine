@@ -30,6 +30,7 @@ SceneManager::~SceneManager()
 {
    delete shader_manager;
    delete models_manager;
+   delete camera;
 }
  
 void SceneManager::notifyBeginFrame()
