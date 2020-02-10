@@ -7,8 +7,6 @@
 
 using namespace Rendering;
 
-float thing = 0.1;
-
 Camera::Camera() {}
 
 Camera::Camera(glm::vec3 _position, glm::vec3 _worldUp, GLfloat _mouseSensitivity, GLfloat _movementSpeed) {
