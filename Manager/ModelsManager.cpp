@@ -3,8 +3,10 @@
  
 using namespace Managers;
 using namespace Rendering;
+
+ModelsManager::ModelsManager(){}
  
-ModelsManager::ModelsManager()
+ModelsManager::ModelsManager(Camera* camera)
 {
  //triangle game object
   // Models::Triangle* triangle = new Models::Triangle();
@@ -16,18 +18,14 @@ ModelsManager::ModelsManager()
   // torus->SetProgram(ShaderManager::GetShader("colorShader"));
   // torus->Create();
   // gameModelList["torus"] = torus;
-    glm::vec3 eyes = {0, 1, -1.5};// starting point {-10, 11, -10, 1}
-    glm::vec3 look_at_pos = {0, 0, 0};// starting point {0, 11, -10, 1}
-    glm::vec3 up_vec = {0, 1, 0};
-
-    Camera* camera = new Camera(eyes, up_vec, 1, 1);
+    this->camera = camera;
     GLuint program = ShaderManager::GetShader("colorShader");
-    camera->setProgram(program);
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     Models::Cube* cube = new Models::Cube();
     cube->SetProgram(program);
     cube->SetProjection(projection);
-    cube->SetModelView(camera->getModelView());
+    cube->SetModelView(camera->getModelView());// probably can replace all of this with the camera reference
+    cube->SetCamera(this->camera);
     cube->Create();
     gameModelList["cube"] = cube;
 }
@@ -61,6 +59,10 @@ void ModelsManager::Update()
   {
     model.second->Update();
   }
+}
+
+void ModelsManager::SetCamera(Camera* camera) {
+    this->camera = camera;
 }
  
 void ModelsManager::Draw()

@@ -18,17 +18,21 @@ SceneManager::SceneManager()
     glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
     shader_manager = new ShaderManager();
+    camera = new Camera(glm::vec3(0,0,2), glm::vec3(0,1,0), 0.5, 0.01);
     //models_manager = new ModelsManager();
     shader_manager->CreateProgram("colorShader",
                                     "shaders/vertex_shader.glsl",
                                     "shaders/fragment_shader.glsl");
-    models_manager = new ModelsManager();
+    models_manager = new ModelsManager(camera);
+
+    /* Setting up input */
 }
  
 SceneManager::~SceneManager()
 {
    delete shader_manager;
    delete models_manager;
+   delete camera;
 }
  
 void SceneManager::notifyBeginFrame()
@@ -46,6 +50,45 @@ void SceneManager::notifyDisplayFrame()
 void SceneManager::notifyEndFrame()
 {
  //nothing here for the moment
+}
+
+void SceneManager::notifyKeyboardInput(unsigned char key) {
+    if(key == 'w') {
+        camera->processKeyboard(FORWARD, 1);
+    }
+    if(key == 's') {
+        camera->processKeyboard(BACKWARD, 1);
+    }
+    if(key == 'a') {
+        camera->processKeyboard(LEFT, 1);
+    }
+    if(key == 'd') {
+        camera->processKeyboard(RIGHT, 1);
+    }
+}
+
+void SceneManager::notifyMouseInput(int button, int state, int x, int y) {
+    std::cout<< "MOUSE X: " << x << " Y: " << y << std::endl;
+}
+
+bool firstMouse = true;
+float lastX;
+float lastY;
+
+void SceneManager::notifyMouseMovementInput(int x, int y) {
+    if (firstMouse)
+    {
+        lastX = x;
+        lastY = y;
+        firstMouse = false;
+    }
+
+    float xoffset = x - lastX;
+    float yoffset = lastY - y; // reversed since y-coordinates go from bottom to top
+
+    lastX = x;
+    lastY = y;
+    camera->processMouseMovement(xoffset, yoffset);
 }
  
 void SceneManager::notifyReshape(int width,
