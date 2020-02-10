@@ -18,11 +18,12 @@ SceneManager::SceneManager()
     glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
     shader_manager = new ShaderManager();
+    camera = new Camera(glm::vec3(0,1,1.5), glm::vec3(0,1,0), 1, 1);
     //models_manager = new ModelsManager();
     shader_manager->CreateProgram("colorShader",
                                     "shaders/vertex_shader.glsl",
                                     "shaders/fragment_shader.glsl");
-    models_manager = new ModelsManager();
+    models_manager = new ModelsManager(camera);
 }
  
 SceneManager::~SceneManager()

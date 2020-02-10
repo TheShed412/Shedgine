@@ -1,6 +1,7 @@
 #pragma once
 #include "ShaderManager.hpp"
 #include "ModelsManager.hpp"
+#include "../Rendering/Camera.hpp"
 #include "../Core/Init/IListener.hpp"
 
 namespace Managers
@@ -21,5 +22,6 @@ namespace Managers
     private:
       Managers::ShaderManager* shader_manager;
       Managers::ModelsManager* models_manager;
+      Rendering::Camera* camera;
  };
 }

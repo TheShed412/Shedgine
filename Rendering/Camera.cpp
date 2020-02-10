@@ -40,6 +40,15 @@ void Camera::processMouseMovement(float xoffset, float yoffset){
 
 void Camera::processKeyboard(CameraMovement direction, float deltaTime) {
     // TODO: probably using the leran opengl implementation
+    float velocity = movementSpeed * deltaTime;
+    if (direction == FORWARD)
+        position += lookDirection * velocity;
+    if (direction == BACKWARD)
+        position -= lookDirection * velocity;
+    if (direction == LEFT)
+        position -= rightVec * velocity;
+    if (direction == RIGHT)
+        position += rightVec * velocity;
     updateVectors();
 }
 
