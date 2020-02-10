@@ -24,6 +24,8 @@ SceneManager::SceneManager()
                                     "shaders/vertex_shader.glsl",
                                     "shaders/fragment_shader.glsl");
     models_manager = new ModelsManager(camera);
+
+    /* Setting up input */
 }
  
 SceneManager::~SceneManager()
@@ -48,6 +50,14 @@ void SceneManager::notifyDisplayFrame()
 void SceneManager::notifyEndFrame()
 {
  //nothing here for the moment
+}
+
+void SceneManager::notifyKeyboardInput() {
+    std::cout<< "KEYBOARD" << std::endl;
+}
+
+void SceneManager::notifyMouseInput() {
+    std::cout<< "MOUSE" << std::endl;
 }
  
 void SceneManager::notifyReshape(int width,

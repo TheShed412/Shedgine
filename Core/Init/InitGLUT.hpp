@@ -37,6 +37,7 @@ namespace Core {
             static void idleCallback(void);
             static void displayCallback(void);
             static void reshapeCallback(int width, int height);
+            static void keyboardCallback(unsigned char key, int mousex, int mousey);
             static void closeCallback();
       };
    }

@@ -43,6 +43,7 @@ void InitGLUT::init(const Core::WindowInfo& windowInfo,
    glutCloseFunc(closeCallback);
    glutDisplayFunc(displayCallback);
    glutReshapeFunc(reshapeCallback);
+   glutKeyboardFunc(keyboardCallback);
    
    //init GLEW, this can be called in main.cpp
    Init::InitGLEW::Init();
@@ -103,6 +104,10 @@ void InitGLUT::reshapeCallback(int width, int height){
       windowInformation.width = width;
       windowInformation.height = height;
   }
+}
+
+void InitGLUT::keyboardCallback(unsigned char key, int mousex, int mousey) {
+   std::cout << "KEYBOARD: " << key << std::endl;
 }
  
 void InitGLUT::closeCallback()

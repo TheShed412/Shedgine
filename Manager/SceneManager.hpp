@@ -14,6 +14,8 @@ namespace Managers
  
       virtual void notifyBeginFrame();
       virtual void notifyDisplayFrame();
+      virtual void notifyKeyboardInput();
+      virtual void notifyMouseInput();
       virtual void notifyEndFrame();
       virtual void notifyReshape(int width,
                                  int height,
