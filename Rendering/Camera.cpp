@@ -14,8 +14,8 @@ Camera::Camera(glm::vec3 _position, glm::vec3 _worldUp, GLfloat _mouseSensitivit
     worldUpVec = _worldUp;
     mouseSensitivity = _mouseSensitivity;
     movementSpeed = _movementSpeed;
-    pitch = 0;
-    yaw = 0;
+    pitch = 0.0f;
+    yaw = -90.0f;
     updateVectors();
 }
 
@@ -33,6 +33,17 @@ glm::mat4 Camera::getModelView() {
 
 void Camera::processMouseMovement(float xoffset, float yoffset){
     // TODO: probably using the leran opengl implementation
+    xoffset *= mouseSensitivity;
+    yoffset *= mouseSensitivity;
+
+    yaw   += xoffset;
+    pitch += yoffset;
+
+    if (pitch > 89.0f)
+        pitch = 89.0f;
+    if (pitch < -89.0f)
+        pitch = -89.0f;
+
     updateVectors();
 }
 
@@ -55,8 +66,8 @@ void Camera::updateVectors() {
     front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
     front.y = sin(glm::radians(pitch));
     front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    //lookDirection = glm::normalize(front);
-    lookDirection = glm::normalize(position - glm::vec3(0,0,0));// temp for testing
+    lookDirection = glm::normalize(front);
+    //lookDirection = glm::normalize(position - glm::vec3(0,0,0));// temp for testing
     glm::vec3 rightVecTmp = glm::cross(lookDirection, worldUpVec);  
 
     // if it's 0, throw error
