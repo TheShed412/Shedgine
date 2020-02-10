@@ -107,7 +107,10 @@ void InitGLUT::reshapeCallback(int width, int height){
 }
 
 void InitGLUT::keyboardCallback(unsigned char key, int mousex, int mousey) {
-   std::cout << "KEYBOARD: " << key << std::endl;
+   if(listener) {
+      listener->notifyKeyboardInput(key);
+      listener->notifyMouseInput(mousex, mousey);
+   }
 }
  
 void InitGLUT::closeCallback()

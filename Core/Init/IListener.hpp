@@ -10,8 +10,8 @@ namespace Core{
      virtual void notifyBeginFrame() = 0;
      virtual void notifyDisplayFrame() = 0;
      virtual void notifyEndFrame() = 0;
-     virtual void notifyKeyboardInput() = 0;
-     virtual void notifyMouseInput() = 0;
+     virtual void notifyKeyboardInput(unsigned char key) = 0;
+     virtual void notifyMouseInput(float x, float y) = 0;
      virtual void notifyReshape(int width,
                                 int height,
                                 int previous_width,

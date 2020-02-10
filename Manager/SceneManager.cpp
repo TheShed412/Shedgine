@@ -52,12 +52,12 @@ void SceneManager::notifyEndFrame()
  //nothing here for the moment
 }
 
-void SceneManager::notifyKeyboardInput() {
-    std::cout<< "KEYBOARD" << std::endl;
+void SceneManager::notifyKeyboardInput(unsigned char key) {
+    std::cout<< "KEYBOARD: " << key << std::endl;
 }
 
-void SceneManager::notifyMouseInput() {
-    std::cout<< "MOUSE" << std::endl;
+void SceneManager::notifyMouseInput(float x, float y) {
+    std::cout<< "MOUSE X: " << x << " Y: " << y << std::endl;
 }
  
 void SceneManager::notifyReshape(int width,
