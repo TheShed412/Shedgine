@@ -37,6 +37,18 @@ SceneManager::~SceneManager()
  
 void SceneManager::notifyBeginFrame()
 {
+    if(keys['w']) {
+        camera->processKeyboard(FORWARD, 1);
+    }
+    if(keys['s']) {
+        camera->processKeyboard(BACKWARD, 1);
+    }
+    if(keys['a']) {
+        camera->processKeyboard(LEFT, 1);
+    }
+    if(keys['d']) {
+        camera->processKeyboard(RIGHT, 1);
+    }
     models_manager->Update();
 }
  
@@ -52,19 +64,24 @@ void SceneManager::notifyEndFrame()
  //nothing here for the moment
 }
 
+void SceneManager::notifyKeyboardUp(unsigned char key) {
+    keys[key] = false;
+}
+
 void SceneManager::notifyKeyboardInput(unsigned char key) {
-    if(key == 'w') {
-        camera->processKeyboard(FORWARD, 1);
-    }
-    if(key == 's') {
-        camera->processKeyboard(BACKWARD, 1);
-    }
-    if(key == 'a') {
-        camera->processKeyboard(LEFT, 1);
-    }
-    if(key == 'd') {
-        camera->processKeyboard(RIGHT, 1);
-    }
+    // if(key == 'w') {
+    //     camera->processKeyboard(FORWARD, 1);
+    // }
+    // if(key == 's') {
+    //     camera->processKeyboard(BACKWARD, 1);
+    // }
+    // if(key == 'a') {
+    //     camera->processKeyboard(LEFT, 1);
+    // }
+    // if(key == 'd') {
+    //     camera->processKeyboard(RIGHT, 1);
+    // }
+    keys[key] = true;
 }
 
 void SceneManager::notifyMouseInput(int button, int state, int x, int y) {

@@ -45,6 +45,7 @@ void InitGLUT::init(const Core::WindowInfo& windowInfo,
    glutReshapeFunc(reshapeCallback);
    // TODO: might need to do an up and down to register multiple keys
    glutKeyboardFunc(keyboardCallback);
+   glutKeyboardUpFunc(keyboardUp);
    glutMouseFunc(mouseCallback);
    glutPassiveMotionFunc(mouseMovementCallback);
    
@@ -93,6 +94,12 @@ void InitGLUT::displayCallback()
       glutSwapBuffers();
    
       listener->notifyEndFrame();
+   }
+}
+
+void InitGLUT::keyboardUp(unsigned char key, int x, int y) {
+   if(listener) {
+      listener->notifyKeyboardUp(key);
    }
 }
  

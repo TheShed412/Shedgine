@@ -41,6 +41,7 @@ namespace Core {
             static void mouseCallback(int button, int state, int x, int y);
             static void mouseMovementCallback(int x, int y);
             static void closeCallback();
+            static void keyboardUp(unsigned char key, int x, int y);
       };
    }
 }
