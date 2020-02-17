@@ -39,6 +39,7 @@ void InitGLUT::init(const Core::WindowInfo& windowInfo,
    std::cout << "GLUT:initialized" << std::endl;
    //these callbacks are used for rendering
    glEnable(GL_DEBUG_OUTPUT);
+   glutSetCursor(GLUT_CURSOR_NONE);
    glutIdleFunc(idleCallback);
    glutCloseFunc(closeCallback);
    glutDisplayFunc(displayCallback);
@@ -123,6 +124,9 @@ void InitGLUT::keyboardCallback(unsigned char key, int mousex, int mousey) {
 }
 
 void InitGLUT::mouseCallback(int button, int state, int x, int y) {
+   static int centerX = 800 / 2;
+   static int centerY = 600 / 2;
+   glutWarpPointer(centerX, centerY);
    if(listener) {
       listener->notifyMouseInput(button, state, x, y);
    }
@@ -130,7 +134,6 @@ void InitGLUT::mouseCallback(int button, int state, int x, int y) {
 
 void InitGLUT::mouseMovementCallback(int x, int y) {
    if(listener) {
-      std::cout << "MOUSE X: " << x << " Y: " << y << std::endl;
       listener->notifyMouseMovementInput(x, y);
    }
 }
