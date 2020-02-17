@@ -8,16 +8,6 @@ ModelsManager::ModelsManager(){}
  
 ModelsManager::ModelsManager(Camera* camera)
 {
- //triangle game object
-  // Models::Triangle* triangle = new Models::Triangle();
-  // triangle->SetProgram(ShaderManager::GetShader("colorShader"));
-  // triangle->Create();
-  // gameModelList["triangle"] = triangle;
-
-  // Models::Torus* torus = new Models::Torus();
-  // torus->SetProgram(ShaderManager::GetShader("colorShader"));
-  // torus->Create();
-  // gameModelList["torus"] = torus;
     this->camera = camera;
     GLuint program = ShaderManager::GetShader("colorShader");
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
