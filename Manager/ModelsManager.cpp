@@ -12,12 +12,22 @@ ModelsManager::ModelsManager(Camera* camera)
     GLuint program = ShaderManager::GetShader("colorShader");
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     Models::Cube* cube = new Models::Cube();
+    Models::Grid* grid = new Models::Grid();
+
     cube->SetProgram(program);
     cube->SetProjection(projection);
     cube->SetModelView(camera->getModelView());// probably can replace all of this with the camera reference
     cube->SetCamera(this->camera);
     cube->Create();
+
+    grid->SetProgram(program);
+    grid->SetProjection(projection);
+    grid->SetModelView(camera->getModelView());// probably can replace all of this with the camera reference
+    grid->SetCamera(this->camera);
+    grid->Create();
+
     gameModelList["cube"] = cube;
+    gameModelList["grid"] = grid;
 }
  
 ModelsManager::~ModelsManager()

@@ -4,6 +4,7 @@
 #include "../Rendering/IGameObject.hpp"
 #include "../Rendering/Models/Triangle.hpp"
 #include "../Rendering/Models/Cube.hpp"
+#include "../Rendering/Models/Grid.hpp"
  
 using namespace Rendering;
 namespace Managers
