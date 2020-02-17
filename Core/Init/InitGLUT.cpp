@@ -130,7 +130,6 @@ void InitGLUT::mouseCallback(int button, int state, int x, int y) {
 
 void InitGLUT::mouseMovementCallback(int x, int y) {
    if(listener) {
-      std::cout << "MOUSE X: " << x << " Y: " << y << std::endl;
       listener->notifyMouseMovementInput(x, y);
    }
 }
