@@ -18,7 +18,7 @@ SceneManager::SceneManager()
     glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
     shader_manager = new ShaderManager();
-    camera = new Camera(glm::vec3(0,0,2), glm::vec3(0,1,0), 0.5, 0.01);
+    camera = new Camera(glm::vec3(0,0,2), glm::vec3(0,1,0), 0.5, 0.05);
     //models_manager = new ModelsManager();
     shader_manager->CreateProgram("colorShader",
                                     "shaders/vertex_shader.glsl",
@@ -85,7 +85,7 @@ void SceneManager::notifyKeyboardInput(unsigned char key) {
 }
 
 void SceneManager::notifyMouseInput(int button, int state, int x, int y) {
-    std::cout<< "MOUSE X: " << x << " Y: " << y << std::endl;
+    //std::cout<< "MOUSE X: " << x << " Y: " << y << std::endl;
 }
 
 bool firstMouse = true;

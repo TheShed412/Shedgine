@@ -28,13 +28,20 @@ Camera::~Camera() {
 }
 
 glm::mat4 Camera::getModelView() {
-    return glm::lookAt(position, lookDirection, upVec);
+    glm::mat4 thing = glm::lookAt(position, position + lookDirection, upVec);
+    glm::vec4 top = thing[0];
+    glm::vec4 mid1 = thing[1];
+    glm::vec4 mid2 = thing[2];
+    glm::vec4 bot = thing[3];
+    std::cout<<glm::to_string(upVec)<<std::endl;
+    return thing;
 }
 
 void Camera::processMouseMovement(float xoffset, float yoffset){
     // TODO: probably using the leran opengl implementation
     xoffset *= mouseSensitivity;
     yoffset *= mouseSensitivity;
+    std::cout << "???" << std::endl;
 
     yaw   += xoffset;
     pitch += yoffset;
