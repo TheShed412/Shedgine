@@ -121,10 +121,7 @@ void InitGLUT::keyboardCallback(unsigned char key, int mousex, int mousey) {
    }
 }
 
-static int mouseClick = 0;
 void InitGLUT::mouseCallback(int button, int state, int x, int y) {
-   std::cout << "MOUSE Click: " << mouseClick << std::endl;
-   mouseClick++;
    if(listener) {
       listener->notifyMouseInput(button, state, x, y);
    }

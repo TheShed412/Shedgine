@@ -5,7 +5,10 @@ using namespace Managers;
 using namespace Rendering;
 
 ModelsManager::ModelsManager(){}
- 
+
+/*
+  TODO: I need to pull the math of multiplying vertices here, and not in the shaders
+*/ 
 ModelsManager::ModelsManager(Camera* camera)
 {
     this->camera = camera;
@@ -16,13 +19,14 @@ ModelsManager::ModelsManager(Camera* camera)
 
     cube->SetProgram(program);
     cube->SetProjection(projection);
-    cube->SetModelView(camera->getModelView());// probably can replace all of this with the camera reference
+    cube->SetModelView(camera->getModelView());
     cube->SetCamera(this->camera);
     cube->Create();
 
+    // TODO: make this a debug feature at compile time
     grid->SetProgram(program);
     grid->SetProjection(projection);
-    grid->SetModelView(camera->getModelView());// probably can replace all of this with the camera reference
+    grid->SetModelView(camera->getModelView());
     grid->SetCamera(this->camera);
     grid->Create();
 

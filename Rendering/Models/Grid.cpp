@@ -6,6 +6,7 @@
 using namespace Rendering;
 using namespace Models;
 
+// TODO: make this able to be whatever size
 Grid::Grid() {
 
 }
@@ -14,6 +15,7 @@ Grid::~Grid(){
 
 }
 
+// TODO: find out what I can pull out in to a parent function
 void Grid::Create() {
     ctm = glm::mat4(1.0);
     GLuint vao;
@@ -63,7 +65,7 @@ std::vector<VertexFormat> Grid::makeGrid() {
     std::vector<VertexFormat> vertices;
     glm::vec4 color;
 
-    for(int i=0;i<=10;i++) {
+    for(int i=0;i<=10;i++) {// TODO: i'd chagne this to change how big the grid is
         if(i == 0) {
             color = glm::vec4(0.3, 0.3, 0.6, 1);
         } else {
