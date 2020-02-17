@@ -16,19 +16,18 @@ void InitGLUT::init(const Core::WindowInfo& windowInfo,
    windowInformation = windowInfo;
 
    if (contextInfo.core){
-         glutInitContextVersion(contextInfo.major_version,
-                                 contextInfo.minor_version);
-         glutInitContextProfile(GLUT_CORE_PROFILE);
+      glutInitContextVersion(contextInfo.major_version, contextInfo.minor_version);
+      glutInitContextProfile(GLUT_CORE_PROFILE);
    }
    else
    {
-         //As I said in part II, version doesn't matter
-         // in Compatibility mode
-         glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
-      }
+      //As I said in part II, version doesn't matter
+      // in Compatibility mode
+      glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
+   }
    
-      //these functions were called in the old main.cpp
-      //Now we use info from the structures
+   //these functions were called in the old main.cpp
+   //Now we use info from the structures
    glutInitDisplayMode(framebufferInfo.flags);
    glutInitWindowPosition(windowInfo.position_x,
                            windowInfo.position_y);
@@ -39,16 +38,15 @@ void InitGLUT::init(const Core::WindowInfo& windowInfo,
    std::cout << "GLUT:initialized" << std::endl;
    //these callbacks are used for rendering
    glEnable(GL_DEBUG_OUTPUT);
-   glutSetCursor(GLUT_CURSOR_NONE);
+   //glutSetCursor(GLUT_CURSOR_NONE);
    glutIdleFunc(idleCallback);
    glutCloseFunc(closeCallback);
    glutDisplayFunc(displayCallback);
    glutReshapeFunc(reshapeCallback);
-   // TODO: might need to do an up and down to register multiple keys
+   glutPassiveMotionFunc(mouseMovementCallback);
    glutKeyboardFunc(keyboardCallback);
    glutKeyboardUpFunc(keyboardUp);
    glutMouseFunc(mouseCallback);
-   glutPassiveMotionFunc(mouseMovementCallback);
    
    //init GLEW, this can be called in main.cpp
    Init::InitGLEW::Init();
@@ -123,16 +121,19 @@ void InitGLUT::keyboardCallback(unsigned char key, int mousex, int mousey) {
    }
 }
 
+static int mouseClick = 0;
 void InitGLUT::mouseCallback(int button, int state, int x, int y) {
-   static int centerX = 800 / 2;
-   static int centerY = 600 / 2;
-   glutWarpPointer(centerX, centerY);
+   std::cout << "MOUSE Click: " << mouseClick << std::endl;
+   mouseClick++;
    if(listener) {
       listener->notifyMouseInput(button, state, x, y);
    }
 }
 
+static int mouseMove = 0;
 void InitGLUT::mouseMovementCallback(int x, int y) {
+   std::cout << "MOUSE: " << mouseMove << std::endl;
+   mouseMove++;
    if(listener) {
       listener->notifyMouseMovementInput(x, y);
    }

@@ -32,6 +32,7 @@ glm::mat4 Camera::getModelView() {
     return modelView;
 }
 
+static int mouseMove = 0;
 void Camera::processMouseMovement(float xoffset, float yoffset){
     // TODO: probably using the leran opengl implementation
     xoffset *= mouseSensitivity;
@@ -66,7 +67,6 @@ void Camera::processKeyboard(CameraMovement direction, float deltaTime) {
             position += rightVec * velocity;
         break;
     }
-    updateVectors();
 }
 
 void Camera::updateVectors() {
