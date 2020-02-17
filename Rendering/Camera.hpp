@@ -8,7 +8,9 @@ namespace Rendering {
             FORWARD,
             BACKWARD,
             LEFT,
-            RIGHT
+            RIGHT,
+            BUTTON_UP,
+            BUTTON_DOWN
         };
     class Camera {
 
