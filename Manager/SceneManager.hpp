@@ -2,6 +2,7 @@
 #include "ShaderManager.hpp"
 #include "ModelsManager.hpp"
 #include "../Rendering/Camera.hpp"
+#include "../Rendering/Texture/TextureLoader.hpp"
 #include "../Core/Init/IListener.hpp"
 
 namespace Managers
@@ -26,6 +27,7 @@ namespace Managers
     private:
       Managers::ShaderManager* shader_manager;
       Managers::ModelsManager* models_manager;
+      Rendering::TextureLoader* textureLoader;
       Rendering::Camera* camera;
  };
 }

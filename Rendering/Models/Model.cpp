@@ -54,4 +54,21 @@ void Model::Destroy()
   glDeleteVertexArrays(1, &vao);
   glDeleteBuffers(vbos.size(), &vbos[0]);
   vbos.clear();
+  if (textures.size() > 0)
+	{
+		for (auto t: textures)
+		{
+			glDeleteTextures(1, &t.second);
+		}
+		textures.clear();
+	}
+}
+
+void Model::SetTexture(std::string textureName, GLuint texture) {
+  if (texture == 0) return;
+	textures[textureName] = texture;
+}
+
+const GLuint Model::GetTexture(std::string textureName) const {
+  return textures.at(textureName);
 }

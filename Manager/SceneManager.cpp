@@ -18,12 +18,13 @@ SceneManager::SceneManager()
     glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
     shader_manager = new ShaderManager();
+    textureLoader = new TextureLoader();
     camera = new Camera(glm::vec3(0,0,2), glm::vec3(0,1,0), 0.5, 0.05);
     //models_manager = new ModelsManager();
     shader_manager->CreateProgram("colorShader",
                                     "shaders/vertex_shader.glsl",
                                     "shaders/fragment_shader.glsl");
-    models_manager = new ModelsManager(camera);
+    models_manager = new ModelsManager(camera, textureLoader);
 
     /* Setting up input */
 }

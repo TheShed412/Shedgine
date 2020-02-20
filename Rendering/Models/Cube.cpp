@@ -29,13 +29,16 @@ void Cube::Create()
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * vectors, &vertices[0], GL_STATIC_DRAW);
+
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexFormat),
-                           (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexFormat), (void*)0);
+
     glEnableVertexAttribArray(1);
-        // you can use offsetof to get the offset of an attribute
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(VertexFormat),
-                           (void*)(offsetof(VertexFormat, VertexFormat::color)));
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(VertexFormat), (void*)(offsetof(VertexFormat, VertexFormat::color)));
+
+    glEnableVertexAttribArray(2);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(VertexFormat), (void*)(offsetof(VertexFormat, VertexFormat::texture)));
+    
     glBindVertexArray(0);
 
     ctm_location = glGetUniformLocation(program, "ctm");
@@ -56,6 +59,12 @@ void Cube::Update()
  
 void Cube::Draw()
 {
+    glUseProgram(program);
+	glBindVertexArray(vao);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->GetTexture("Create"));
+    unsigned int textureLocation = glGetUniformLocation(program, "texture1");
+    glUniform1i(textureLocation, 0);
     glUseProgram(program);
     glBindVertexArray(vao);
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ctm);

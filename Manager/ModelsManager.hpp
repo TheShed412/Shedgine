@@ -5,6 +5,7 @@
 #include "../Rendering/Models/Triangle.hpp"
 #include "../Rendering/Models/Cube.hpp"
 #include "../Rendering/Models/Grid.hpp"
+#include "../Rendering/Texture/TextureLoader.hpp"
  
 using namespace Rendering;
 namespace Managers
@@ -13,7 +14,7 @@ namespace Managers
    {
      public:
          ModelsManager();
-         ModelsManager(Camera* camera);
+         ModelsManager(Camera* camera, TextureLoader* textureLoader);
         ~ModelsManager();
  
          void Draw();

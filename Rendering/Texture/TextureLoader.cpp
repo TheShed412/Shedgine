@@ -29,10 +29,7 @@ unsigned int TextureLoader::LoadTexture(const std::string& filename,
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    float maxAnisotropy;
-    glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAnisotropy);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
  
     //when we work with textures of sizes not divisible by 4 we have to use the line reader
     //which loads the textures in OpenGL so as it can work with a 1 alligned memory (default is 4)
@@ -57,9 +54,9 @@ void TextureLoader::LoadBMPFile(const std::string& filename,
                                 unsigned char*& data)
 {
     //read the file
-    std::ifstream file(filename.c_str(), std::ios::in | std::ios::binary);
+    std::ifstream file(filename.c_str(), std::ios::binary | std::ios::in);
     if (!file.good()){
-        std::cout << "Texture Loader: Cannot open texture file ";
+        std::cout << "Texture Loader: Cannot open texture file :: " << filename.c_str() << std::endl;
         width = 0;
         height = 0;
         return;
