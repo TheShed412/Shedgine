@@ -70,5 +70,6 @@ void Model::SetTexture(std::string textureName, GLuint texture) {
 }
 
 const GLuint Model::GetTexture(std::string textureName) const {
-  return textures.at(textureName);
+  GLuint tex = textures.at(textureName);
+  return tex;
 }

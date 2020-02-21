@@ -16,7 +16,7 @@ ModelsManager::ModelsManager(Camera* camera, TextureLoader* textureLoader)
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     Models::Cube* cube = new Models::Cube();
     Models::Grid* grid = new Models::Grid();
-    unsigned int texture = textureLoader->LoadTexture("Textures/brick.bmp", 512, 512);
+    unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
     cube->SetProgram(program);
     cube->SetProjection(projection);
