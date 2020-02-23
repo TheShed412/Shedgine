@@ -1,6 +1,5 @@
 #version 300 es
-out mediump vec4 out_color;
-in mediump vec4 color;
+layout(location = 0) out mediump vec4 out_color;
 uniform sampler2D texture1;
  
 in mediump vec2 texcoord;

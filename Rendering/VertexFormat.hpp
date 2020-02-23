@@ -15,6 +15,12 @@ namespace Rendering
        position = iPos;
        color = iColor;
     }
+
+    VertexFormat(const glm::vec3 &iPos, const glm::vec2 &iTexture)
+     {
+       position = iPos;
+       texture = iTexture;
+    }
  
     VertexFormat() {}
  
