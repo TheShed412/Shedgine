@@ -12,13 +12,14 @@ ModelsManager::ModelsManager(){}
 ModelsManager::ModelsManager(Camera* camera, TextureLoader* textureLoader)
 {
     this->camera = camera;
-    GLuint program = ShaderManager::GetShader("colorShader");
+    GLuint textureProgram = ShaderManager::GetShader("textureShader");
+    GLuint colorProgram = ShaderManager::GetShader("colorShader");
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     Models::Cube* cube = new Models::Cube();
     Models::Grid* grid = new Models::Grid();
     unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
-    cube->SetProgram(program);
+    cube->SetProgram(textureProgram);
     cube->SetProjection(projection);
     cube->SetModelView(camera->getModelView());
     cube->SetCamera(this->camera);
@@ -26,7 +27,7 @@ ModelsManager::ModelsManager(Camera* camera, TextureLoader* textureLoader)
     cube->Create();
 
     // TODO: make this a debug feature at compile time
-    grid->SetProgram(program);
+    grid->SetProgram(colorProgram);
     grid->SetProjection(projection);
     grid->SetModelView(camera->getModelView());
     grid->SetCamera(this->camera);
