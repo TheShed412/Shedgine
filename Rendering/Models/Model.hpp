@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <map>
 #include "../IGameObject.hpp"
 #include "../Camera.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -20,6 +21,8 @@ namespace Rendering
          virtual void SetProjection(glm::mat4 projection);
          virtual void SetCamera(Camera* camera);
          virtual void Destroy() override;
+         virtual const GLuint GetTexture(std::string textureName) const override;
+				 virtual void SetTexture(std::string textureName, GLuint texture) override;
  
          virtual GLuint GetVao() const override;
          virtual const std::vector<GLuint>& GetVbos() const override;
@@ -35,6 +38,7 @@ namespace Rendering
         GLuint vao;
         GLuint program;
         std::vector<GLuint> vbos;
+        std::map<std::string, GLuint> textures;
    };
   }
 }
