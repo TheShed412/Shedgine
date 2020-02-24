@@ -23,7 +23,7 @@ ModelsManager::ModelsManager(Camera* camera, TextureLoader* textureLoader)
     cube->SetProjection(projection);
     cube->SetModelView(camera->getModelView());
     cube->SetCamera(this->camera);
-    cube->SetTexture("Create", texture);
+    cube->SetTexture("crate", texture);
     cube->Create();
 
     // TODO: make this a debug feature at compile time
