@@ -91,25 +91,25 @@ std::vector<VertexFormat> ObjectLoader::LoadObject(const std::string& filename) 
     */
 
    
-   for(int i = 0; i < vector_indecies.size(); i++) {
-       int vector_index = vector_indecies[i];// this will fill the mesh indecies array
-       glm::vec3 vector = temp_verts[vector_index-1];
-       temp_verts.push_back(vector);
-   }
+    for(int i = 0; i < vector_indecies.size(); i++) {
+        int vector_index = vector_indecies[i];// this will fill the mesh indecies array
+        glm::vec3 vector = temp_verts[vector_index-1];
+        temp_verts.push_back(vector);
+    }
 
-   for(int i = 0; i < uv_indices.size(); i++) {
-       int uv_index = uv_indices[i];// this will fill the mesh indecies array
-       glm::vec2 uv = temp_uvs[uv_index-1];
-       temp_uvs.push_back(uv);
-   }
+    for(int i = 0; i < uv_indices.size(); i++) {
+        int uv_index = uv_indices[i];// this will fill the mesh indecies array
+        glm::vec2 uv = temp_uvs[uv_index-1];
+        temp_uvs.push_back(uv);
+    }
 
-   for(int i = 0; i < noramal_indecies.size(); i++) {
-       int norm_index = noramal_indecies[i];// this will fill the mesh indecies array
-       glm::vec3 norm = temp_norms[norm_index-1];
-       temp_norms.push_back(norm);
-   }
+    for(int i = 0; i < noramal_indecies.size(); i++) {
+        int norm_index = noramal_indecies[i];// this will fill the mesh indecies array
+        glm::vec3 norm = temp_norms[norm_index-1];
+        temp_norms.push_back(norm);
+    }
 
-   for (unsigned int i = 0; i < vector_indecies.size(); i++) {
+    for (unsigned int i = 0; i < vector_indecies.size(); i++) {
         if (uv_indices.size() < 1) { // pull this if out
             unsigned int norm_index = noramal_indecies[i];
             unsigned int vector_index = vector_indecies[i];
@@ -117,12 +117,12 @@ std::vector<VertexFormat> ObjectLoader::LoadObject(const std::string& filename) 
             glm::vec3 norm = temp_norms[norm_index-1];
             glm::vec3 vector = temp_verts[vector_index-1];
             glm::vec2 empty_tex;
-            VertexFormat vertex(vector, glm::vec4(0.5,0.5,0.5,1));// just making it a color
+            VertexFormat vertex(vector, glm::vec4(0.0, 0.0, 1, 1));// just making it a color
             thing.push_back(vertex);
         } else {
             // TODO case when there is a texture
         }
-   }
-
+    }
+    
     return thing;
 }

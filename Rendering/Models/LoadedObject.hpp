@@ -9,6 +9,7 @@ namespace Rendering
     {
       public:
         LoadedObject();
+        LoadedObject(std::string filename);
        ~LoadedObject();
  
         void Create();
@@ -17,6 +18,7 @@ namespace Rendering
 
       private:
         int vectors;
+        std::string filename;
         std::vector<VertexFormat> makeObject();
     };
   }
