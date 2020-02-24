@@ -31,7 +31,7 @@ std::vector<VertexFormat> ObjectLoader::LoadObject(const std::string& filename) 
 
     std::ifstream model(filename.c_str(), std::ios::in);
     if (!model.good()) {
-        std::cout << "Won't open" << std::endl;
+        std::cout << "Can't open OBJ file" << std::endl;
         return thing;
     }
 
@@ -109,37 +109,20 @@ std::vector<VertexFormat> ObjectLoader::LoadObject(const std::string& filename) 
        temp_norms.push_back(norm);
    }
 
-   /**
-    * Creating a Mesh from the stuff above
-   */
+   for (unsigned int i = 0; i < vector_indecies.size(); i++) {
+        if (uv_indices.size() < 1) { // pull this if out
+            unsigned int norm_index = noramal_indecies[i];
+            unsigned int vector_index = vector_indecies[i];
 
-    // std::vector<VertexFormat> vertices;
-    // std::vector<unsigned int> indecies;
-    // std::vector<VertexTexture> textures;
-
-    // // assume size of indecies will be the same or 0 for now
-    // for (unsigned int i = 0; i < vector_indecies.size(); i++) {
-    //     if (uv_indices.size() < 1) { // pull this if out
-    //         unsigned int norm_index = noramal_indecies[i];
-    //         unsigned int vector_index = vector_indecies[i];
-
-    //         glm::vec3 norm = temp_norms[norm_index-1];
-    //         glm::vec3 vector = temp_verts[vector_index-1];
-    //         glm::vec2 empty_tex;
-
-    //         Vertex vertex;
-    //         vertex.Normal = norm;
-    //         vertex.Position = vector;
-    //         vertex.TexCoords = empty_tex;
-    //     } else {
-    //         // TODO case when there is a texture
-    //     }
-
-    // }
-
-    // indecies.insert(indecies.end(), vector_indecies.begin(), vector_indecies.end());
-    // indecies.insert(indecies.end(), noramal_indecies.begin(), noramal_indecies.end());
-    // indecies.insert(indecies.end(), uv_indices.begin(), uv_indices.end());
+            glm::vec3 norm = temp_norms[norm_index-1];
+            glm::vec3 vector = temp_verts[vector_index-1];
+            glm::vec2 empty_tex;
+            VertexFormat vertex(vector, glm::vec4(0.5,0.5,0.5,1));// just making it a color
+            thing.push_back(vertex);
+        } else {
+            // TODO case when there is a texture
+        }
+   }
 
     return thing;
 }

@@ -1,5 +1,6 @@
 #include "ModelsManager.hpp"
 #include "../Rendering/Camera.hpp"
+#include "../Rendering/ObjectLoader.hpp"
  
 using namespace Managers;
 using namespace Rendering;
