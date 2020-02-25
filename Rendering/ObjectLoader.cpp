@@ -1,4 +1,7 @@
+#include <deque>
 #include "ObjectLoader.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/string_cast.hpp"
 
 using namespace Rendering;
 
@@ -23,6 +26,7 @@ bool ObjectLoader::hasUvIndexes(std::string face) {
 
 std::vector<VertexFormat> ObjectLoader::LoadObject(const std::string& filename) {
     std::vector<VertexFormat> thing;
+    std::deque<VertexFormat> tempDeque;
 
     std::vector<int> vector_indecies, uv_indices, noramal_indecies;
     std::vector<glm::vec3> temp_verts;
@@ -116,13 +120,15 @@ std::vector<VertexFormat> ObjectLoader::LoadObject(const std::string& filename) 
 
             glm::vec3 norm = temp_norms[norm_index-1];
             glm::vec3 vector = temp_verts[vector_index-1];
+            std::cout << glm::to_string(vector) << std::endl;
             glm::vec2 empty_tex;
-            VertexFormat vertex(vector, glm::vec4(0.0, 0.0, 1, 1));// just making it a color
-            thing.push_back(vertex);
+            VertexFormat vertex(vector, glm::vec4(0.25, 0.25, 0.25, 1));// just making it a color
+            tempDeque.push_front(vertex);
+            //thing.push_back(vertex);
         } else {
             // TODO case when there is a texture
         }
     }
-    
-    return thing;
+
+    return {tempDeque.begin(), tempDeque.end()};
 }
