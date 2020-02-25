@@ -26,33 +26,13 @@ void Cube::Create()
     glBindVertexArray(vao);
  
     std::vector<VertexFormat> vertices = makeCube(0.25);
-    std::vector<unsigned int>  indices = { 0,  1,  2,  0,  2,  3,   //front
-										   4,  5,  6,  4,  6,  7,   //right
-								           8,  9,  10, 8,  10, 11 ,  //back
-										   12, 13, 14, 12, 14, 15,  //left
-										   16, 17, 18, 16, 18, 19,  //upper
-										   20, 21, 22, 20, 22, 23}; //bottom
     
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * vectors, &vertices[0], GL_STATIC_DRAW);
 
-    // glGenBuffers(1, &ibo);
-	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	// glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-
-    // glEnableVertexAttribArray(0);
-    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexFormat), (void*)0);
-    // glEnableVertexAttribArray(1);
-    // glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
-    //                           sizeof(VertexFormat),
-    //                           (void*)(offsetof(VertexFormat, VertexFormat::texture)));
-
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexFormat), (void*)0);
-
-    // glEnableVertexAttribArray(1);
-    // glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(VertexFormat), (void*)(offsetof(VertexFormat, VertexFormat::color)));
 
     glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(VertexFormat), (void*)(offsetof(VertexFormat, VertexFormat::texture)));
@@ -70,9 +50,7 @@ void Cube::Create()
  
 void Cube::Update()
 {
-    //for triangle there is nothing to update for now
     model_view = camera->getModelView();
-    //ctm = glm::rotate(ctm, glm::radians(1.0f), glm::vec3(1,1,0));
 }
  
 void Cube::Draw()
@@ -80,7 +58,7 @@ void Cube::Draw()
     glUseProgram(program);
 	glBindVertexArray(vao);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, this->GetTexture("Create"));
+    glBindTexture(GL_TEXTURE_2D, this->GetTexture("crate"));
     unsigned int textureLocation = glGetUniformLocation(program, "texture1");
     glUniform1i(textureLocation, 0);
     glBindVertexArray(vao);

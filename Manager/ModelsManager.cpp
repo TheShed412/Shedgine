@@ -17,14 +17,21 @@ ModelsManager::ModelsManager(Camera* camera, TextureLoader* textureLoader)
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     Models::Cube* cube = new Models::Cube();
     Models::Grid* grid = new Models::Grid();
+    Models::LoadedObject* loadedCube = new Models::LoadedObject("Models/test_cone.obj");
     unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
-    cube->SetProgram(textureProgram);
-    cube->SetProjection(projection);
-    cube->SetModelView(camera->getModelView());
-    cube->SetCamera(this->camera);
-    cube->SetTexture("Create", texture);
-    cube->Create();
+    loadedCube->SetProgram(colorProgram);
+    loadedCube->SetProjection(projection);
+    loadedCube->SetModelView(camera->getModelView());
+    loadedCube->SetCamera(this->camera);
+    loadedCube->Create();
+
+    // cube->SetProgram(textureProgram);
+    // cube->SetProjection(projection);
+    // cube->SetModelView(camera->getModelView());
+    // cube->SetCamera(this->camera);
+    // cube->SetTexture("crate", texture);
+    // cube->Create();
 
     // TODO: make this a debug feature at compile time
     grid->SetProgram(colorProgram);
@@ -33,7 +40,7 @@ ModelsManager::ModelsManager(Camera* camera, TextureLoader* textureLoader)
     grid->SetCamera(this->camera);
     grid->Create();
 
-    gameModelList["cube"] = cube;
+    gameModelList["cube"] = loadedCube;
     gameModelList["grid"] = grid;
 }
  
