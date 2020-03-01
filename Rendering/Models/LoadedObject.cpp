@@ -1,4 +1,5 @@
 #include "LoadedObject.hpp"
+#include "../AssimpUtils.hpp"
 #include "../ObjectLoader.hpp"
 
 using namespace Rendering;
@@ -16,7 +17,7 @@ void LoadedObject::Create(){
     GLuint vao;
     GLuint vbo;
     GLuint ibo;
- 
+
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
  
@@ -65,5 +66,38 @@ std::vector<VertexFormat> LoadedObject::makeObject() {
     ObjectLoader* objLoader = new ObjectLoader();
     std::vector<VertexFormat> vertecies = objLoader->LoadObject(filename);
     vectors = vertecies.size();
+    return vertecies;
+}
+
+void processNode(aiNode *node, const aiScene *scene)
+{
+    // process each mesh located at the current node
+    for(unsigned int i = 0; i < node->mNumMeshes; i++)
+    {
+        // the node object only contains indices to index the actual objects in the scene. 
+        // the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
+        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+        //meshes.push_back(processMesh(mesh, scene));
+    }
+    // after we've processed all of the meshes (if any) we then recursively process each of the children nodes
+    for(unsigned int i = 0; i < node->mNumChildren; i++)
+    {
+        processNode(node->mChildren[i], scene);
+    }
+
+    }
+
+std::vector<VertexFormat> LoadedObject::loadObject() {
+    std::vector<VertexFormat> vertecies;
+
+    Assimp::Importer importer;
+    const aiScene* scene = importer.ReadFile(filename.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+        // check for errors
+    if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
+    {
+        std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
+        //return;
+    }
+
     return vertecies;
 }
