@@ -4,6 +4,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../Core/stb_image.h"
 
+#include <algorithm>
+
 using namespace Rendering;
 using namespace Models;
 
@@ -55,7 +57,6 @@ std::vector<VertexFormat> LoadedObject::makeObject() {
 
 void LoadedObject::processNode(aiNode *node, const aiScene *scene) {
     // process each mesh located at the current node
-    std::cout << "PROCESS NODE MESHES: " << node->mNumMeshes << std::endl;
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         // the node object only contains indices to index the actual objects in the scene. 
@@ -66,7 +67,6 @@ void LoadedObject::processNode(aiNode *node, const aiScene *scene) {
     // after we've processed all of the meshes (if any) we then recursively process each of the children nodes
     for(unsigned int i = 0; i < node->mNumChildren; i++)
     {
-        std::cout << "PROCESS NODE CHILDREN: " << node->mNumChildren << std::endl;
         processNode(node->mChildren[i], scene);
     }
 
@@ -102,7 +102,6 @@ std::vector<TextureFormat> LoadedObject::loadMaterialTextures(aiMaterial *mat, a
 }
 
 unsigned int LoadedObject::TextureFromFile(const char *path, const std::string &directory) {
-    std::cout << "TEXTURE FROM FILE" << std::endl;
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
 
@@ -195,8 +194,9 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
     {
         aiFace face = mesh->mFaces[i];
         // retrieve all indices of the face and store them in the indices vector
-        for(unsigned int j = 0; j < face.mNumIndices; j++)
+        for(unsigned int j = 0; j < face.mNumIndices; j++) {
             indices.push_back(face.mIndices[j]);
+        }
     }
     // process materials
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];    
@@ -221,6 +221,9 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
         
     // return a mesh object created from the extracted mesh data
+    // std::reverse(vertices.begin(), vertices.end());
+    std::reverse(indices.begin(), indices.end());
+    // std::reverse(textures.begin(), textures.end());
     return Mesh(vertices, indices, textures);
 }
 
