@@ -34,6 +34,7 @@ namespace Rendering
         std::vector<VertexFormat> loadObject();
         Mesh processMesh(aiMesh *mesh, const aiScene *scene);
         void processNode(aiNode *node, const aiScene *scene);
+        std::vector<TextureFormat> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
     };
   }
 }
