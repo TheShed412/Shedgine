@@ -4,7 +4,6 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
-#include <stb_image.h>
 
 #include "../TextureFormat.hpp"
 #include "Mesh.hpp"
@@ -35,6 +34,7 @@ namespace Rendering
         Mesh processMesh(aiMesh *mesh, const aiScene *scene);
         void processNode(aiNode *node, const aiScene *scene);
         std::vector<TextureFormat> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
+        unsigned int TextureFromFile(const char *path, const std::string &directory);
     };
   }
 }

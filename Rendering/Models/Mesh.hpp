@@ -23,7 +23,13 @@ namespace Rendering
             std::vector<VertexFormat> getVertices();
             std::vector<unsigned int> getIndecies();
             std::vector<TextureFormat> getTextures();
-            void draw(GLuint program);
+            void Draw(GLuint program, 
+                GLuint ctm_location,
+                GLuint projection_location,
+                GLuint model_view_location,
+                glm::mat4 ctm,
+                glm::mat4 projection,
+                glm::mat4 model_view);
             unsigned int getVAO();
             unsigned int getVBO();
             unsigned int getEBO();

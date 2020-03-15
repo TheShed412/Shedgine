@@ -1,6 +1,8 @@
 #include "LoadedObject.hpp"]
 #include "../AssimpUtils.hpp"
 #include "../ObjectLoader.hpp"
+#define STB_IMAGE_IMPLEMENTATION
+#include "../../Core/stb_image.h"
 
 using namespace Rendering;
 using namespace Models;
@@ -49,16 +51,21 @@ void LoadedObject::Update(){
 }
 
 void LoadedObject::Draw(){
-    glUseProgram(program);
-	glBindVertexArray(vao);
+    // glUseProgram(program);
+	// glBindVertexArray(vao);
     // glActiveTexture(GL_TEXTURE0);
     // glBindTexture(GL_TEXTURE_2D, this->GetTexture("crate"));
     // unsigned int textureLocation = glGetUniformLocation(program, "texture1");
     // glUniform1i(textureLocation, 0);
-    glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ctm);
-    glUniformMatrix4fv(projection_location, 1, GL_FALSE, (GLfloat *) &projection);
-    glUniformMatrix4fv(model_view_location, 1, GL_FALSE, (GLfloat *) &model_view);
-    glDrawArrays(GL_TRIANGLES, 0, vectors);
+    // glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ctm);
+    // glUniformMatrix4fv(projection_location, 1, GL_FALSE, (GLfloat *) &projection);
+    // glUniformMatrix4fv(model_view_location, 1, GL_FALSE, (GLfloat *) &model_view);
+    // glDrawArrays(GL_TRIANGLES, 0, vectors);
+    for (unsigned int i = 0; i < meshes.size(); i++)
+    {
+        meshes[i].Draw(program,ctm_location, projection_location, model_view_location, ctm, projection, model_view);
+    }
+    
 }
 
 std::vector<VertexFormat> LoadedObject::makeObject() {
@@ -113,7 +120,7 @@ std::vector<TextureFormat> LoadedObject::loadMaterialTextures(aiMaterial *mat, a
     return textures;
 }
 
-unsigned int TextureFromFile(const char *path, const std::string &directory)
+unsigned int LoadedObject::TextureFromFile(const char *path, const std::string &directory)
 {
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
