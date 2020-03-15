@@ -4,6 +4,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../Core/stb_image.h"
 
+#include <deque>
 #include <algorithm>
 
 using namespace Rendering;
@@ -143,7 +144,7 @@ unsigned int LoadedObject::TextureFromFile(const char *path, const std::string &
 Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
     // data to fill
     std::vector<VertexFormat> vertices;
-    std::vector<unsigned int> indices;
+    std::deque<unsigned int> indices;
     std::vector<TextureFormat> textures;
 
     // Walk through each of the mesh's vertices
@@ -195,7 +196,7 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
         aiFace face = mesh->mFaces[i];
         // retrieve all indices of the face and store them in the indices vector
         for(unsigned int j = 0; j < face.mNumIndices; j++) {
-            indices.push_back(face.mIndices[j]);
+            indices.push_front(face.mIndices[j]);
         }
     }
     // process materials
@@ -222,9 +223,9 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
         
     // return a mesh object created from the extracted mesh data
     // std::reverse(vertices.begin(), vertices.end());
-    std::reverse(indices.begin(), indices.end());
+    // std::reverse(indices.begin(), indices.end());
     // std::reverse(textures.begin(), textures.end());
-    return Mesh(vertices, indices, textures);
+    return Mesh(vertices, {indices.begin(), indices.end()}, textures);
 }
 
 std::vector<VertexFormat> LoadedObject::loadObject() {
