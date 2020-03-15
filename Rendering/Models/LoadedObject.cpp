@@ -1,4 +1,4 @@
-#include "LoadedObject.hpp"]
+#include "LoadedObject.hpp"
 #include "../AssimpUtils.hpp"
 #include "../ObjectLoader.hpp"
 #define STB_IMAGE_IMPLEMENTATION
@@ -16,34 +16,12 @@ LoadedObject::LoadedObject(std::string filename) {
  
 void LoadedObject::Create(){
     ctm = glm::mat4(1.0);
-    GLuint vao;
-    GLuint vbo;
-    GLuint ibo;
-
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
- 
-    std::vector<VertexFormat> vertices = makeObject();
-    
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * vectors, &vertices[0], GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexFormat), (void*)0);
-    glEnableVertexAttribArray(1);
-    
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(VertexFormat),
-                           (void*)(offsetof(VertexFormat, VertexFormat::color)));
-    
-    glBindVertexArray(0);
 
     ctm_location = glGetUniformLocation(program, "ctm");
     projection_location = glGetUniformLocation(program, "projection");
     model_view_location = glGetUniformLocation(program, "modelView");
- 
-    //here we assign the values
-    this->vao = vao;
-    this->vbos.push_back(vbo);
+
+    loadObject();
 }
 
 void LoadedObject::Update(){
@@ -77,16 +55,18 @@ std::vector<VertexFormat> LoadedObject::makeObject() {
 
 void LoadedObject::processNode(aiNode *node, const aiScene *scene) {
     // process each mesh located at the current node
+    std::cout << "PROCESS NODE MESHES: " << node->mNumMeshes << std::endl;
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         // the node object only contains indices to index the actual objects in the scene. 
         // the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        //meshes.push_back(processMesh(mesh, scene));
+        meshes.push_back(processMesh(mesh, scene));
     }
     // after we've processed all of the meshes (if any) we then recursively process each of the children nodes
     for(unsigned int i = 0; i < node->mNumChildren; i++)
     {
+        std::cout << "PROCESS NODE CHILDREN: " << node->mNumChildren << std::endl;
         processNode(node->mChildren[i], scene);
     }
 
@@ -94,6 +74,7 @@ void LoadedObject::processNode(aiNode *node, const aiScene *scene) {
 
 std::vector<TextureFormat> LoadedObject::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName) {
     std::vector<TextureFormat> textures;
+    std::cout << "LOAD TEXTURE" << std::endl;
     for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
     {
         aiString str;
@@ -120,8 +101,8 @@ std::vector<TextureFormat> LoadedObject::loadMaterialTextures(aiMaterial *mat, a
     return textures;
 }
 
-unsigned int LoadedObject::TextureFromFile(const char *path, const std::string &directory)
-{
+unsigned int LoadedObject::TextureFromFile(const char *path, const std::string &directory) {
+    std::cout << "TEXTURE FROM FILE" << std::endl;
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
 
@@ -176,10 +157,12 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
         vector.z = mesh->mVertices[i].z;
         vertex.position = vector;
         // normals
-        vector.x = mesh->mNormals[i].x;
-        vector.y = mesh->mNormals[i].y;
-        vector.z = mesh->mNormals[i].z;
-        vertex.normal = vector;
+        if(mesh->mNormals) {
+            vector.x = mesh->mNormals[i].x;
+            vector.y = mesh->mNormals[i].y;
+            vector.z = mesh->mNormals[i].z;
+            vertex.normal = vector;
+        }
         // texture coordinates
         if(mesh->mTextureCoords[0]) {
             glm::vec2 vec;
@@ -188,19 +171,24 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
             vec.x = mesh->mTextureCoords[0][i].x; 
             vec.y = mesh->mTextureCoords[0][i].y;
             vertex.texture = vec;
-        } else
+        } else {
             vertex.texture = glm::vec2(0.0f, 0.0f);
-            // tangent
+        }
+        // tangent
+        if(mesh->mTangents) {
             vector.x = mesh->mTangents[i].x;
             vector.y = mesh->mTangents[i].y;
             vector.z = mesh->mTangents[i].z;
             vertex.tangent = vector;
-            // bitangent
+        }
+        // bitangent
+        if(mesh->mBitangents) {
             vector.x = mesh->mBitangents[i].x;
             vector.y = mesh->mBitangents[i].y;
             vector.z = mesh->mBitangents[i].z;
             vertex.bitTangent = vector;
-            vertices.push_back(vertex);
+        }
+        vertices.push_back(vertex);
     }
     // now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
     for(unsigned int i = 0; i < mesh->mNumFaces; i++)
@@ -219,18 +207,18 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
     // specular: texture_specularN
     // normal: texture_normalN
 
-    // // 1. diffuse maps
-    // std::vector<TextureFormat> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-    // textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-    // // 2. specular maps
-    // std::vector<TextureFormat> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-    // textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-    // // 3. normal maps
-    // std::vector<TextureFormat> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-    // textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-    // // 4. height maps
-    // std::vector<TextureFormat> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-    // textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+    // 1. diffuse maps
+    std::vector<TextureFormat> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+    textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+    // 2. specular maps
+    std::vector<TextureFormat> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+    textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+    // 3. normal maps
+    std::vector<TextureFormat> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+    textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+    // 4. height maps
+    std::vector<TextureFormat> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+    textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
         
     // return a mesh object created from the extracted mesh data
     return Mesh(vertices, indices, textures);
