@@ -4,6 +4,8 @@
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
 #include <vector>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 
 #include "../VertexFormat.hpp"
 #include "../TextureFormat.hpp"
@@ -21,6 +23,7 @@ namespace Rendering
             std::vector<VertexFormat> getVertices();
             std::vector<unsigned int> getIndecies();
             std::vector<TextureFormat> getTextures();
+            void draw(GLuint program);
             unsigned int getVAO();
             unsigned int getVBO();
             unsigned int getEBO();
