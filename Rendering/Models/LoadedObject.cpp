@@ -75,7 +75,6 @@ void LoadedObject::processNode(aiNode *node, const aiScene *scene) {
 
 std::vector<TextureFormat> LoadedObject::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName) {
     std::vector<TextureFormat> textures;
-    std::cout << "LOAD TEXTURE" << std::endl;
     for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
     {
         aiString str;

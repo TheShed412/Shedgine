@@ -86,6 +86,7 @@ void Mesh::Draw(GLuint program,
     // glBindTexture(GL_TEXTURE_2D, this->GetTexture("crate"));
     // unsigned int textureLocation = glGetUniformLocation(program, "texture1");
     // glUniform1i(textureLocation, 0);
+    glUseProgram(program);
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ctm);
     glUniformMatrix4fv(projection_location, 1, GL_FALSE, (GLfloat *) &projection);
     glUniformMatrix4fv(model_view_location, 1, GL_FALSE, (GLfloat *) &model_view);
