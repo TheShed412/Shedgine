@@ -1,5 +1,12 @@
 #pragma once
 #include "Model.hpp"
+#include <assimp/cimport.h>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <assimp/Importer.hpp>
+
+#include "../TextureFormat.hpp"
+#include "Mesh.hpp"
 
 namespace Rendering
 {
@@ -17,9 +24,17 @@ namespace Rendering
         virtual void Draw() override final;
 
       private:
+        std::vector<TextureFormat> textures;
+        std::vector<Mesh> meshes;
         int vectors;
         std::string filename;
+        std::string directory;
         std::vector<VertexFormat> makeObject();
+        std::vector<VertexFormat> loadObject();
+        Mesh processMesh(aiMesh *mesh, const aiScene *scene);
+        void processNode(aiNode *node, const aiScene *scene);
+        std::vector<TextureFormat> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
+        unsigned int TextureFromFile(const char *path, const std::string &directory);
     };
   }
 }

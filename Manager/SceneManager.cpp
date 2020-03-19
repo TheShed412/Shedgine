@@ -27,6 +27,10 @@ SceneManager::SceneManager()
     shader_manager->CreateProgram("colorShader",
                                     "shaders/vertex_shader_color.glsl",
                                     "shaders/fragment_shader_color.glsl");
+    shader_manager->CreateProgram("loadedShader",
+                                    "shaders/vert_obj.glsl",
+                                    "shaders/frag_obj.glsl");
+
     models_manager = new ModelsManager(camera, textureLoader);
 
     /* Setting up input */
