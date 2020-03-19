@@ -1,0 +1,14 @@
+I think I need to come up with a process for loading textures on my own.
+
+I am having issues with textures and OBJ files.
+1. The mtl file blender (or even downloaded objs) provide never link to provided texture files.
+    - if I do add it manually, it will load the texture
+    - though this leads to issue 2
+2. When I do get the texture loaded, it is completely wrong
+    - blender cuts up the texture and pastes it around the model, I seem to be able to wrap it and that's it
+
+I guess the plan will be to make the objs seperate from the textures, and load them seperately.
+This will need an interesting work flow for model makers I'll need to figure out
+
+I am able to load textures and apply them independently. I can load that wood texture and apply it to like any model I load.
+What is weird, is the texcoords in the obj file works. So like. I dunno lol
