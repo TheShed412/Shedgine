@@ -14,13 +14,14 @@ ModelsManager::ModelsManager(Camera* camera, TextureLoader* textureLoader)
     this->camera = camera;
     GLuint textureProgram = ShaderManager::GetShader("textureShader");
     GLuint colorProgram = ShaderManager::GetShader("colorShader");
+    GLuint loadedProgram = ShaderManager::GetShader("loadedShader");
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     Models::Cube* cube = new Models::Cube();
     Models::Grid* grid = new Models::Grid();
     Models::LoadedObject* loadedCube = new Models::LoadedObject("Models/catgirl.obj");
     unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
-    loadedCube->SetProgram(colorProgram);
+    loadedCube->SetProgram(loadedProgram);
     loadedCube->SetProjection(projection);
     loadedCube->SetModelView(camera->getModelView());
     loadedCube->SetCamera(this->camera);
