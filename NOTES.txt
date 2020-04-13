@@ -11,4 +11,7 @@ I guess the plan will be to make the objs seperate from the textures, and load t
 This will need an interesting work flow for model makers I'll need to figure out
 
 I am able to load textures and apply them independently. I can load that wood texture and apply it to like any model I load.
-What is weird, is the texcoords in the obj file works. So like. I dunno lol
+What is weird, is the texcoords in the obj file works. So like. I dunno.
+
+We are moving on to just making a game. First I need to figure out lighting, then I'm going to make some
+models, and from there just make a simple star fox clone

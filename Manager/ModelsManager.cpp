@@ -18,10 +18,10 @@ ModelsManager::ModelsManager(Camera* camera, TextureLoader* textureLoader)
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     Models::Cube* cube = new Models::Cube();
     Models::Grid* grid = new Models::Grid();
-    Models::LoadedObject* loadedCube = new Models::LoadedObject("Models/catgirl.obj");
-    unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
+    Models::LoadedObject* loadedCube = new Models::LoadedObject("Models/PenguinBaseMesh.obj");
+    //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
-    loadedCube->SetProgram(loadedProgram);
+    loadedCube->SetProgram(colorProgram);
     loadedCube->SetProjection(projection);
     loadedCube->SetModelView(camera->getModelView());
     loadedCube->SetCamera(this->camera);

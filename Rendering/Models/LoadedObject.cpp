@@ -1,5 +1,4 @@
 #include "LoadedObject.hpp"
-#include "../AssimpUtils.hpp"
 #include "../ObjectLoader.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../Core/stb_image.h"
