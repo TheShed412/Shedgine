@@ -18,4 +18,4 @@ outs:
 	$(MKDIR) obj bin
 
 main: $(OBJDIR)/main.o $(LIBMEMBERS)
-	g++ -std=c++11 -w -g -o $(OUT)/main main.cpp $(LIBMEMBERS)  $(LIBFLAGS)
+	g++ -D _DEBUG -std=c++11 -w -g -o $(OUT)/main main.cpp $(LIBMEMBERS)  $(LIBFLAGS)

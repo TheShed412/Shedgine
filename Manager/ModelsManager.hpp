@@ -15,12 +15,13 @@ namespace Managers
    {
      public:
          ModelsManager();
-         ModelsManager(Camera* camera, TextureLoader* textureLoader);
+         ModelsManager(Camera* camera);
         ~ModelsManager();
  
          void Draw();
          void Update();
          void DeleteModel(const std::string& gameModelName);
+         void AddModel(const std::string& gameModelName, IGameObject* gameModel);
          void SetCamera(Camera* camera);
          const IGameObject& GetModel(const std::string& gameModelName) const;
  

@@ -29,5 +29,6 @@ namespace Managers
       Managers::ModelsManager* models_manager;
       Rendering::TextureLoader* textureLoader;
       Rendering::Camera* camera;
+      glm::mat4 projection;
  };
 }

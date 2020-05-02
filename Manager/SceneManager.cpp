@@ -2,14 +2,9 @@
 using namespace Managers;
  
 /*
-    TODO: maybe put the projection and camera in here since those
-    make sense to be part of the scene and not models
-
-    Though, I guess I will just be passing them from here to the model manager
-    but I do want to be able to control the camera easier
-
-    For the projection matrix, it might be done in the camera later since
-    that makes sense to me
+    SceneManager seems to be more of just a scene object that is consturcted instead of 
+    the collection of scenes in a game. I might change this to Scene and make an actual
+    scene manager that keeps a list of scenes in a game
 */
 SceneManager::SceneManager()
 {
@@ -18,8 +13,8 @@ SceneManager::SceneManager()
     glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
     shader_manager = new ShaderManager();
-    textureLoader = new TextureLoader();
     camera = new Camera(glm::vec3(0,0,2), glm::vec3(0,1,0), 0.5, 0.05);
+    projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     //models_manager = new ModelsManager();
     shader_manager->CreateProgram("textureShader",
                                     "shaders/vertex_shader.glsl",
@@ -31,7 +26,30 @@ SceneManager::SceneManager()
                                     "shaders/vert_obj.glsl",
                                     "shaders/frag_obj.glsl");
 
-    models_manager = new ModelsManager(camera, textureLoader);
+    models_manager = new ModelsManager(camera);
+
+    Models::LoadedObject* shipModel = new Models::LoadedObject("Models/SmallSpaceFighter.obj");
+
+    #ifdef _DEBUG
+    Models::Grid* grid = new Models::Grid();
+
+    grid->SetProgram(ShaderManager::GetShader("colorShader"));
+    grid->SetProjection(projection);
+    grid->SetModelView(camera->getModelView());
+    grid->SetCamera(this->camera);
+    grid->Create();
+
+    models_manager->AddModel("grid", grid);
+    #endif
+    //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
+
+    shipModel->SetProgram(ShaderManager::GetShader("colorShader"));
+    shipModel->SetProjection(projection);
+    shipModel->SetModelView(camera->getModelView());
+    shipModel->SetCamera(this->camera);
+    shipModel->Create();
+
+    models_manager->AddModel("ship", shipModel);
 
     /* Setting up input */
 }
@@ -77,18 +95,6 @@ void SceneManager::notifyKeyboardUp(unsigned char key) {
 }
 
 void SceneManager::notifyKeyboardInput(unsigned char key) {
-    // if(key == 'w') {
-    //     camera->processKeyboard(FORWARD, 1);
-    // }
-    // if(key == 's') {
-    //     camera->processKeyboard(BACKWARD, 1);
-    // }
-    // if(key == 'a') {
-    //     camera->processKeyboard(LEFT, 1);
-    // }
-    // if(key == 'd') {
-    //     camera->processKeyboard(RIGHT, 1);
-    // }
     keys[key] = true;
 }
 
