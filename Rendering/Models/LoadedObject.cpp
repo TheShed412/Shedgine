@@ -6,6 +6,14 @@
 #include <deque>
 #include <algorithm>
 
+/**
+ * I need to add the ability to add mtl from objs here. 
+ * http://www.programmersought.com/article/5130383977/
+ * 
+ * I need to taking the specular, ambient, diffuse light, and color from the mtl file.
+ * I will also need new accompanying shader file to consume the light values properly. 
+*/
+
 using namespace Rendering;
 using namespace Models;
 
@@ -28,6 +36,7 @@ void LoadedObject::Create(){
 
 void LoadedObject::Update(){
     model_view = camera->getModelView();
+    //ctm = glm::translate(ctm, {0.1, 0, 0});
 }
 
 void LoadedObject::Draw(){
