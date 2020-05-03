@@ -2,7 +2,6 @@
 #include <map>
 #include "ShaderManager.hpp"
 #include "../Rendering/IGameObject.hpp"
-#include "../Rendering/Models/Triangle.hpp"
 #include "../Rendering/Models/Cube.hpp"
 #include "../Rendering/Models/LoadedObject.hpp"
 #include "../Rendering/Models/Grid.hpp"
@@ -23,7 +22,7 @@ namespace Managers
          void DeleteModel(const std::string& gameModelName);
          void AddModel(const std::string& gameModelName, IGameObject* gameModel);
          void SetCamera(Camera* camera);
-         const IGameObject& GetModel(const std::string& gameModelName) const;
+         IGameObject& GetModel(const std::string& gameModelName) const;
  
      private:
         std::map<std::string, IGameObject*> gameModelList;

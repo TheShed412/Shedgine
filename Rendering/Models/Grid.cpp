@@ -60,6 +60,10 @@ void Grid::Draw() {
     glDrawArrays(GL_LINES, 0, vectors);
 }
 
+void Grid::processKeyboard(Movement direction, float deltaTime) {
+    
+}
+
 std::vector<VertexFormat> Grid::makeGrid() {
     std::vector<VertexFormat> vertices;
     glm::vec4 color;

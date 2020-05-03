@@ -35,6 +35,7 @@ namespace Rendering
         void processNode(aiNode *node, const aiScene *scene);
         std::vector<TextureFormat> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
         unsigned int TextureFromFile(const char *path, const std::string &directory);
+        void processKeyboard(Movement direction, float deltaTime);
     };
   }
 }

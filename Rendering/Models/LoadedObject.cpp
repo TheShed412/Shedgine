@@ -34,6 +34,27 @@ void LoadedObject::Create(){
     loadObject();
 }
 
+void LoadedObject::processKeyboard(Movement direction, float deltaTime) {
+    switch (direction)
+    {
+        case FORWARD:
+            ctm = glm::translate(ctm, {0, 0, -0.1});
+            break;
+        case BACKWARD:
+            ctm = glm::translate(ctm, {0, 0, 0.1});
+            break;
+        case LEFT:
+            ctm = glm::translate(ctm, {-0.1, 0, 0});
+            break;
+        case RIGHT:
+            ctm = glm::translate(ctm, {0.1, 0, 0});
+            break;
+        
+        default:
+            break;
+    }
+}
+
 void LoadedObject::Update(){
     model_view = camera->getModelView();
     //ctm = glm::translate(ctm, {0.1, 0, 0});

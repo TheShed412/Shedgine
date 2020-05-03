@@ -7,6 +7,14 @@
  
 namespace Rendering
 {
+    enum Movement {
+      FORWARD,
+      BACKWARD,
+      LEFT,
+      RIGHT,
+      BUTTON_UP,
+      BUTTON_DOWN
+    };
   class IGameObject
     {
      public:
@@ -18,6 +26,7 @@ namespace Rendering
        virtual void Destroy() = 0;
        virtual void SetTexture(std::string textureName, GLuint texture) = 0;
        virtual const GLuint GetTexture(std::string textureName) const = 0;
+       virtual void processKeyboard(Movement direction, float deltaTime) = 0;
  
        virtual GLuint GetVao() const = 0;
        virtual const std::vector<GLuint>& GetVbos() const = 0;

@@ -64,16 +64,29 @@ SceneManager::~SceneManager()
 void SceneManager::notifyBeginFrame()
 {
     if(keys['w']) {
-        camera->processKeyboard(FORWARD, 1);
+        camera->processKeyboard(Camera::FORWARD, 1);
     }
     if(keys['s']) {
-        camera->processKeyboard(BACKWARD, 1);
+        camera->processKeyboard(Camera::BACKWARD, 1);
     }
     if(keys['a']) {
-        camera->processKeyboard(LEFT, 1);
+        camera->processKeyboard(Camera::LEFT, 1);
     }
     if(keys['d']) {
-        camera->processKeyboard(RIGHT, 1);
+        camera->processKeyboard(Camera::RIGHT, 1);
+    }
+
+    if(keys['i']) {
+        models_manager->GetModel("ship").processKeyboard(FORWARD, 1);
+    }
+    if(keys['k']) {
+        models_manager->GetModel("ship").processKeyboard(BACKWARD, 1);
+    }
+    if(keys['j']) {
+        models_manager->GetModel("ship").processKeyboard(LEFT, 1);
+    }
+    if(keys['l']) {
+        models_manager->GetModel("ship").processKeyboard(RIGHT, 1);
     }
     models_manager->Update();
 }

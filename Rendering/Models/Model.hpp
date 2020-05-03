@@ -23,6 +23,7 @@ namespace Rendering
          virtual void Destroy() override;
          virtual const GLuint GetTexture(std::string textureName) const override;
 				 virtual void SetTexture(std::string textureName, GLuint texture) override;
+         virtual void processKeyboard(Movement direction, float deltaTime) override;
  
          virtual GLuint GetVao() const override;
          virtual const std::vector<GLuint>& GetVbos() const override;

@@ -36,7 +36,7 @@ void ModelsManager::AddModel(const std::string& gameModelName, IGameObject* game
   gameModelList[gameModelName] = gameModel;
 }
  
-const IGameObject& ModelsManager::GetModel(const std::string& gameModelName) const
+IGameObject& ModelsManager::GetModel(const std::string& gameModelName) const
 {
   return (*gameModelList.at(gameModelName));
 }

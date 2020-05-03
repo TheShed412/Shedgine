@@ -14,6 +14,7 @@ namespace Rendering
         void Create();
         virtual void Update() override final;
         virtual void Draw() override final;
+        virtual void processKeyboard(Movement direction, float deltaTime) override final;
 
       private:
         int vectors;

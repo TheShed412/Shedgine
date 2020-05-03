@@ -18,6 +18,10 @@ void Model::Update()
 {
  //this will be again overridden
 }
+
+void Model::processKeyboard(Movement direction, float deltaTime) {
+    
+}
  
 void Model::SetProgram(GLuint program)
 {

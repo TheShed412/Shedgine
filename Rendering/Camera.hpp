@@ -4,17 +4,17 @@
 
 namespace Rendering {
 
-        enum CameraMovement {
-            FORWARD,
-            BACKWARD,
-            LEFT,
-            RIGHT,
-            BUTTON_UP,
-            BUTTON_DOWN
-        };
     class Camera {
 
         public:
+            enum CameraMovement {
+                FORWARD,
+                BACKWARD,
+                LEFT,
+                RIGHT,
+                BUTTON_UP,
+                BUTTON_DOWN
+            };
             Camera();
             ~Camera();
             Camera(glm::vec3 _position, glm::vec3 _worldUp, GLfloat _mouseSensitivity, GLfloat _movementSpeed);

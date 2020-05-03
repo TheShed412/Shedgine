@@ -68,6 +68,10 @@ void Cube::Draw()
     glDrawArrays(GL_TRIANGLES, 0, vectors);
 }
 
+void Cube::processKeyboard(Movement direction, float deltaTime) {
+    
+}
+
 std::vector<VertexFormat> Cube::makeCube(GLfloat size) {
     std::vector<VertexFormat> vertices;
 
