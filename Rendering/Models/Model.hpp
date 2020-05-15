@@ -33,6 +33,7 @@ namespace Rendering
         GLuint ctm_location;
         GLuint projection_location;
         GLuint model_view_location;
+        glm::vec3 currentLocation;
         glm::mat4 ctm;
         glm::mat4 projection;
         glm::mat4 model_view;

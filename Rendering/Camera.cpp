@@ -32,6 +32,23 @@ glm::mat4 Camera::getModelView() {
     return modelView;
 }
 
+void Camera::setLookAt(glm::vec3 target) {
+    glm::vec3 upVecTmp = glm::cross(rightVec, target);
+
+    // this should throw an error
+    if (glm::length(upVecTmp) < 0.00001 * 0.00001) {
+        throw "Vector error: up is a zero vector";
+    } else {
+        upVec = glm::normalize(upVecTmp);
+    }
+
+    lookDirection = target;
+}
+
+void Camera::addToPosition(glm::vec3 diff) {
+    position += diff;
+}
+
 static int mouseMove = 0;
 void Camera::processMouseMovement(float xoffset, float yoffset){
     // TODO: probably using the leran opengl implementation

@@ -34,20 +34,25 @@ void LoadedObject::Create(){
     loadObject();
 }
 
+// TODO: I need to pull this out in to a game logic class
 void LoadedObject::processKeyboard(Movement direction, float deltaTime) {
     switch (direction)
     {
         case FORWARD:
-            ctm = glm::translate(ctm, {0, 0, -0.1});
+            //currentLocation += glm::vec3(0, 0, -0.1);
+            ctm = glm::rotate(ctm, 0.05f, glm::vec3(-1.0, 0, 0));
+            //camera->addToPosition(glm::vec3(0, 0, -0.1));
+            //camera->setLookAt(currentLocation);
             break;
         case BACKWARD:
-            ctm = glm::translate(ctm, {0, 0, 0.1});
+            ctm = glm::rotate(ctm, 0.05f, glm::vec3(1.0, 0, 0));
+            //camera->setLookAt(currentLocation);
             break;
         case LEFT:
-            ctm = glm::translate(ctm, {-0.1, 0, 0});
+            ctm = glm::rotate(ctm, 0.05f, glm::vec3(0, 0, 1.0));
             break;
         case RIGHT:
-            ctm = glm::translate(ctm, {0.1, 0, 0});
+            ctm = glm::rotate(ctm, 0.05f, glm::vec3(0, 0, -1.0));
             break;
         
         default:

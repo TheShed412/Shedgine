@@ -20,6 +20,8 @@ namespace Rendering {
             Camera(glm::vec3 _position, glm::vec3 _worldUp, GLfloat _mouseSensitivity, GLfloat _movementSpeed);
             void processMouseMovement(float xoffset, float yoffset);
             void processKeyboard(CameraMovement direction, float deltaTime);
+            void setLookAt(glm::vec3 target);
+            void addToPosition(glm::vec3 diff);
             glm::mat4 getModelView();
             void setProgram(GLuint program);
 

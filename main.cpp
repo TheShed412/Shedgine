@@ -12,7 +12,6 @@
 using namespace Core;
 using namespace Init;
 
-Managers::ShaderManager* shaderManager;
 GLuint program;
 
 int main(int argc, char **argv)

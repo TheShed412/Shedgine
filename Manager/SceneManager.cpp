@@ -13,7 +13,7 @@ SceneManager::SceneManager()
     glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
     shader_manager = new ShaderManager();
-    camera = new Camera(glm::vec3(0,0,2), glm::vec3(0,1,0), 0.5, 0.05);
+    camera = new Camera(glm::vec3(0,4,10), glm::vec3(0,1,0), 0.5, 0.05);
     projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     //models_manager = new ModelsManager();
     shader_manager->CreateProgram("textureShader",
@@ -50,7 +50,7 @@ SceneManager::SceneManager()
     shipModel->Create();
 
     models_manager->AddModel("ship", shipModel);
-
+    camera->setLookAt(glm::vec3(0,-1,-3));
     /* Setting up input */
 }
  
@@ -64,30 +64,22 @@ SceneManager::~SceneManager()
 void SceneManager::notifyBeginFrame()
 {
     if(keys['w']) {
-        camera->processKeyboard(Camera::FORWARD, 1);
-    }
-    if(keys['s']) {
-        camera->processKeyboard(Camera::BACKWARD, 1);
-    }
-    if(keys['a']) {
-        camera->processKeyboard(Camera::LEFT, 1);
-    }
-    if(keys['d']) {
-        camera->processKeyboard(Camera::RIGHT, 1);
-    }
-
-    if(keys['i']) {
+        //camera->processKeyboard(Camera::FORWARD, 1);
         models_manager->GetModel("ship").processKeyboard(FORWARD, 1);
     }
-    if(keys['k']) {
+    if(keys['s']) {
+        //camera->processKeyboard(Camera::BACKWARD, 1);
         models_manager->GetModel("ship").processKeyboard(BACKWARD, 1);
     }
-    if(keys['j']) {
+    if(keys['a']) {
+        //camera->processKeyboard(Camera::LEFT, 1);
         models_manager->GetModel("ship").processKeyboard(LEFT, 1);
     }
-    if(keys['l']) {
+    if(keys['d']) {
+        //camera->processKeyboard(Camera::RIGHT, 1);
         models_manager->GetModel("ship").processKeyboard(RIGHT, 1);
     }
+
     models_manager->Update();
 }
  
@@ -132,7 +124,7 @@ void SceneManager::notifyMouseMovementInput(int x, int y) {
 
     lastX = x;
     lastY = y;
-    camera->processMouseMovement(xoffset, yoffset);
+    //camera->processMouseMovement(xoffset, yoffset);
 }
  
 void SceneManager::notifyReshape(int width,
