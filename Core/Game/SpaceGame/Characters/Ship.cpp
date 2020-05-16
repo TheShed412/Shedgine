@@ -1,11 +1,28 @@
 #include "Ship.hpp"
+#include "../../../../Manager/ShaderManager.hpp"
 
 using namespace Game;
 using namespace Characters;
 
 Ship::Ship() {}
-Ship::~Ship() {
+Ship::~Ship()
+{
     model->Destroy();
+}
+
+Ship::Ship(Rendering::Models::LoadedObject* shipModel,
+GLuint program,
+glm::mat4 projection,
+glm::mat4 modelView,
+Rendering::Camera* camera) 
+{
+    shipModel->SetProgram(program);
+    shipModel->SetProjection(projection);
+    shipModel->SetModelView(camera->getModelView());
+    shipModel->SetCamera(camera);
+    shipModel->Create();
+
+    this->model = shipModel;
 }
 
 void Ship::Update()
@@ -89,4 +106,3 @@ void Ship::SetRoll(float max, float delta)
     this->maxRoll = max;
     this->rollDelta = delta;
 }
-

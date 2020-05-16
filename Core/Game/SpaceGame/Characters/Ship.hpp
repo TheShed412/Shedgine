@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Actor.hpp"
+#include "../../../../Rendering/Models/LoadedObject.hpp"
 
 
 namespace Game
@@ -19,6 +20,11 @@ namespace Game
             
             public:
                 Ship();
+                Ship(Rendering::Models::LoadedObject*,
+                        GLuint,
+                        glm::mat4,
+                        glm::mat4,
+                        Rendering::Camera*);
                 ~Ship();
                 void Update();
                 void Draw();
