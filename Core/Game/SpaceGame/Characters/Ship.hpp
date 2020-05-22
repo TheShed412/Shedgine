@@ -7,7 +7,7 @@ namespace Game
 {
     namespace Characters
     {
-        class Ship : public Actor
+        class Ship : virtual public Actor
         {
             private:
                 float flightSpeed;
@@ -26,20 +26,20 @@ namespace Game
                         glm::mat4,
                         Rendering::Camera*);
                 ~Ship();
-                void Update();
-                void Draw();
-                void Create();
-                void MoveForward();
-                void MoveBackward();
-                void MoveRight();
-                void MoveLeft();
-                void MoveUp();
-                void MoveDown();
-                void TurnRight();
-                void TurnLeft();
-                void TurnUp();
-                void TurnDown();
-                void Action();
+                void Update() override;
+                void Draw() override;
+                void Create() override;
+                void MoveForward() override;
+                void MoveBackward() override;
+                void MoveRight() override;
+                void MoveLeft() override;
+                void MoveUp() override;
+                void MoveDown() override;
+                void TurnRight() override;
+                void TurnLeft() override;
+                void TurnUp() override;
+                void TurnDown() override;
+                void Action() override;
                 void SetFlightSpeed(float flightSpeed);
                 void SetPitch(float max, float delta);
                 void SetYaw(float max, float delta);

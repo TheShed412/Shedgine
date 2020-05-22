@@ -4,6 +4,7 @@
 #include "../Rendering/Camera.hpp"
 #include "../Rendering/Texture/TextureLoader.hpp"
 #include "../Core/Init/IListener.hpp"
+#include "../Core/Game/GameObject.hpp"
 
 namespace Managers
 {
@@ -29,6 +30,7 @@ namespace Managers
       Managers::ModelsManager* models_manager;
       Rendering::TextureLoader* textureLoader;
       Rendering::Camera* camera;
+      std::vector<Game::GameObject*> gameObjects;
       glm::mat4 projection;
  };
 }

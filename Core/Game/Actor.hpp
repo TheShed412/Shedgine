@@ -10,7 +10,7 @@
 */
 namespace Game
 {
-    class Actor : public GameObject
+    class Actor : virtual public GameObject
     {
         public:
             virtual ~Actor() = 0;

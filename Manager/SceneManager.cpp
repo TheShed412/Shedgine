@@ -6,7 +6,10 @@ using namespace Managers;
 /*
     SceneManager seems to be more of just a scene object that is consturcted instead of 
     the collection of scenes in a game. I might change this to Scene and make an actual
-    scene manager that keeps a list of scenes in a game
+    scene manager that keeps a list of scenes in a game.
+
+    The scene manager should have a map of scenes with names that can be opned from any other scene.
+    Scene loading will be controlled by the scene manager. 
 */
 SceneManager::SceneManager()
 {
@@ -51,10 +54,17 @@ SceneManager::SceneManager()
     shipModel->SetCamera(this->camera);
     shipModel->Create();
 
-    models_manager->AddModel("ship", shipModel);
+    //models_manager->AddModel("ship", shipModel);
     camera->setLookAt(glm::vec3(0,-1,-3));
     /* Setting up input */
-    //Game::Characters::Ship ship;
+    Game::Characters::Ship* ship = new Game::Characters::Ship(
+        shipModel,
+        ShaderManager::GetShader("colorShader"),
+        projection,
+        camera->getModelView(),
+        camera
+    );
+    gameObjects.push_back(ship);
 }
  
 SceneManager::~SceneManager()
@@ -84,6 +94,12 @@ void SceneManager::notifyBeginFrame()
     }
 
     models_manager->Update();
+
+    for (int i = 0; i < gameObjects.size(); i++)
+    {
+        gameObjects.at(i)->Update();
+    }
+    
 }
  
 void SceneManager::notifyDisplayFrame()
@@ -91,8 +107,12 @@ void SceneManager::notifyDisplayFrame()
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     models_manager->Draw();
+    for (int i = 0; i < gameObjects.size(); i++)
+    {
+        gameObjects.at(i)->Draw();
+    }
 }
- 
+       
 void SceneManager::notifyEndFrame()
 {
  //nothing here for the moment
