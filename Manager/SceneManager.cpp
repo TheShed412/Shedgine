@@ -54,7 +54,7 @@ SceneManager::SceneManager()
     models_manager->AddModel("ship", shipModel);
     camera->setLookAt(glm::vec3(0,-1,-3));
     /* Setting up input */
-    Game::Characters::Ship ship;
+    //Game::Characters::Ship ship;
 }
  
 SceneManager::~SceneManager()
