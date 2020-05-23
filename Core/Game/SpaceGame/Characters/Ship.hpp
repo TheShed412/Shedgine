@@ -29,6 +29,7 @@ namespace Game
                 void Update() override;
                 void Draw() override;
                 void Create() override;
+                void Destroy() override;
                 void MoveForward() override;
                 void MoveBackward() override;
                 void MoveRight() override;

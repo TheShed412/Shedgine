@@ -40,6 +40,10 @@ void Ship::Create()
     model->Create();
 }
 
+void Ship::Destroy() {
+    model->Destroy();
+}
+
 void Ship::MoveForward()
 {
 }

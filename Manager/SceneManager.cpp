@@ -17,6 +17,7 @@ SceneManager::SceneManager()
     glCullFace(GL_FRONT);
     glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
+    gameObjectManager = new Game::Managers::ObjectManager();
     shader_manager = new ShaderManager();
     camera = new Camera(glm::vec3(0,4,10), glm::vec3(0,1,0), 0.5, 0.05);
     projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
@@ -64,7 +65,7 @@ SceneManager::SceneManager()
         camera->getModelView(),
         camera
     );
-    gameObjects.push_back(ship);
+    gameObjectManager->AddObject("player", ship);
 }
  
 SceneManager::~SceneManager()
@@ -72,6 +73,7 @@ SceneManager::~SceneManager()
    delete shader_manager;
    delete models_manager;
    delete camera;
+   delete gameObjectManager;
 }
  
 void SceneManager::notifyBeginFrame()
@@ -94,11 +96,7 @@ void SceneManager::notifyBeginFrame()
     }
 
     models_manager->Update();
-
-    for (int i = 0; i < gameObjects.size(); i++)
-    {
-        gameObjects.at(i)->Update();
-    }
+    gameObjectManager->Update();
     
 }
  
@@ -107,10 +105,7 @@ void SceneManager::notifyDisplayFrame()
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     models_manager->Draw();
-    for (int i = 0; i < gameObjects.size(); i++)
-    {
-        gameObjects.at(i)->Draw();
-    }
+    gameObjectManager->Draw();
 }
        
 void SceneManager::notifyEndFrame()
