@@ -18,6 +18,7 @@ SceneManager::SceneManager()
     glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
     gameObjectManager = new Game::Managers::ObjectManager();
+    actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
     camera = new Camera(glm::vec3(0,4,10), glm::vec3(0,1,0), 0.5, 0.05);
     projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
@@ -36,6 +37,7 @@ SceneManager::SceneManager()
 
     Models::LoadedObject* shipModel = new Models::LoadedObject("Models/SmallSpaceFighter.obj");
 
+    // TODO: make grid a game object, or handled somewhere else
     #ifdef _DEBUG
     Models::Grid* grid = new Models::Grid();
 
@@ -65,7 +67,8 @@ SceneManager::SceneManager()
         camera->getModelView(),
         camera
     );
-    gameObjectManager->AddObject("player", ship);
+    actorManager->AddActor("player", ship);
+    gameObjectManager->AddObject("ship", ship);
 }
  
 SceneManager::~SceneManager()
@@ -80,19 +83,19 @@ void SceneManager::notifyBeginFrame()
 {
     if(keys['w']) {
         //camera->processKeyboard(Camera::FORWARD, 1);
-        models_manager->GetModel("ship").processKeyboard(FORWARD, 1);
+        actorManager->GetActor("player").TurnDown();
     }
     if(keys['s']) {
         //camera->processKeyboard(Camera::BACKWARD, 1);
-        models_manager->GetModel("ship").processKeyboard(BACKWARD, 1);
+        actorManager->GetActor("player").TurnUp();
     }
     if(keys['a']) {
         //camera->processKeyboard(Camera::LEFT, 1);
-        models_manager->GetModel("ship").processKeyboard(LEFT, 1);
+        actorManager->GetActor("player").TurnLeft();
     }
     if(keys['d']) {
         //camera->processKeyboard(Camera::RIGHT, 1);
-        models_manager->GetModel("ship").processKeyboard(RIGHT, 1);
+        actorManager->GetActor("player").TurnRight();
     }
 
     models_manager->Update();

@@ -6,6 +6,7 @@
 #include "../Core/Init/IListener.hpp"
 #include "../Core/Game/GameObject.hpp"
 #include "../Core/Game/Manager/ObjectManager.hpp"
+#include "../Core/Game/Manager/ActorManager.hpp"
 
 namespace Managers
 {
@@ -32,6 +33,7 @@ namespace Managers
       Rendering::TextureLoader* textureLoader;
       Rendering::Camera* camera;
       Game::Managers::ObjectManager* gameObjectManager;
+      Game::Managers::ActorManager* actorManager;
       glm::mat4 projection;
 
  };
