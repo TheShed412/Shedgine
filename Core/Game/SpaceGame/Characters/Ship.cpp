@@ -70,18 +70,26 @@ void Ship::MoveDown()
 
 void Ship::TurnRight()
 {
+    glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.05f, glm::vec3(0, 0, -1.0));
+    model->SetCtm(&newCtm);
 }
 
 void Ship::TurnLeft()
 {
+    glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.05f, glm::vec3(0, 0, 1.0));
+    model->SetCtm(&newCtm);
 }
 
 void Ship::TurnUp()
 {
+    glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.05f, glm::vec3(1.0, 0, 0));
+    model->SetCtm(&newCtm);
 }
 
 void Ship::TurnDown()
 {
+    glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.05f, glm::vec3(-1.0, 0, 0));
+    model->SetCtm(&newCtm);
 }
 
 void Ship::Action()

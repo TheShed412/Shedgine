@@ -34,6 +34,14 @@ void LoadedObject::Create(){
     loadObject();
 }
 
+const glm::mat4* LoadedObject::GetCtm() {
+    return &this->ctm;
+}
+
+void LoadedObject::SetCtm(glm::mat4* ctm) {
+    this->ctm = *ctm;
+}
+
 // TODO: I need to pull this out in to a game logic class
 void LoadedObject::processKeyboard(Movement direction, float deltaTime) {
     switch (direction)
