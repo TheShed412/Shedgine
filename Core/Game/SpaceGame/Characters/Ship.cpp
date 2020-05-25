@@ -33,8 +33,7 @@ void Ship::Update()
 
 void Ship::Draw()
 {
-    Rendering::Light light;
-    model->Draw(light);
+    model->Draw();
 }
 
 void Ship::Create()

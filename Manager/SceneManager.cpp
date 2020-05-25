@@ -21,6 +21,15 @@ SceneManager::SceneManager()
     actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
     camera = new Camera(glm::vec3(0,4,10), glm::vec3(0,1,0), 0.5, 0.05);
+    light = new Light(
+        glm::vec3(0,5,0),
+        glm::vec3(1.0, 1.0, 1.0),
+        glm::vec3(1.0, 1.0, 1.0),
+        glm::vec3(1.0, 1.0, 1.0),
+        1.0,
+        0.01,
+        0.01
+    );
     projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     //models_manager = new ModelsManager();
     shader_manager->CreateProgram("textureShader",
@@ -39,6 +48,7 @@ SceneManager::SceneManager()
     models_manager = new ModelsManager(camera);
 
     Models::LoadedObject* shipModel = new Models::LoadedObject("Models/ship2.obj");
+    shipModel->SetLight(light);
 
     // TODO: make grid a game object, or handled somewhere else
     #ifdef _DEBUG

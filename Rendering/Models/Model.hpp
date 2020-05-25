@@ -3,6 +3,7 @@
 #include <map>
 #include "../IGameObject.hpp"
 #include "../Camera.hpp"
+#include "../Light.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 namespace Rendering
 {
@@ -14,12 +15,13 @@ namespace Rendering
          Model();
          virtual ~Model();
          // methods from interface
-         virtual void Draw(Light) override;
+         virtual void Draw() override;
          virtual void Update() override;
          virtual void SetProgram(GLuint shaderName) override;
          virtual void SetModelView(glm::mat4 modelView);
          virtual void SetProjection(glm::mat4 projection);
          virtual void SetCamera(Camera* camera);
+         virtual void SetLight(Light* light);
          virtual void Destroy() override;
          virtual const GLuint GetTexture(std::string textureName) const override;
 				 virtual void SetTexture(std::string textureName, GLuint texture) override;
@@ -29,7 +31,9 @@ namespace Rendering
          virtual const std::vector<GLuint>& GetVbos() const override;
  
       protected:
+        // TODO: camera and light may become lists since we can have more than one effecting an object
         Camera* camera;
+        Light* light;
         GLuint ctm_location;
         GLuint projection_location;
         GLuint model_view_location;

@@ -76,10 +76,10 @@ void LoadedObject::Update(){
     //ctm = glm::translate(ctm, {0.1, 0, 0});
 }
 
-void LoadedObject::Draw(Light light){
+void LoadedObject::Draw(){
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
-        meshes[i].Draw(ctm, projection, model_view, light);
+        meshes[i].Draw(ctm, projection, model_view, this->light);
     }
     
 }

@@ -21,7 +21,7 @@ namespace Rendering
      public:
        virtual ~IGameObject() = 0;
  
-       virtual void Draw(Light) = 0;
+       virtual void Draw() = 0;
        virtual void Update()= 0;
        virtual void SetProgram(GLuint shaderName) = 0;
        virtual void Destroy() = 0;

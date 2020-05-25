@@ -9,7 +9,7 @@ Model::~Model()
    Destroy();
 }
  
-void Model::Draw(Light light)
+void Model::Draw()
 {
    //this will be again overridden
 }
@@ -36,6 +36,11 @@ void Model::SetModelView(glm::mat4 modelView)
 void Model::SetCamera(Camera* camera)
 {
   this->camera = camera;
+}
+
+void Model::SetLight(Light* light)
+{
+  this->light = light;
 }
 
 void Model::SetProjection(glm::mat4 projection)

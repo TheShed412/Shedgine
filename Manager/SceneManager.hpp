@@ -2,6 +2,7 @@
 #include "ShaderManager.hpp"
 #include "ModelsManager.hpp"
 #include "../Rendering/Camera.hpp"
+#include "../Rendering/Light.hpp"
 #include "../Rendering/Texture/TextureLoader.hpp"
 #include "../Core/Init/IListener.hpp"
 #include "../Core/Game/GameObject.hpp"
@@ -31,6 +32,7 @@ namespace Managers
       Managers::ShaderManager* shader_manager;
       Managers::ModelsManager* models_manager;
       Rendering::TextureLoader* textureLoader;
+      Rendering::Light* light;
       Rendering::Camera* camera;
       Game::Managers::ObjectManager* gameObjectManager;
       Game::Managers::ActorManager* actorManager;
