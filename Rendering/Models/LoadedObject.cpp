@@ -77,19 +77,9 @@ void LoadedObject::Update(){
 }
 
 void LoadedObject::Draw(Light light){
-    // glUseProgram(program);
-	// glBindVertexArray(vao);
-    // glActiveTexture(GL_TEXTURE0);
-    // glBindTexture(GL_TEXTURE_2D, this->GetTexture("crate"));
-    // unsigned int textureLocation = glGetUniformLocation(program, "texture1");
-    // glUniform1i(textureLocation, 0);
-    // glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ctm);
-    // glUniformMatrix4fv(projection_location, 1, GL_FALSE, (GLfloat *) &projection);
-    // glUniformMatrix4fv(model_view_location, 1, GL_FALSE, (GLfloat *) &model_view);
-    // glDrawArrays(GL_TRIANGLES, 0, vectors);
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
-        meshes[i].Draw(program,ctm_location, projection_location, model_view_location, ctm, projection, model_view, light);
+        meshes[i].Draw(ctm, projection, model_view, light);
     }
     
 }

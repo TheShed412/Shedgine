@@ -49,11 +49,7 @@ namespace Rendering
             std::vector<VertexFormat> getVertices();
             std::vector<unsigned int> getIndecies();
             std::vector<TextureFormat> getTextures();
-            void Draw(GLuint program, 
-                GLuint ctm_location,
-                GLuint projection_location,
-                GLuint model_view_location,
-                glm::mat4 ctm,
+            void Draw(glm::mat4 ctm,
                 glm::mat4 projection,
                 glm::mat4 model_view,
                 Light light);
@@ -68,6 +64,16 @@ namespace Rendering
             Material mat;
             sLight light;
             GLuint program;
+            GLuint ctm_location;
+            GLuint projection_location;
+            GLuint model_view_location;
+            GLuint ambient_location;
+            GLuint position_location;
+            GLuint specular_location;
+            GLuint diffuse_location;
+            GLuint constant_location;
+            GLuint linear_location;
+            GLuint quadratic_location;
             unsigned int VAO, VBO, EBO, uniformBlockIndex, lightObject;
             void setupMesh();
 

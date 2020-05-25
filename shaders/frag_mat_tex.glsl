@@ -1,11 +1,13 @@
 #version 330 core
 out vec4 FragColor;
  
-uniform vec3 position;  
-
+uniform vec3 position; 
 uniform vec3 ambient;
 uniform vec3 diffuse;
 uniform vec3 specular;
+uniform float constant;
+uniform float linear;
+uniform float quadratic;
 
  
 in vec3 FragPos;  
@@ -27,9 +29,9 @@ void main()
     // light2.ambient = vec3(1.0, 1.0, 1.0);
     // light2.diffuse = vec3(1.0, 1.0, 1.0);
     // light2.specular = vec3(1.0, 1.0, 1.0);
-    float constant = 1.0;
-    float linear = 0.01;
-    float quadratic = 0.01;
+    // float constant = 1.0;
+    // float linear = 0.01;
+    // float quadratic = 0.01;
     //light2 = light;
 	// ambient
     vec3 ambient = ambient * Diffuse.rgb;

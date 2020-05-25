@@ -33,7 +33,16 @@ void Mesh::setupMesh() {
             0.0
         };
         this->light = slight;
-
+        ctm_location = glGetUniformLocation(program, "ctm");
+        projection_location = glGetUniformLocation(program, "projection");
+        model_view_location = glGetUniformLocation(program, "modelView");
+        ambient_location = glGetUniformLocation(program, "ambient");
+        position_location = glGetUniformLocation(program, "position");
+        specular_location = glGetUniformLocation(program, "specular");
+        diffuse_location = glGetUniformLocation(program, "diffuse");
+        constant_location = glGetUniformLocation(program, "constant");
+        linear_location = glGetUniformLocation(program, "linear");
+        quadratic_location = glGetUniformLocation(program, "quadratic");
 
         glBindVertexArray(VAO);
         // load data into vertex buffers
@@ -70,11 +79,7 @@ void Mesh::setupMesh() {
         glBindVertexArray(0);
 }
 
-void Mesh::Draw(GLuint program, 
-                GLuint ctm_location,
-                GLuint projection_location,
-                GLuint model_view_location,
-                glm::mat4 ctm,
+void Mesh::Draw(glm::mat4 ctm,
                 glm::mat4 projection,
                 glm::mat4 model_view,
                 Light light) 
@@ -104,10 +109,6 @@ void Mesh::Draw(GLuint program,
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
 
-    GLuint ambient_location = glGetUniformLocation(program, "ambient");
-    GLuint position_location = glGetUniformLocation(program, "position");
-    GLuint specular_location = glGetUniformLocation(program, "specular");
-    GLuint diffuse_location = glGetUniformLocation(program, "diffuse");
     // glActiveTexture(GL_TEXTURE0);
     // glBindTexture(GL_TEXTURE_2D, this->GetTexture("crate"));
     // unsigned int textureLocation = glGetUniformLocation(program, "texture1");
@@ -120,6 +121,9 @@ void Mesh::Draw(GLuint program,
     glUniform3fv(position_location, 1, (GLfloat*) &this->light.position);
     glUniform3fv(specular_location, 1, (GLfloat*) &this->light.specular);
     glUniform3fv(diffuse_location, 1, (GLfloat*) &this->light.diffuse);
+    glUniform1f(constant_location, 1.0);
+    glUniform1f(linear_location, 0.01);
+    glUniform1f(quadratic_location, 0.01);
 
     GLuint matIndex =  glGetUniformBlockIndex(program, "MatBlock");
     glUniformBlockBinding(program, matIndex, 0);
