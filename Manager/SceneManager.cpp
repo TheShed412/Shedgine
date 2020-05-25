@@ -32,10 +32,13 @@ SceneManager::SceneManager()
     shader_manager->CreateProgram("loadedShader",
                                     "shaders/vert_obj.glsl",
                                     "shaders/frag_obj.glsl");
+    shader_manager->CreateProgram("matShader",
+                                    "shaders/vert_mat_tex.glsl",
+                                    "shaders/frag_mat_tex.glsl");
 
     models_manager = new ModelsManager(camera);
 
-    Models::LoadedObject* shipModel = new Models::LoadedObject("Models/SmallSpaceFighter.obj");
+    Models::LoadedObject* shipModel = new Models::LoadedObject("Models/ship2.obj");
 
     // TODO: make grid a game object, or handled somewhere else
     #ifdef _DEBUG
@@ -51,18 +54,12 @@ SceneManager::SceneManager()
     #endif
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
-    shipModel->SetProgram(ShaderManager::GetShader("colorShader"));
-    shipModel->SetProjection(projection);
-    shipModel->SetModelView(camera->getModelView());
-    shipModel->SetCamera(this->camera);
-    shipModel->Create();
-
     //models_manager->AddModel("ship", shipModel);
     camera->setLookAt(glm::vec3(0,-1,-3));
     /* Setting up input */
     Game::Characters::Ship* ship = new Game::Characters::Ship(
         shipModel,
-        ShaderManager::GetShader("colorShader"),
+        ShaderManager::GetShader("matShader"),
         projection,
         camera->getModelView(),
         camera

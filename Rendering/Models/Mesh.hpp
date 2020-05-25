@@ -14,11 +14,22 @@ namespace Rendering
 {
   namespace Models
   {
+
+    struct Material {
+      //Material color lighting
+      glm::vec4 Ka;
+      //Diffuse reflection
+      glm::vec4 Kd;
+      //Mirror reflection
+      glm::vec4 Ks;
+    };
+
+
     class Mesh
     {
         // TODO: make a destroy method
         public:
-            Mesh(std::vector<VertexFormat> vertices, std::vector<unsigned int> indices, std::vector<TextureFormat> textures);
+            Mesh(std::vector<VertexFormat> vertices, std::vector<unsigned int> indices, std::vector<TextureFormat> textures, Material mat);
             Mesh();
             std::vector<VertexFormat> getVertices();
             std::vector<unsigned int> getIndecies();
@@ -38,7 +49,8 @@ namespace Rendering
             std::vector<VertexFormat> vertices;
             std::vector<unsigned int> indices;
             std::vector<TextureFormat> textures;
-            unsigned int VAO, VBO, EBO;
+            Material mat;
+            unsigned int VAO, VBO, EBO, uniformBlockIndex;
             void setupMesh();
 
     };

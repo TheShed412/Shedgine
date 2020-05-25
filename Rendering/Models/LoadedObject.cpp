@@ -2,6 +2,8 @@
 #include "../ObjectLoader.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../Core/stb_image.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/ext.hpp"
 
 #include <deque>
 #include <algorithm>
@@ -44,28 +46,29 @@ void LoadedObject::SetCtm(glm::mat4* ctm) {
 
 // TODO: I need to pull this out in to a game logic class
 void LoadedObject::processKeyboard(Movement direction, float deltaTime) {
-    switch (direction)
-    {
-        case FORWARD:
-            //currentLocation += glm::vec3(0, 0, -0.1);
-            ctm = glm::rotate(ctm, 0.05f, glm::vec3(-1.0, 0, 0));
-            //camera->addToPosition(glm::vec3(0, 0, -0.1));
-            //camera->setLookAt(currentLocation);
-            break;
-        case BACKWARD:
-            ctm = glm::rotate(ctm, 0.05f, glm::vec3(1.0, 0, 0));
-            //camera->setLookAt(currentLocation);
-            break;
-        case LEFT:
-            ctm = glm::rotate(ctm, 0.05f, glm::vec3(0, 0, 1.0));
-            break;
-        case RIGHT:
-            ctm = glm::rotate(ctm, 0.05f, glm::vec3(0, 0, -1.0));
-            break;
+    // TODO: get rid of this later, I'm lazy now lol
+    // switch (direction)
+    // {
+    //     case FORWARD:
+    //         //currentLocation += glm::vec3(0, 0, -0.1);
+    //         ctm = glm::rotate(ctm, 0.05f, glm::vec3(-1.0, 0, 0));
+    //         //camera->addToPosition(glm::vec3(0, 0, -0.1));
+    //         //camera->setLookAt(currentLocation);
+    //         break;
+    //     case BACKWARD:
+    //         ctm = glm::rotate(ctm, 0.05f, glm::vec3(1.0, 0, 0));
+    //         //camera->setLookAt(currentLocation);
+    //         break;
+    //     case LEFT:
+    //         ctm = glm::rotate(ctm, 0.05f, glm::vec3(0, 0, 1.0));
+    //         break;
+    //     case RIGHT:
+    //         ctm = glm::rotate(ctm, 0.05f, glm::vec3(0, 0, -1.0));
+    //         break;
         
-        default:
-            break;
-    }
+    //     default:
+    //         break;
+    // }
 }
 
 void LoadedObject::Update(){
@@ -117,6 +120,7 @@ void LoadedObject::processNode(aiNode *node, const aiScene *scene) {
 
 std::vector<TextureFormat> LoadedObject::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName) {
     std::vector<TextureFormat> textures;
+
     for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
     {
         aiString str;
@@ -138,6 +142,7 @@ std::vector<TextureFormat> LoadedObject::loadMaterialTextures(aiMaterial *mat, a
             texture.path = str.C_Str();
             textures.push_back(texture);
             textures.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+            std::cout << "filename: " << texture.path << std::endl;
         }
     }
     return textures;
@@ -242,12 +247,24 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
     }
     // process materials
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];    
+    Material mat;
+	aiColor3D color;
+
     // we assume a convention for sampler names in the shaders. Each diffuse texture should be named
     // as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
     // Same applies to other texture as the following list summarizes:
     // diffuse: texture_diffuseN
     // specular: texture_specularN
     // normal: texture_normalN
+
+    material->Get(AI_MATKEY_COLOR_AMBIENT, color);
+	mat.Ka = glm::vec4(color.r, color.g, color.b,1.0);
+	material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+	mat.Kd = glm::vec4(color.r, color.g, color.b,1.0);
+	material->Get(AI_MATKEY_COLOR_SPECULAR, color);
+	mat.Ks = glm::vec4(color.r, color.g, color.b,1.0);
+
+    // std::cout<<glm::to_string(mat.Kd)<<std::endl;
 
     // 1. diffuse maps
     std::vector<TextureFormat> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
@@ -256,17 +273,17 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
     std::vector<TextureFormat> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
     // 3. normal maps
-    std::vector<TextureFormat> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+    std::vector<TextureFormat> normalMaps = loadMaterialTextures(material, aiTextureType_NORMALS, "texture_normal");
     textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
     // 4. height maps
-    std::vector<TextureFormat> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+    std::vector<TextureFormat> heightMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
         
     // return a mesh object created from the extracted mesh data
     // std::reverse(vertices.begin(), vertices.end());
     // std::reverse(indices.begin(), indices.end());
     // std::reverse(textures.begin(), textures.end());
-    return Mesh(vertices, {indices.begin(), indices.end()}, textures);
+    return Mesh(vertices, {indices.begin(), indices.end()}, textures, mat);
 }
 
 std::vector<VertexFormat> LoadedObject::loadObject() {
