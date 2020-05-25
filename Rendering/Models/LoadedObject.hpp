@@ -21,7 +21,7 @@ namespace Rendering
  
         void Create();
         virtual void Update() override final;
-        virtual void Draw() override final;
+        virtual void Draw(Light) override final;
         virtual const glm::mat4* GetCtm();
         virtual void SetCtm(glm::mat4*);
 

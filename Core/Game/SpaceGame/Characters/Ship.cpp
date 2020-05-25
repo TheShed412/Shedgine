@@ -1,5 +1,6 @@
 #include "Ship.hpp"
 #include "../../../../Manager/ShaderManager.hpp"
+#include "../../../../Rendering/Light.hpp"
 
 using namespace Game;
 using namespace Characters;
@@ -32,7 +33,8 @@ void Ship::Update()
 
 void Ship::Draw()
 {
-    model->Draw();
+    Rendering::Light light;
+    model->Draw(light);
 }
 
 void Ship::Create()

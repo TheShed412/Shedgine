@@ -9,7 +9,7 @@ Model::~Model()
    Destroy();
 }
  
-void Model::Draw()
+void Model::Draw(Light light)
 {
    //this will be again overridden
 }

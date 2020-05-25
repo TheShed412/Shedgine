@@ -2,11 +2,11 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
  
-uniform Mat{
+uniform MatBlock {
 	vec4 aAmbient;
 	vec4 aDiffuse;
 	vec4 aSpecular;
-};
+} Mat;
 out vec3 FragPos;
 out vec3 Normal;
  
@@ -23,9 +23,9 @@ void main()
 	vec3 position = vec3(0,10,0);
     FragPos = vec3( modelView * vec4(aPos, 1.0));
 	Normal = mat3(transpose(inverse(modelView * ctm))) * aNormal;  
-	Ambient = aAmbient;
-	Diffuse = aDiffuse;
-	Specular = aSpecular;
+	Ambient = Mat.aAmbient;
+	Diffuse = Mat.aDiffuse;
+	Specular = Mat.aSpecular;
  
 	
     vec4 tmp_pos = vec4(aPos, 1);

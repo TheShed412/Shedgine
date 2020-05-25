@@ -9,6 +9,7 @@
 
 #include "../VertexFormat.hpp"
 #include "../TextureFormat.hpp"
+#include "../Light.hpp"
 
 namespace Rendering
 {
@@ -25,7 +26,8 @@ namespace Rendering
       glm::vec4 Ks;
     };
 
-    struct Light {
+    // There is a light object as well, this is purely to pass to the shader
+    struct sLight {
       glm::vec3 position;  
     
       glm::vec3 ambient;
@@ -42,7 +44,7 @@ namespace Rendering
     {
         // TODO: make a destroy method
         public:
-            Mesh(std::vector<VertexFormat> vertices, std::vector<unsigned int> indices, std::vector<TextureFormat> textures, Material mat);
+            Mesh(std::vector<VertexFormat> vertices, std::vector<unsigned int> indices, std::vector<TextureFormat> textures, Material mat, GLuint program);
             Mesh();
             std::vector<VertexFormat> getVertices();
             std::vector<unsigned int> getIndecies();
@@ -53,7 +55,8 @@ namespace Rendering
                 GLuint model_view_location,
                 glm::mat4 ctm,
                 glm::mat4 projection,
-                glm::mat4 model_view);
+                glm::mat4 model_view,
+                Light light);
             unsigned int getVAO();
             unsigned int getVBO();
             unsigned int getEBO();
@@ -63,7 +66,9 @@ namespace Rendering
             std::vector<unsigned int> indices;
             std::vector<TextureFormat> textures;
             Material mat;
-            unsigned int VAO, VBO, EBO, uniformBlockIndex;
+            sLight light;
+            GLuint program;
+            unsigned int VAO, VBO, EBO, uniformBlockIndex, lightObject;
             void setupMesh();
 
     };

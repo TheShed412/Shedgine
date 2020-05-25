@@ -51,7 +51,7 @@ void Grid::Update() {
     model_view = camera->getModelView();
 }
 
-void Grid::Draw() {
+void Grid::Draw(Light light) {
     glUseProgram(program);
     glBindVertexArray(vao);
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ctm);

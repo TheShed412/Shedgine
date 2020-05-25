@@ -53,7 +53,7 @@ void Cube::Update()
     model_view = camera->getModelView();
 }
  
-void Cube::Draw()
+void Cube::Draw(Light light)
 {
     glUseProgram(program);
 	glBindVertexArray(vao);

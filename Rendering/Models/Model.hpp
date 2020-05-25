@@ -14,7 +14,7 @@ namespace Rendering
          Model();
          virtual ~Model();
          // methods from interface
-         virtual void Draw() override;
+         virtual void Draw(Light) override;
          virtual void Update() override;
          virtual void SetProgram(GLuint shaderName) override;
          virtual void SetModelView(glm::mat4 modelView);

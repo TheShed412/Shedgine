@@ -8,11 +8,12 @@ using namespace Models;
 
 Mesh::Mesh(){}
 
-Mesh::Mesh(std::vector<VertexFormat> vertices, std::vector<unsigned int> indices, std::vector<TextureFormat> textures, Material mat) {
+Mesh::Mesh(std::vector<VertexFormat> vertices, std::vector<unsigned int> indices, std::vector<TextureFormat> textures, Material mat, GLuint program) {
     this->vertices = vertices;
     this->indices = indices;
     this->textures = textures;
     this->mat = mat;
+    this->program = program;
 
     setupMesh();
 }
@@ -22,6 +23,16 @@ void Mesh::setupMesh() {
         glGenBuffers(1, &VBO);
         glGenBuffers(1, &EBO);
         glGenBuffers(1, &uniformBlockIndex);
+        sLight slight = {
+            glm::vec3(0,5,0),
+            glm::vec3(1.0, 1.0, 1.0),
+            glm::vec3(1.0, 1.0, 1.0),
+            glm::vec3(1.0, 1.0, 1.0),
+            1.0,
+            0.0,
+            0.0
+        };
+        this->light = slight;
 
 
         glBindVertexArray(VAO);
@@ -30,12 +41,14 @@ void Mesh::setupMesh() {
         // A great thing about structs is that their memory layout is sequential for all its items.
         // The effect is that we can simply pass a pointer to the struct and it translates perfectly to a glm::vec3/2 array which
         // again translates to 3/2 floats which translates to a byte array.
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(VertexFormat) + sizeof(mat), &vertices[0], GL_STATIC_DRAW);  
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(VertexFormat) + sizeof(Material), &vertices[0], GL_DYNAMIC_DRAW);
+        
         glBindBuffer(GL_UNIFORM_BUFFER, uniformBlockIndex);
-        glBufferData(GL_UNIFORM_BUFFER,sizeof(mat),(void*)(&mat), GL_STATIC_DRAW);
+        glBufferData(GL_UNIFORM_BUFFER,sizeof(Material),(void*)(&mat), GL_DYNAMIC_DRAW);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_DYNAMIC_DRAW);
+
 
         // set the vertex attribute pointers
         // vertex Positions
@@ -63,7 +76,8 @@ void Mesh::Draw(GLuint program,
                 GLuint model_view_location,
                 glm::mat4 ctm,
                 glm::mat4 projection,
-                glm::mat4 model_view) 
+                glm::mat4 model_view,
+                Light light) 
 {
     // bind appropriate textures
     unsigned int diffuseNr  = 1;
@@ -89,6 +103,11 @@ void Mesh::Draw(GLuint program,
         // and finally bind the texture
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
+
+    GLuint ambient_location = glGetUniformLocation(program, "ambient");
+    GLuint position_location = glGetUniformLocation(program, "position");
+    GLuint specular_location = glGetUniformLocation(program, "specular");
+    GLuint diffuse_location = glGetUniformLocation(program, "diffuse");
     // glActiveTexture(GL_TEXTURE0);
     // glBindTexture(GL_TEXTURE_2D, this->GetTexture("crate"));
     // unsigned int textureLocation = glGetUniformLocation(program, "texture1");
@@ -97,10 +116,24 @@ void Mesh::Draw(GLuint program,
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ctm);
     glUniformMatrix4fv(projection_location, 1, GL_FALSE, (GLfloat *) &projection);
     glUniformMatrix4fv(model_view_location, 1, GL_FALSE, (GLfloat *) &model_view);
+    glUniform3fv(ambient_location, 1, (GLfloat*) &this->light.ambient);
+    glUniform3fv(position_location, 1, (GLfloat*) &this->light.position);
+    glUniform3fv(specular_location, 1, (GLfloat*) &this->light.specular);
+    glUniform3fv(diffuse_location, 1, (GLfloat*) &this->light.diffuse);
+
+    GLuint matIndex =  glGetUniformBlockIndex(program, "MatBlock");
+    glUniformBlockBinding(program, matIndex, 0);
+    glBindBufferBase(GL_UNIFORM_BUFFER, 0, uniformBlockIndex);
 
     // draw mesh
+    //GLuint lightIndex =  glGetUniformBlockIndex(program, "Light");
+    
+    glBindBuffer(GL_UNIFORM_BUFFER, uniformBlockIndex);
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Material), &this->mat);
+
     glBindVertexArray(VAO);
-    glBindBufferRange(GL_UNIFORM_BUFFER,0, uniformBlockIndex,0,sizeof(Material));
+    //glBindBufferRange(GL_UNIFORM_BUFFER,0, uniformBlockIndex,0,sizeof(Material));
+    //glBindBufferRange(GL_UNIFORM_BUFFER,lightIndex, lightObject,0,sizeof(sLight));
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 

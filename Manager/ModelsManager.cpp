@@ -56,9 +56,10 @@ void ModelsManager::SetCamera(Camera* camera) {
  
 void ModelsManager::Draw()
 {
+  Light light;
    //auto -it's a map iterator
    for (auto model : gameModelList)
    {
-      model.second->Draw();
+      model.second->Draw(light);
    }
 }

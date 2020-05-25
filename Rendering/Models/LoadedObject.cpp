@@ -76,7 +76,7 @@ void LoadedObject::Update(){
     //ctm = glm::translate(ctm, {0.1, 0, 0});
 }
 
-void LoadedObject::Draw(){
+void LoadedObject::Draw(Light light){
     // glUseProgram(program);
 	// glBindVertexArray(vao);
     // glActiveTexture(GL_TEXTURE0);
@@ -89,7 +89,7 @@ void LoadedObject::Draw(){
     // glDrawArrays(GL_TRIANGLES, 0, vectors);
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
-        meshes[i].Draw(program,ctm_location, projection_location, model_view_location, ctm, projection, model_view);
+        meshes[i].Draw(program,ctm_location, projection_location, model_view_location, ctm, projection, model_view, light);
     }
     
 }
@@ -283,7 +283,7 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
     // std::reverse(vertices.begin(), vertices.end());
     // std::reverse(indices.begin(), indices.end());
     // std::reverse(textures.begin(), textures.end());
-    return Mesh(vertices, {indices.begin(), indices.end()}, textures, mat);
+    return Mesh(vertices, {indices.begin(), indices.end()}, textures, mat, program);
 }
 
 std::vector<VertexFormat> LoadedObject::loadObject() {
