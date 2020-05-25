@@ -24,6 +24,8 @@ namespace Rendering
       glm::vec4 Kd;
       //Mirror reflection
       glm::vec4 Ks;
+      // shininess
+      float Ns;
     };
 
 

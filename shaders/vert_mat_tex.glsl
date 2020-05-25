@@ -6,6 +6,7 @@ uniform MatBlock {
 	vec4 aAmbient;
 	vec4 aDiffuse;
 	vec4 aSpecular;
+	float aShine;
 } Mat;
 out vec3 FragPos;
 out vec3 Normal;
@@ -13,6 +14,7 @@ out vec3 Normal;
 out vec4 Ambient;
 out vec4 Diffuse;
 out vec4 Specular;
+out float shininess;
  
 uniform mat4 ctm;
 uniform mat4 modelView;
@@ -26,6 +28,7 @@ void main()
 	Ambient = Mat.aAmbient;
 	Diffuse = Mat.aDiffuse;
 	Specular = Mat.aSpecular;
+	shininess = Mat.aShine;
  
 	
     vec4 tmp_pos = vec4(aPos, 1);

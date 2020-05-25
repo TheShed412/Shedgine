@@ -247,12 +247,15 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
     // specular: texture_specularN
     // normal: texture_normalN
 
+    float shininess;
     material->Get(AI_MATKEY_COLOR_AMBIENT, color);
 	mat.Ka = glm::vec4(color.r, color.g, color.b,1.0);
 	material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
 	mat.Kd = glm::vec4(color.r, color.g, color.b,1.0);
 	material->Get(AI_MATKEY_COLOR_SPECULAR, color);
 	mat.Ks = glm::vec4(color.r, color.g, color.b,1.0);
+    material->Get(AI_MATKEY_SHININESS, shininess);
+    mat.Ns = shininess;
 
     // std::cout<<glm::to_string(mat.Kd)<<std::endl;
 

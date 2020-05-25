@@ -17,10 +17,9 @@ in vec3 Normal;
 in vec4 Ambient;
 in vec4 Diffuse;
 in vec4 Specular;
+in float shininess;
  
 uniform vec3 viewPos;// should be camera pos
- 
-uniform float shininess; // Ns in mtl file
  
 void main()
 {    
@@ -48,7 +47,7 @@ void main()
 	// specular
     vec3 viewDir = normalize(vec3(0.0,4.0,10.0) - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);  
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 94.117647);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     vec3 specular = specular * spec * Specular.rgb;
 	  
     vec3 result = ambient + (attenuation * (diffuse + specular));
