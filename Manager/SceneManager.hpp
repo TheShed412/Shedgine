@@ -28,7 +28,7 @@ namespace Managers
                                  int height,
                                  int previous_width,
                                  int previous_height);
-    private:
+    protected:
       Managers::ShaderManager* shader_manager;
       Managers::ModelsManager* models_manager;
       Rendering::TextureLoader* textureLoader;

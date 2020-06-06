@@ -1,0 +1,25 @@
+#pragma once
+#include "SceneManager.hpp"
+#include "ModelsManager.hpp"
+
+namespace Managers
+{
+  class DebugScene : public SceneManager
+  {
+    public:
+      DebugScene();
+      ~DebugScene();
+      void notifyBeginFrame() override;
+      void notifyDisplayFrame() override;
+      void notifyKeyboardInput(unsigned char key) override;
+      void notifyMouseInput(int button, int state, int x, int y) override;
+      void notifyMouseMovementInput(int x, int y) override;
+      void notifyKeyboardUp(unsigned char key) override;
+      void notifyEndFrame() override;
+      void notifyReshape(int width,
+                                 int height,
+                                 int previous_width,
+                                 int previous_height) override;
+
+ };
+}
