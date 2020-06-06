@@ -13,7 +13,7 @@ DebugScene::DebugScene()
     gameObjectManager = new Game::Managers::ObjectManager();
     actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
-    camera = new Camera(glm::vec3(0,15,25), glm::vec3(0,1,0), 0.1, 0.05);
+    camera = new Camera(glm::vec3(0,5,10), glm::vec3(0,1,0), 0.1, 0.05);
     light = new Light(
         glm::vec3(0,5,0),
         glm::vec3(1.0, 1.0, 1.0),
@@ -41,7 +41,9 @@ DebugScene::DebugScene()
     models_manager = new ModelsManager(camera);
 
     Models::LoadedObject* shipModel = new Models::LoadedObject("Models/ship2.obj");
+    Models::LoadedObject* laserModel = new Models::LoadedObject("Models/laser.obj");
     shipModel->SetLight(light);
+    laserModel->SetLight(light);
 
     Models::Grid* grid = new Models::Grid();
 
@@ -50,6 +52,12 @@ DebugScene::DebugScene()
     grid->SetModelView(camera->getModelView());
     grid->SetCamera(this->camera);
     grid->Create();
+
+    laserModel->SetProgram(ShaderManager::GetShader("matShader"));
+    laserModel->SetProjection(projection);
+    laserModel->SetModelView(camera->getModelView());
+    laserModel->SetCamera(this->camera);
+    laserModel->Create();
 
     models_manager->AddModel("grid", grid);
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
@@ -66,7 +74,7 @@ DebugScene::DebugScene()
     );
     actorManager->AddActor("player", ship);
     gameObjectManager->AddObject("ship", ship);
-    models_manager->AddModel("ship", shipModel);
+    models_manager->AddModel("ship", laserModel);
 }
  
 DebugScene::~DebugScene()
