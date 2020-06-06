@@ -20,7 +20,7 @@ SceneManager::SceneManager()
     gameObjectManager = new Game::Managers::ObjectManager();
     actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
-    camera = new Camera(glm::vec3(0,4,10), glm::vec3(0,1,0), 0.5, 0.05);
+    camera = new Camera(glm::vec3(0,15,25), glm::vec3(0,1,0), 0.5, 0.05);
     light = new Light(
         glm::vec3(0,5,0),
         glm::vec3(1.0, 1.0, 1.0),
@@ -90,11 +90,11 @@ void SceneManager::notifyBeginFrame()
 {
     if(keys['w']) {
         //camera->processKeyboard(Camera::FORWARD, 1);
-        actorManager->GetActor("player").TurnDown();
+        actorManager->GetActor("player").TurnUp();
     }
     if(keys['s']) {
         //camera->processKeyboard(Camera::BACKWARD, 1);
-        actorManager->GetActor("player").TurnUp();
+        actorManager->GetActor("player").TurnDown();
     }
     if(keys['a']) {
         //camera->processKeyboard(Camera::LEFT, 1);

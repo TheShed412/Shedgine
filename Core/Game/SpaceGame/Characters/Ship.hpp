@@ -10,6 +10,7 @@ namespace Game
         class Ship : virtual public Actor
         {
             private:
+                float currentPitch;
                 float flightSpeed;
                 float maxPitch;
                 float pitchDelta; // This is how much the pitch will change, as it gets closer to max, it goes slower

@@ -23,6 +23,8 @@ Rendering::Camera* camera)
     shipModel->SetCamera(camera);
     shipModel->Create();
 
+    currentPitch = 0;
+
     this->model = shipModel;
 }
 
@@ -83,13 +85,29 @@ void Ship::TurnLeft()
 
 void Ship::TurnUp()
 {
-    glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.05f, glm::vec3(1.0, 0, 0));
+    glm::mat4 newCtm;
+    // if(currentPitch <= 5.0) {
+    //     currentPitch += 0.5f;
+    //     newCtm = glm::rotate(*model->GetCtm(), 0.05f, glm::vec3(1.0, 0, 0));
+    // } else {
+    //     newCtm = glm::rotate(*model->GetCtm(), 0.0f, glm::vec3(1.0, 0, 0));
+    // }
+    newCtm = glm::translate(*model->GetCtm(), glm::vec3(0.0, 0.1, 0.0));
     model->SetCtm(&newCtm);
+
 }
 
 void Ship::TurnDown()
 {
-    glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.05f, glm::vec3(-1.0, 0, 0));
+    glm::mat4 newCtm;
+    
+    // if(currentPitch >= -5.0) {
+    //     currentPitch -= 0.5f;
+    //     newCtm = glm::rotate(*model->GetCtm(), 0.05f, glm::vec3(-1.0, 0, 0));
+    // } else {
+    //     newCtm = glm::rotate(*model->GetCtm(), 0.0f, glm::vec3(-1.0, 0, 0));
+    // }
+    newCtm = glm::translate(*model->GetCtm(), glm::vec3(0.0, -0.1, 0.0));
     model->SetCtm(&newCtm);
 }
 
