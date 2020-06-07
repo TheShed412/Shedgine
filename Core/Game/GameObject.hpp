@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Rendering/Models/LoadedObject.hpp"
+#include "../../Rendering/Models/Redical.hpp"
 
 
 /**
@@ -13,6 +14,7 @@ namespace Game
         protected:
             Game::GameObject* parent;
             Rendering::Models::LoadedObject* model;
+            Rendering::Models::Redical* redicalModel;// lol tmp fix dont @ me
             bool active;
             std::string scene; // TODO: will be a reference to the scene
         

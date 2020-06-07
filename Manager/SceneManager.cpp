@@ -1,5 +1,7 @@
 #include "SceneManager.hpp"
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
+#include "../Core/Game/SpaceGame/Characters/Redical.hpp"
+#include "../Rendering/Models/Redical.hpp"
 
 using namespace Managers;
  
@@ -50,6 +52,8 @@ SceneManager::SceneManager()
     Models::LoadedObject* shipModel = new Models::LoadedObject("Models/ship2.obj");
     shipModel->SetLight(light);
 
+    Rendering::Models::Redical* redicalModel = new Rendering::Models::Redical();
+
     // TODO: make grid a game object, or handled somewhere else
     #ifdef _DEBUG
     Models::Grid* grid = new Models::Grid();
@@ -74,8 +78,18 @@ SceneManager::SceneManager()
         camera->getModelView(),
         camera
     );
+
+    Game::Characters::Redical* redical = new Game::Characters::Redical(
+        redicalModel,
+        ShaderManager::GetShader("colorShader"),
+        projection,
+        camera->getModelView(),
+        camera
+    );
     actorManager->AddActor("player", ship);
     gameObjectManager->AddObject("ship", ship);
+    actorManager->AddActor("retical", redical);
+    gameObjectManager->AddObject("retical", redical);
 }
  
 SceneManager::~SceneManager()

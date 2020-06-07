@@ -73,13 +73,13 @@ void Ship::MoveDown()
 
 void Ship::TurnRight()
 {
-    glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.05f, glm::vec3(0, 0, -1.0));
+    glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.1f, glm::vec3(0, 0, -1.0));
     model->SetCtm(&newCtm);
 }
 
 void Ship::TurnLeft()
 {
-    glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.05f, glm::vec3(0, 0, 1.0));
+    glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.1f, glm::vec3(0, 0, 1.0));
     model->SetCtm(&newCtm);
 }
 
@@ -92,7 +92,7 @@ void Ship::TurnUp()
     // } else {
     //     newCtm = glm::rotate(*model->GetCtm(), 0.0f, glm::vec3(1.0, 0, 0));
     // }
-    newCtm = glm::translate(*model->GetCtm(), glm::vec3(0.0, 0.1, 0.0));
+    newCtm = glm::translate(*model->GetCtm(), glm::vec3(0.0, 0.2, 0.0));
     model->SetCtm(&newCtm);
 
 }
@@ -107,7 +107,7 @@ void Ship::TurnDown()
     // } else {
     //     newCtm = glm::rotate(*model->GetCtm(), 0.0f, glm::vec3(-1.0, 0, 0));
     // }
-    newCtm = glm::translate(*model->GetCtm(), glm::vec3(0.0, -0.1, 0.0));
+    newCtm = glm::translate(*model->GetCtm(), glm::vec3(0.0, -0.2, 0.0));
     model->SetCtm(&newCtm);
 }
 
