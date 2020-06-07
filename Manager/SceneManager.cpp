@@ -135,20 +135,23 @@ void SceneManager::notifyMouseInput(int button, int state, int x, int y) {
     //std::cout<< "MOUSE X: " << x << " Y: " << y << std::endl;
 }
 
+bool firstMouse1 = true;
+float lastX1;
+float lastY1;
 
 void SceneManager::notifyMouseMovementInput(int x, int y) {
-    // if (firstMouse)
-    // {
-    //     lastX = x;
-    //     lastY = y;
-    //     firstMouse = false;
-    // }
+    if (firstMouse1)
+    {
+        lastX1 = x;
+        lastY1 = y;
+        firstMouse1 = false;
+    }
 
-    // float xoffset = x - lastX;
-    // float yoffset = lastY - y; // reversed since y-coordinates go from bottom to top
+    float xoffset = x - lastX1;
+    float yoffset = lastY1 - y; // reversed since y-coordinates go from bottom to top
 
-    // lastX = x;
-    // lastY = y;
+    lastX1 = x;
+    lastY1 = y;
     //camera->processMouseMovement(xoffset, yoffset);
 }
  
