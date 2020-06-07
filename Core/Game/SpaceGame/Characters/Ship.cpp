@@ -47,43 +47,46 @@ void Ship::Destroy() {
     model->Destroy();
 }
 
-void Ship::MoveForward()
+glm::mat4 Ship::MoveForward()
+{
+    return glm::mat4(0);
+}
+
+glm::mat4 Ship::MoveBackward()
 {
 }
 
-void Ship::MoveBackward()
+glm::mat4 Ship::MoveRight()
 {
 }
 
-void Ship::MoveRight()
+glm::mat4 Ship::MoveLeft()
 {
 }
 
-void Ship::MoveLeft()
+glm::mat4 Ship::MoveUp()
 {
 }
 
-void Ship::MoveUp()
+glm::mat4 Ship::MoveDown()
 {
 }
 
-void Ship::MoveDown()
-{
-}
-
-void Ship::TurnRight()
+glm::mat4 Ship::TurnRight()
 {
     glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.1f, glm::vec3(0, 0, -1.0));
     model->SetCtm(&newCtm);
+    return newCtm;
 }
 
-void Ship::TurnLeft()
+glm::mat4 Ship::TurnLeft()
 {
     glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.1f, glm::vec3(0, 0, 1.0));
     model->SetCtm(&newCtm);
+    return newCtm;
 }
 
-void Ship::TurnUp()
+glm::mat4 Ship::TurnUp()
 {
     glm::mat4 newCtm;
     // if(currentPitch <= 5.0) {
@@ -94,10 +97,10 @@ void Ship::TurnUp()
     // }
     newCtm = glm::translate(*model->GetCtm(), glm::vec3(0.0, 0.2, 0.0));
     model->SetCtm(&newCtm);
-
+    return newCtm;
 }
 
-void Ship::TurnDown()
+glm::mat4 Ship::TurnDown()
 {
     glm::mat4 newCtm;
     
@@ -109,10 +112,30 @@ void Ship::TurnDown()
     // }
     newCtm = glm::translate(*model->GetCtm(), glm::vec3(0.0, -0.2, 0.0));
     model->SetCtm(&newCtm);
+    return newCtm;
 }
 
 void Ship::Action()
 {
+}
+
+void Ship::HandleInput(unsigned char keys[] ) {
+    if(keys['w']) {
+        //camera->processKeyboard(Camera::FORWARD, 1);
+        this->TurnUp();
+    }
+    if(keys['s']) {
+        //camera->processKeyboard(Camera::BACKWARD, 1);
+        this->TurnDown();
+    }
+    if(keys['a']) {
+        //camera->processKeyboard(Camera::LEFT, 1);
+        this->TurnLeft();
+    }
+    if(keys['d']) {
+        //camera->processKeyboard(Camera::RIGHT, 1);
+        this->TurnRight();
+    }
 }
 
 void Ship::SetFlightSpeed(float flightSpeed)

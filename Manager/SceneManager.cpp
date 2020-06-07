@@ -102,22 +102,25 @@ SceneManager::~SceneManager()
  
 void SceneManager::notifyBeginFrame()
 {
-    if(keys['w']) {
-        //camera->processKeyboard(Camera::FORWARD, 1);
-        actorManager->GetActor("player").TurnUp();
-    }
-    if(keys['s']) {
-        //camera->processKeyboard(Camera::BACKWARD, 1);
-        actorManager->GetActor("player").TurnDown();
-    }
-    if(keys['a']) {
-        //camera->processKeyboard(Camera::LEFT, 1);
-        actorManager->GetActor("player").TurnLeft();
-    }
-    if(keys['d']) {
-        //camera->processKeyboard(Camera::RIGHT, 1);
-        actorManager->GetActor("player").TurnRight();
-    }
+
+    // if(keys['w']) {
+    //     //camera->processKeyboard(Camera::FORWARD, 1);
+    //     actorManager->GetActor("player").TurnUp();
+    // }
+    // if(keys['s']) {
+    //     //camera->processKeyboard(Camera::BACKWARD, 1);
+    //     actorManager->GetActor("player").TurnDown();
+    // }
+    // if(keys['a']) {
+    //     //camera->processKeyboard(Camera::LEFT, 1);
+    //     actorManager->GetActor("player").TurnLeft();
+    // }
+    // if(keys['d']) {
+    //     //camera->processKeyboard(Camera::RIGHT, 1);
+    //     actorManager->GetActor("player").TurnRight();
+    // }
+
+    actorManager->GetActor("player").HandleInput(keys);
 
     models_manager->Update();
     gameObjectManager->Update();

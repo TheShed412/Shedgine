@@ -14,17 +14,18 @@ namespace Game
     {
         public:
             virtual ~Actor() = 0;
-            virtual void MoveForward() = 0;
-            virtual void MoveBackward()= 0;
-            virtual void MoveRight()= 0;
-            virtual void MoveLeft() = 0;
-            virtual void MoveUp() = 0;
-            virtual void MoveDown() = 0;
-            virtual void TurnRight() = 0;
-            virtual void TurnLeft() = 0;
-            virtual void TurnUp() = 0;
-            virtual void TurnDown() = 0;
+            virtual glm::mat4 MoveForward() = 0;
+            virtual glm::mat4 MoveBackward()= 0;
+            virtual glm::mat4 MoveRight()= 0;
+            virtual glm::mat4 MoveLeft() = 0;
+            virtual glm::mat4 MoveUp() = 0;
+            virtual glm::mat4 MoveDown() = 0;
+            virtual glm::mat4 TurnRight() = 0;
+            virtual glm::mat4 TurnLeft() = 0;
+            virtual glm::mat4 TurnUp() = 0;
+            virtual glm::mat4 TurnDown() = 0;
             virtual void Action() = 0;
+            virtual void HandleInput(unsigned char[]) = 0;
     };
     inline Actor::~Actor()
     {//blank

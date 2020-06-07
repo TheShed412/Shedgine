@@ -60,43 +60,51 @@ void Redical::Destroy() {
     redicalModel->Destroy();
 }
 
-void Redical::MoveForward()
+glm::mat4 Redical::MoveForward()
 {
+    return glm::mat4(0);
 }
 
-void Redical::MoveBackward()
+glm::mat4 Redical::MoveBackward()
 {
+    return glm::mat4(0);
 }
 
-void Redical::MoveRight()
+glm::mat4 Redical::MoveRight()
 {
+    return glm::mat4(0);
 }
 
-void Redical::MoveLeft()
+glm::mat4 Redical::MoveLeft()
 {
+    return glm::mat4(0);
 }
 
-void Redical::MoveUp()
+glm::mat4 Redical::MoveUp()
 {
+    return glm::mat4(0);
 }
 
-void Redical::MoveDown()
+glm::mat4 Redical::MoveDown()
 {
+    return glm::mat4(0);
 }
 
-void Redical::TurnRight()
+glm::mat4 Redical::TurnRight()
 {
     glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.05f, glm::vec3(0, 0, -1.0));
     model->SetCtm(&newCtm);
+    return glm::mat4(0);
 }
 
-void Redical::TurnLeft()
+glm::mat4 Redical::TurnLeft()
 {
     glm::mat4 newCtm = glm::rotate(*model->GetCtm(), 0.05f, glm::vec3(0, 0, 1.0));
     model->SetCtm(&newCtm);
+    return glm::mat4(0);
 }
 
-void Redical::TurnUp()
+glm::mat4 Redical::TurnUp()
 {
     glm::mat4 newCtm;
     // if(currentPitch <= 5.0) {
@@ -107,10 +115,10 @@ void Redical::TurnUp()
     // }
     newCtm = glm::translate(*model->GetCtm(), glm::vec3(0.0, 0.1, 0.0));
     model->SetCtm(&newCtm);
-
+    return glm::mat4(0);
 }
 
-void Redical::TurnDown()
+glm::mat4 Redical::TurnDown()
 {
     glm::mat4 newCtm;
     
@@ -122,8 +130,13 @@ void Redical::TurnDown()
     // }
     newCtm = glm::translate(*model->GetCtm(), glm::vec3(0.0, -0.1, 0.0));
     model->SetCtm(&newCtm);
+    return glm::mat4(0);
 }
 
 void Redical::Action()
 {
+}
+
+void Redical::HandleInput(unsigned char keys[] ) {
+
 }
