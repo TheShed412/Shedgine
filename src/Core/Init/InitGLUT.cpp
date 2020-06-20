@@ -11,7 +11,7 @@ void InitGLUT::init(const Core::WindowInfo& windowInfo,
 {
    //we need to create these fake arguments
    int fakeargc = 1;
-   char *fakeargv[] = { "fake", NULL };
+   char *fakeargv[] = { (char*)"fake", NULL };// this casting thing is so dumb lol
    glutInit(&fakeargc, fakeargv);
    windowInformation = windowInfo;
 

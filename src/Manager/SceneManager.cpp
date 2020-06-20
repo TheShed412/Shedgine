@@ -1,7 +1,5 @@
 #include "SceneManager.hpp"
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
-#include "../Core/Game/SpaceGame/Characters/Redical.hpp"
-#include "../Rendering/Models/Redical.hpp"
 
 using namespace Managers;
  
@@ -35,24 +33,22 @@ SceneManager::SceneManager()
     projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     //models_manager = new ModelsManager();
     shader_manager->CreateProgram("textureShader",
-                                    "shaders/vertex_shader.glsl",
-                                    "shaders/fragment_shader.glsl");
+                                    "src/shaders/vertex_shader.glsl",
+                                    "src/shaders/fragment_shader.glsl");
     shader_manager->CreateProgram("colorShader",
-                                    "shaders/vertex_shader_color.glsl",
-                                    "shaders/fragment_shader_color.glsl");
+                                    "src/shaders/vertex_shader_color.glsl",
+                                    "src/shaders/fragment_shader_color.glsl");
     shader_manager->CreateProgram("loadedShader",
-                                    "shaders/vert_obj.glsl",
-                                    "shaders/frag_obj.glsl");
+                                    "src/shaders/vert_obj.glsl",
+                                    "src/shaders/frag_obj.glsl");
     shader_manager->CreateProgram("matShader",
-                                    "shaders/vert_mat_tex.glsl",
-                                    "shaders/frag_mat_tex.glsl");
+                                    "src/shaders/vert_mat_tex.glsl",
+                                    "src/shaders/frag_mat_tex.glsl");
 
     models_manager = new ModelsManager(camera);
 
-    Models::LoadedObject* shipModel = new Models::LoadedObject("Models/ship2.obj");
+    Models::LoadedObject* shipModel = new Models::LoadedObject("src/Models/ship2.obj");
     shipModel->SetLight(light);
-
-    Rendering::Models::Redical* redicalModel = new Rendering::Models::Redical();
 
     // TODO: make grid a game object, or handled somewhere else
     #ifdef _DEBUG

@@ -62,9 +62,9 @@ GLuint ShaderLoader::CreateShader(GLenum shaderType, std::string source, char* s
      //read the shader files and save the code
      std::string vertex_shader_code = ReadShader(vertexShaderFilename);
      std::string fragment_shader_code = ReadShader(fragmentShaderFilename);
- 
-   GLuint vertex_shader = CreateShader(GL_VERTEX_SHADER, vertex_shader_code, "vertex shader");
-   GLuint fragment_shader = CreateShader(GL_FRAGMENT_SHADER, fragment_shader_code, "fragment shader");
+
+  GLuint vertex_shader = CreateShader(GL_VERTEX_SHADER, vertex_shader_code, (char*)"vertex shader");// C++: don't use string literals, also C++: nah, casting is fine lol
+  GLuint fragment_shader = CreateShader(GL_FRAGMENT_SHADER, fragment_shader_code, (char*)"fragment shader");
  
     int link_result = 0;
     //create the program handle, attatch the shaders and link it
