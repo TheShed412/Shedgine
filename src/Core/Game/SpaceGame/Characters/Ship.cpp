@@ -136,11 +136,14 @@ float generateTiltMatrices(glm::mat4* rotationMat, glm::mat4* translationMat, fl
     return currentTilt;
 }
 
+
 // TODO: pull some of this logic out
 void Ship::HandleInput(unsigned char keys[] ) {
     if(keys['w'] || keys['a'] || keys['s'] || keys['d']) {
+        glm::vec2 relScreenPos = model->GetRelativeScreenPosition();
         glm::mat4 rotationMats = glm::mat4(1.0);
         glm::mat4 translationMats = glm::mat4(1.0);
+        std::cout << glm::to_string(relScreenPos) << std::endl;
         if(keys['w']) {
             //camera->processKeyboard(Camera::FORWARD, 1);
             //translationMats = translationMats * this->TurnUp();
@@ -150,7 +153,9 @@ void Ship::HandleInput(unsigned char keys[] ) {
             } else {
                 rotationMats = glm::rotate(rotationMats, 0.0f, glm::vec3(1.0, 0, 0));
             }
-            translationMats = glm::translate(translationMats, glm::vec3(0.0, 0.2, 0.0));
+            if (relScreenPos[1] < 0.99) {
+                translationMats = glm::translate(translationMats, glm::vec3(0.0, 0.2, 0.0));
+            }
         }
         if(keys['s']) {
             //camera->processKeyboard(Camera::BACKWARD, 1);
@@ -161,7 +166,9 @@ void Ship::HandleInput(unsigned char keys[] ) {
             } else {
                 rotationMats = glm::rotate(rotationMats, 0.0f, glm::vec3(-1.0, 0, 0));
             }
-            translationMats = glm::translate(translationMats, glm::vec3(0.0, -0.2, 0.0));
+            if (relScreenPos[1] > -0.99) {
+                translationMats = glm::translate(translationMats, glm::vec3(0.0, -0.2, 0.0));
+            }
         }
         if(keys['a']) {
             //camera->processKeyboard(Camera::LEFT, 1);
@@ -174,7 +181,9 @@ void Ship::HandleInput(unsigned char keys[] ) {
             } else {
                 rotationMats = glm::rotate(rotationMats, 0.0f, glm::vec3(0.0, 0, 1.0));
             }
-            translationMats = glm::translate(translationMats, glm::vec3(-0.2, 0.0, 0.0));
+            if (relScreenPos[0] > -0.99) {
+                translationMats = glm::translate(translationMats, glm::vec3(-0.2, 0.0, 0.0));
+            }
         }
         if(keys['d']) {
             //camera->processKeyboard(Camera::RIGHT, 1);
@@ -187,11 +196,15 @@ void Ship::HandleInput(unsigned char keys[] ) {
             } else {
                 rotationMats = glm::rotate(rotationMats, 0.0f, glm::vec3(0.0, 0, -1.0));
             }
-            translationMats = glm::translate(translationMats, glm::vec3(0.2, 0.0, 0.0));
+            if (relScreenPos[0] < 0.99) {
+                translationMats = glm::translate(translationMats, glm::vec3(0.2, 0.0, 0.0));
+            }
         }
+
         glm::mat4 newCtm;
         newCtm = translationMats * *this->model->GetCtm() * rotationMats;
         this->model->SetCtm(&newCtm);
+        
     }
 }
 

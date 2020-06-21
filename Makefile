@@ -49,6 +49,9 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 outs:
 	$(MKDIR) obj bin
 
+clean:
+	rm obj/*
+
 main: $(OBJDIR)/main.o $(OBJMEMBERS)
 	g++ -std=c++11 -w -g -o $(OUT)/main $(OBJDIR)/main.o $(OBJMEMBERS) $(LIBFLAGS)
 
