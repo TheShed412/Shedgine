@@ -27,8 +27,8 @@ SceneManager::SceneManager()
         glm::vec3(1.0, 1.0, 1.0),
         glm::vec3(1.0, 1.0, 1.0),
         1.0,
-        0.01,
-        0.01
+        0.001,
+        0.001
     );
     projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     //models_manager = new ModelsManager();
@@ -98,24 +98,6 @@ SceneManager::~SceneManager()
  
 void SceneManager::notifyBeginFrame()
 {
-
-    // if(keys['w']) {
-    //     //camera->processKeyboard(Camera::FORWARD, 1);
-    //     actorManager->GetActor("player").TurnUp();
-    // }
-    // if(keys['s']) {
-    //     //camera->processKeyboard(Camera::BACKWARD, 1);
-    //     actorManager->GetActor("player").TurnDown();
-    // }
-    // if(keys['a']) {
-    //     //camera->processKeyboard(Camera::LEFT, 1);
-    //     actorManager->GetActor("player").TurnLeft();
-    // }
-    // if(keys['d']) {
-    //     //camera->processKeyboard(Camera::RIGHT, 1);
-    //     actorManager->GetActor("player").TurnRight();
-    // }
-
     actorManager->GetActor("player").HandleInput(keys);
 
     models_manager->Update();

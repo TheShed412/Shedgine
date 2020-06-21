@@ -1,6 +1,9 @@
 #include "Ship.hpp"
 #include "../../../../Manager/ShaderManager.hpp"
 #include "../../../../Rendering/Light.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/string_cast.hpp"
+#include <glm/gtx/matrix_decompose.hpp>
 
 using namespace Game;
 using namespace Characters;
@@ -24,6 +27,7 @@ Rendering::Camera* camera)
     shipModel->Create();
 
     currentPitch = 0;
+    currentYaw = 0;
 
     this->model = shipModel;
 }
@@ -106,9 +110,9 @@ glm::mat4 Ship::TurnDown()
     
     // if(currentPitch >= -5.0) {
     //     currentPitch -= 0.5f;
-    //     newCtm = glm::rotate(glm::mat4();, 0.05f, glm::vec3(-1.0, 0, 0));
+    //     newCtm = glm::rotate(glm::mat4(), 0.05f, glm::vec3(-1.0, 0, 0));
     // } else {
-    //     newCtm = glm::rotate(glm::mat4();, 0.0f, glm::vec3(-1.0, 0, 0));
+    //     newCtm = glm::rotate(glm::mat4(), 0.0f, glm::vec3(-1.0, 0, 0));
     // }
     newCtm = glm::translate(*this->model->GetCtm(), glm::vec3(0.0, -0.2, 0.0));
     // model->SetCtm(&newCtm);
@@ -119,7 +123,23 @@ void Ship::Action()
 {
 }
 
+float generateTiltMatrices(glm::mat4* rotationMat, glm::mat4* translationMat, float currentTilt, float maxTilt, float tiltChange) {
 
+    if(currentTilt <= maxTilt) {
+        currentTilt += tiltChange;
+        rotationMat = new glm::mat4(glm::rotate(*rotationMat, 0.05f, glm::vec3(0.0, 0, 1.0)));
+    } else {
+        rotationMat = new glm::mat4(glm::rotate(*rotationMat, 0.0f, glm::vec3(0.0, 0, 1.0)));
+    }
+    translationMat = new glm::mat4(glm::translate(*translationMat, glm::vec3(-0.2, 0.0, 0.0)));
+
+    return currentTilt;
+}
+
+// TODO: move this to a math library
+
+
+// TODO: pull some of this logic out
 void Ship::HandleInput(unsigned char keys[] ) {
     if(keys['w'] || keys['a'] || keys['s'] || keys['d']) {
         glm::mat4 rotationMats = glm::mat4(1.0);
@@ -127,25 +147,55 @@ void Ship::HandleInput(unsigned char keys[] ) {
         if(keys['w']) {
             //camera->processKeyboard(Camera::FORWARD, 1);
             //translationMats = translationMats * this->TurnUp();
+            if(currentPitch <= 5.0) {
+                currentPitch += 0.5f;
+                rotationMats = glm::rotate(rotationMats, 0.05f, glm::vec3(1.0, 0, 0));
+            } else {
+                rotationMats = glm::rotate(rotationMats, 0.0f, glm::vec3(1.0, 0, 0));
+            }
             translationMats = glm::translate(translationMats, glm::vec3(0.0, 0.2, 0.0));
         }
         if(keys['s']) {
             //camera->processKeyboard(Camera::BACKWARD, 1);
+            //translationMats = translationMats * this->TurnDown();
+            if(currentPitch >= -5.0) {
+                currentPitch -= 0.5f;
+                rotationMats = glm::rotate(rotationMats, 0.05f, glm::vec3(-1.0, 0, 0));
+            } else {
+                rotationMats = glm::rotate(rotationMats, 0.0f, glm::vec3(-1.0, 0, 0));
+            }
             translationMats = glm::translate(translationMats, glm::vec3(0.0, -0.2, 0.0));
         }
         if(keys['a']) {
             //camera->processKeyboard(Camera::LEFT, 1);
             //rotationMats = rotationMats + this->TurnLeft();
-            rotationMats = glm::rotate(rotationMats, 0.1f, glm::vec3(0, 0, 1.0));
+            //rotationMats = glm::rotate(rotationMats, 0.1f, glm::vec3(0, 0, 1.0));
+
+            if(currentYaw >= -5.0) {
+                currentYaw -= 0.5f;
+                rotationMats = glm::rotate(rotationMats, 0.05f, glm::vec3(0.0, 0, 1.0));
+            } else {
+                rotationMats = glm::rotate(rotationMats, 0.0f, glm::vec3(0.0, 0, 1.0));
+            }
+            translationMats = glm::translate(translationMats, glm::vec3(-0.2, 0.0, 0.0));
         }
         if(keys['d']) {
             //camera->processKeyboard(Camera::RIGHT, 1);
             //rotationMats = rotationMats + this->TurnRight();
-            rotationMats = glm::rotate(rotationMats, 0.1f, glm::vec3(0, 0, -1.0));
+            //rotationMats = glm::rotate(rotationMats, 0.1f, glm::vec3(0, 0, -1.0));
+            
+            if(currentYaw <= 5.0) {
+                currentYaw += 0.5f;
+                rotationMats = glm::rotate(rotationMats, 0.05f, glm::vec3(0.0, 0, -1.0));
+            } else {
+                rotationMats = glm::rotate(rotationMats, 0.0f, glm::vec3(0.0, 0, -1.0));
+            }
+            translationMats = glm::translate(translationMats, glm::vec3(0.2, 0.0, 0.0));
         }
         glm::mat4 newCtm;
-        newCtm = *this->model->GetCtm() * rotationMats * translationMats;
+        newCtm = translationMats * *this->model->GetCtm() * rotationMats;
         this->model->SetCtm(&newCtm);
+        std::cout << "curr coords: " << glm::to_string(this->GetCoords()) << std::endl;
     }
 }
 
@@ -170,4 +220,9 @@ void Ship::SetRoll(float max, float delta)
 {
     this->maxRoll = max;
     this->rollDelta = delta;
+}
+
+glm::vec3 Ship::GetCoords() 
+{
+    return glm::vec3((*this->model->GetCtm())[3]);
 }

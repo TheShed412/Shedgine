@@ -4,6 +4,8 @@ using namespace Rendering;
 
 Light::Light(){}
 
+// Playing with the constant, linear, and quadratic values will play with the brightness of the light, the lower, the brighter it will be
+// TODO: make a wrapper that lets you play withh brightness in a simpler way
 Light::Light(   glm::vec3 position, 
                 glm::vec3 ambient,
                 glm::vec3 diffuse,

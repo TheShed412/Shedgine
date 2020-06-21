@@ -10,6 +10,7 @@ namespace Game
         class Ship : virtual public Actor
         {
             private:
+                float currentYaw;
                 float currentPitch;
                 float flightSpeed;
                 float maxPitch;
@@ -47,6 +48,7 @@ namespace Game
                 void SetPitch(float max, float delta);
                 void SetYaw(float max, float delta);
                 void SetRoll(float max, float delta);
+                glm::vec3 GetCoords();
         };
     } // namespace Characters
     
