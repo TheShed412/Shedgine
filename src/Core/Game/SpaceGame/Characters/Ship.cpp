@@ -136,9 +136,6 @@ float generateTiltMatrices(glm::mat4* rotationMat, glm::mat4* translationMat, fl
     return currentTilt;
 }
 
-// TODO: move this to a math library
-
-
 // TODO: pull some of this logic out
 void Ship::HandleInput(unsigned char keys[] ) {
     if(keys['w'] || keys['a'] || keys['s'] || keys['d']) {
@@ -195,7 +192,6 @@ void Ship::HandleInput(unsigned char keys[] ) {
         glm::mat4 newCtm;
         newCtm = translationMats * *this->model->GetCtm() * rotationMats;
         this->model->SetCtm(&newCtm);
-        std::cout << "curr coords: " << glm::to_string(this->GetCoords()) << std::endl;
     }
 }
 

@@ -32,6 +32,7 @@ namespace Rendering
  
       protected:
         // TODO: camera and light may become lists since we can have more than one effecting an object
+        // TODO: I need to add a function that lets me get either the projection and model view, or I need provide a function that returns the screen coords
         Camera* camera;
         Light* light;
         GLuint ctm_location;

@@ -15,3 +15,6 @@ What is weird, is the texcoords in the obj file works. So like. I dunno.
 
 We are moving on to just making a game. First I need to figure out lighting, then I'm going to make some
 models, and from there just make a simple star fox clone
+
+For getting from world coords to screen coords:
+https://stackoverflow.com/questions/8491247/c-opengl-convert-world-coords-to-screen2d-coords
