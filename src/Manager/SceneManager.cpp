@@ -75,13 +75,6 @@ SceneManager::SceneManager()
         camera
     );
 
-    // Game::Characters::Redical* redical = new Game::Characters::Redical(
-    //     redicalModel,
-    //     ShaderManager::GetShader("colorShader"),
-    //     projection,
-    //     camera->getModelView(),
-    //     camera
-    // );
     actorManager->AddActor("player", ship);
     gameObjectManager->AddObject("ship", ship);
     // actorManager->AddActor("retical", redical);

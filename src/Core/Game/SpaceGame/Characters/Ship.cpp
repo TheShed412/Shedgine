@@ -143,11 +143,10 @@ void Ship::HandleInput(unsigned char keys[] ) {
         glm::vec2 relScreenPos = model->GetRelativeScreenPosition();
         glm::mat4 rotationMats = glm::mat4(1.0);
         glm::mat4 translationMats = glm::mat4(1.0);
-        std::cout << glm::to_string(relScreenPos) << std::endl;
         if(keys['w']) {
             //camera->processKeyboard(Camera::FORWARD, 1);
             //translationMats = translationMats * this->TurnUp();
-            if(currentPitch <= 5.0) {
+            if(currentPitch <= 3.0) {
                 currentPitch += 0.5f;
                 rotationMats = glm::rotate(rotationMats, 0.05f, glm::vec3(1.0, 0, 0));
             } else {
@@ -160,7 +159,7 @@ void Ship::HandleInput(unsigned char keys[] ) {
         if(keys['s']) {
             //camera->processKeyboard(Camera::BACKWARD, 1);
             //translationMats = translationMats * this->TurnDown();
-            if(currentPitch >= -5.0) {
+            if(currentPitch >= -3.0) {
                 currentPitch -= 0.5f;
                 rotationMats = glm::rotate(rotationMats, 0.05f, glm::vec3(-1.0, 0, 0));
             } else {
@@ -175,7 +174,7 @@ void Ship::HandleInput(unsigned char keys[] ) {
             //rotationMats = rotationMats + this->TurnLeft();
             //rotationMats = glm::rotate(rotationMats, 0.1f, glm::vec3(0, 0, 1.0));
 
-            if(currentYaw >= -5.0) {
+            if(currentYaw >= -3.0) {
                 currentYaw -= 0.5f;
                 rotationMats = glm::rotate(rotationMats, 0.05f, glm::vec3(0.0, 0, 1.0));
             } else {
@@ -190,7 +189,7 @@ void Ship::HandleInput(unsigned char keys[] ) {
             //rotationMats = rotationMats + this->TurnRight();
             //rotationMats = glm::rotate(rotationMats, 0.1f, glm::vec3(0, 0, -1.0));
             
-            if(currentYaw <= 5.0) {
+            if(currentYaw <= 3.0) {
                 currentYaw += 0.5f;
                 rotationMats = glm::rotate(rotationMats, 0.05f, glm::vec3(0.0, 0, -1.0));
             } else {
@@ -204,7 +203,6 @@ void Ship::HandleInput(unsigned char keys[] ) {
         glm::mat4 newCtm;
         newCtm = translationMats * *this->model->GetCtm() * rotationMats;
         this->model->SetCtm(&newCtm);
-        
     }
 }
 
