@@ -20,8 +20,8 @@ FPSScene::FPSScene()
         glm::vec3(1.0, 1.0, 1.0),
         glm::vec3(1.0, 1.0, 1.0),
         1.0,
-        0.01,
-        0.01
+        0.001,
+        0.001
     );
     projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     //models_manager = new ModelsManager();
@@ -40,41 +40,21 @@ FPSScene::FPSScene()
 
     models_manager = new ModelsManager(camera);
 
-    Models::LoadedObject* shipModel = new Models::LoadedObject("src/Models/ship2.obj");
-    Models::LoadedObject* laserModel = new Models::LoadedObject("src/Models/laser.obj");
-    shipModel->SetLight(light);
-    laserModel->SetLight(light);
+    Models::LoadedObject* groundModel = new Models::LoadedObject("src/Models/terrain.obj");
+    groundModel->SetLight(light);
 
-    Models::Grid* grid = new Models::Grid();
+    groundModel->SetProgram(ShaderManager::GetShader("matShader"));
+    groundModel->SetProjection(projection);
+    groundModel->SetModelView(camera->getModelView());
+    groundModel->SetCamera(this->camera);
+    groundModel->Create();
 
-    grid->SetProgram(ShaderManager::GetShader("colorShader"));
-    grid->SetProjection(projection);
-    grid->SetModelView(camera->getModelView());
-    grid->SetCamera(this->camera);
-    grid->Create();
-
-    laserModel->SetProgram(ShaderManager::GetShader("matShader"));
-    laserModel->SetProjection(projection);
-    laserModel->SetModelView(camera->getModelView());
-    laserModel->SetCamera(this->camera);
-    laserModel->Create();
-
-    models_manager->AddModel("grid", grid);
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
     //models_manager->AddModel("ship", shipModel);
     camera->setLookAt(glm::vec3(0,-1,-3));
     /* Setting up input */
-    Game::Characters::Ship* ship = new Game::Characters::Ship(
-        shipModel,
-        ShaderManager::GetShader("matShader"),
-        projection,
-        camera->getModelView(),
-        camera
-    );
-    actorManager->AddActor("player", ship);
-    gameObjectManager->AddObject("ship", ship);
-    models_manager->AddModel("ship", laserModel);
+    models_manager->AddModel("ground", groundModel);
 }
  
 FPSScene::~FPSScene()
@@ -139,9 +119,7 @@ void FPSScene::notifyMouseInput(int button, int state, int x, int y) {
     //std::cout<< "MOUSE X: " << x << " Y: " << y << std::endl;
 }
 
-bool firstMouse = true;
-float lastX;
-float lastY;
+
 
 void FPSScene::notifyMouseMovementInput(int x, int y) {
     if (firstMouse)

@@ -6,6 +6,10 @@ namespace Managers
 {
   class FPSScene : public SceneManager
   {
+    private:
+      bool firstMouse = true;
+      float lastX;
+      float lastY;
     public:
       FPSScene();
       ~FPSScene();
