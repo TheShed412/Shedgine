@@ -24,6 +24,7 @@ namespace Game
             virtual glm::mat4 TurnLeft() = 0;
             virtual glm::mat4 TurnUp() = 0;
             virtual glm::mat4 TurnDown() = 0;
+            virtual void LookAtObject(glm::vec3) = 0;
             virtual void Action() = 0;
             virtual void HandleInput(unsigned char[]) = 0;
     };

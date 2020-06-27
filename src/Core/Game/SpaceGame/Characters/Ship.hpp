@@ -44,6 +44,7 @@ namespace Game
                 glm::mat4 TurnDown() override;
                 void HandleInput(unsigned char[]);
                 void Action() override;
+                void LookAtObject(glm::vec3) override;
                 void SetFlightSpeed(float flightSpeed);
                 void SetPitch(float max, float delta);
                 void SetYaw(float max, float delta);

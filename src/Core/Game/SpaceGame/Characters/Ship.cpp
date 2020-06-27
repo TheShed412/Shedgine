@@ -137,12 +137,15 @@ float generateTiltMatrices(glm::mat4* rotationMat, glm::mat4* translationMat, fl
 }
 
 
+bool needToLook = true;
 // TODO: pull some of this logic out
 void Ship::HandleInput(unsigned char keys[] ) {
     if(keys['w'] || keys['a'] || keys['s'] || keys['d']) {
+        needToLook = true;
         glm::vec2 relScreenPos = model->GetRelativeScreenPosition();
         glm::mat4 rotationMats = glm::mat4(1.0);
-        glm::mat4 translationMats = glm::mat4(1.0);
+        glm::mat4 translationMats = *this->model->GetCtm();
+        std::cout << "hi ctm: " << glm::to_string(translationMats) << std::endl;
         if(keys['w']) {
             //camera->processKeyboard(Camera::FORWARD, 1);
             //translationMats = translationMats * this->TurnUp();
@@ -154,6 +157,7 @@ void Ship::HandleInput(unsigned char keys[] ) {
             }
             if (relScreenPos[1] < 0.99) {
                 translationMats = glm::translate(translationMats, glm::vec3(0.0, 0.2, 0.0));
+                std::cout << "h2 ctm: " << glm::to_string(translationMats) << std::endl;
             }
         }
         if(keys['s']) {
@@ -201,8 +205,24 @@ void Ship::HandleInput(unsigned char keys[] ) {
         }
 
         glm::mat4 newCtm;
-        newCtm = translationMats * *this->model->GetCtm() * rotationMats;
+        //newCtm = translationMats * *this->model->GetCtm();// * rotationMats;
+        this->model->SetCtm(&translationMats);
+        std::cout << "h3 ctm: " << glm::to_string(*this->model->GetCtm()) << std::endl;
+    }
+}
+
+
+void Ship::LookAtObject(glm::vec3 lookAtPoint) {
+
+    if(needToLook) {
+        glm::vec3 currPos = (*this->model->GetCtm())[3];
+        // TODO: probably should calculate the up
+        glm::mat4 rotationMatrix = glm::lookAt(currPos, lookAtPoint, glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 newCtm;
+        newCtm = *this->model->GetCtm() * rotationMatrix;
         this->model->SetCtm(&newCtm);
+        std::cout << "la ctm: " << glm::to_string(*this->model->GetCtm()) << std::endl;
+        needToLook = false;
     }
 }
 
