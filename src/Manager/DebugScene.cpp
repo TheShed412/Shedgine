@@ -20,8 +20,8 @@ DebugScene::DebugScene()
         glm::vec3(1.0, 1.0, 1.0),
         glm::vec3(1.0, 1.0, 1.0),
         1.0,
-        0.01,
-        0.01
+        0.001,
+        0.001
     );
     projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     //models_manager = new ModelsManager();
@@ -42,8 +42,10 @@ DebugScene::DebugScene()
 
     Models::LoadedObject* shipModel = new Models::LoadedObject("src/Models/ship2.obj");
     Models::LoadedObject* laserModel = new Models::LoadedObject("src/Models/laser.obj");
+    Models::LoadedObject* groundModel = new Models::LoadedObject("src/Models/ground.obj");
     shipModel->SetLight(light);
     laserModel->SetLight(light);
+    groundModel->SetLight(light);
 
     Models::Grid* grid = new Models::Grid();
 
@@ -58,6 +60,13 @@ DebugScene::DebugScene()
     laserModel->SetModelView(camera->getModelView());
     laserModel->SetCamera(this->camera);
     laserModel->Create();
+
+    groundModel->SetProgram(ShaderManager::GetShader("matShader"));
+    groundModel->SetProjection(projection);
+    groundModel->SetModelView(camera->getModelView());
+    groundModel->SetCamera(this->camera);
+    groundModel->Create();
+
 
     models_manager->AddModel("grid", grid);
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
@@ -74,7 +83,7 @@ DebugScene::DebugScene()
     );
     actorManager->AddActor("player", ship);
     gameObjectManager->AddObject("ship", ship);
-    models_manager->AddModel("ship", laserModel);
+    models_manager->AddModel("ship", groundModel);
 }
  
 DebugScene::~DebugScene()
