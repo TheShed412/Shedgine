@@ -15,11 +15,11 @@ FPSScene::FPSScene()
     shader_manager = new ShaderManager();
     camera = new Camera(glm::vec3(0,5,10), glm::vec3(0,1,0), 0.1, 0.05);
     light = new Light(
-        glm::vec3(0,5,0),
+        glm::vec3(0,10,0),
         glm::vec3(1.0, 1.0, 1.0),
         glm::vec3(1.0, 1.0, 1.0),
         glm::vec3(1.0, 1.0, 1.0),
-        1.0,
+        0.0001,
         0.001,
         0.001
     );
@@ -40,7 +40,9 @@ FPSScene::FPSScene()
 
     models_manager = new ModelsManager(camera);
 
-    Models::LoadedObject* groundModel = new Models::LoadedObject("src/Models/terrain.obj");
+    Models::LoadedObject* groundModel = new Models::LoadedObject("src/Models/path.obj");
+    Models::LoadedObject* shipModel = new Models::LoadedObject("src/Models/ship2.obj");
+    shipModel->SetLight(light);
     groundModel->SetLight(light);
 
     groundModel->SetProgram(ShaderManager::GetShader("matShader"));
@@ -49,12 +51,19 @@ FPSScene::FPSScene()
     groundModel->SetCamera(this->camera);
     groundModel->Create();
 
+    // shipModel->SetProgram(ShaderManager::GetShader("matShader"));
+    // shipModel->SetProjection(projection);
+    // shipModel->SetModelView(camera->getModelView());
+    // shipModel->SetCamera(this->camera);
+    // shipModel->Create();
+
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
     //models_manager->AddModel("ship", shipModel);
     camera->setLookAt(glm::vec3(0,-1,-3));
     /* Setting up input */
     models_manager->AddModel("ground", groundModel);
+    models_manager->AddModel("ship", shipModel);
 }
  
 FPSScene::~FPSScene()
@@ -84,7 +93,7 @@ void FPSScene::notifyBeginFrame()
  
 void FPSScene::notifyDisplayFrame()
 {
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(0.53, 0.81, 0.92, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     models_manager->Draw();
     gameObjectManager->Update();
