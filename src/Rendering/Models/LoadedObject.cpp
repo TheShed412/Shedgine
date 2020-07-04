@@ -257,7 +257,7 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
     material->Get(AI_MATKEY_SHININESS, shininess);
     mat.Ns = shininess;
 
-    // std::cout<<glm::to_string(mat.Kd)<<std::endl;
+    std::cout<<glm::to_string(mat.Ka)<<std::endl;
 
     // 1. diffuse maps
     std::vector<TextureFormat> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");

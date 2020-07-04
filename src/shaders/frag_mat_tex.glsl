@@ -22,18 +22,9 @@ in float shininess;
 uniform vec3 viewPos;// should be camera pos
  
 void main()
-{    
-    // Light light2;
-    // light2.position = vec3(0,1,0);
-    // light2.ambient = vec3(1.0, 1.0, 1.0);
-    // light2.diffuse = vec3(1.0, 1.0, 1.0);
-    // light2.specular = vec3(1.0, 1.0, 1.0);
-    // float constant = 1.0;
-    // float linear = 0.01;
-    // float quadratic = 0.01;
-    //light2 = light;
+{
 	// ambient
-    vec3 ambient = ambient * Diffuse.rgb;
+    vec3 ambient = Ambient.xyz * Diffuse.rgb;
   	
     // diffuse 
     vec3 norm = normalize(Normal);
@@ -49,7 +40,10 @@ void main()
     vec3 reflectDir = reflect(-lightDir, norm);  
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     vec3 specular = specular * spec * Specular.rgb;
+
+    diffuse *= attenuation;
+    specular *= attenuation;
 	  
-    vec3 result = ambient + (attenuation * (diffuse + specular));
+    vec3 result = ambient + diffuse + specular;
     FragColor = vec4(result, 1.0);
 }
