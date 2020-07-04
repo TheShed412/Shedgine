@@ -22,7 +22,7 @@ uniform mat4 projection;
  
 void main()
 {
-    FragPos = vec3( modelView * vec4(aPos, 0.0));
+    FragPos = vec3(aPos);
 	Normal = mat3(transpose(inverse(modelView * ctm))) * aNormal;  
 	Ambient = Mat.aAmbient;
 	Diffuse = Mat.aDiffuse;
