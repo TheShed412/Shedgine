@@ -3,6 +3,7 @@ using namespace Managers;
 
 #include "../Rendering/Camera.hpp"
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
+#include "../Core/Game/FPS/Characters/Terry.hpp"
  
 FPSScene::FPSScene()
 {
@@ -61,7 +62,17 @@ FPSScene::FPSScene()
 
     //models_manager->AddModel("ship", shipModel);
     camera->setLookAt(glm::vec3(0,-1,-3));
+
+    Game::Characters::Terry* terry = new Game::Characters::Terry(
+        NULL,
+        ShaderManager::GetShader("matShader"),
+        projection,
+        camera->getModelView(),
+        camera
+    );
+
     /* Setting up input */
+    actorManager->AddActor("player", terry);
     models_manager->AddModel("ground", groundModel);
     models_manager->AddModel("ship", shipModel);
     inBuffer = false;
@@ -82,18 +93,7 @@ FPSScene::~FPSScene()
  
 void FPSScene::notifyBeginFrame()
 {
-    if(keys['w']) {
-        camera->processKeyboard(Rendering::Camera::FORWARD, 1);
-    }
-    if(keys['s']) {
-        camera->processKeyboard(Rendering::Camera::BACKWARD, 1);
-    }
-    if(keys['a']) {
-        camera->processKeyboard(Rendering::Camera::LEFT, 1);
-    }
-    if(keys['d']) {
-        camera->processKeyboard(Rendering::Camera::RIGHT, 1);
-    }
+    actorManager->GetActor("player").HandleInput(keys);
     models_manager->Update();
     gameObjectManager->Update();
 }
@@ -152,7 +152,7 @@ void FPSScene::notifyMouseMovementInput(int x, int y) {
 
         lastX = x;
         lastY = y;
-        camera->processMouseMovement(xoffset, yoffset);
+        actorManager->GetActor("player").HandleMouseInput(xoffset, yoffset);
     }
     
     glutPostRedisplay();

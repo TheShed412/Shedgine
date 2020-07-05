@@ -27,6 +27,7 @@ namespace Game
             virtual void LookAtObject(glm::vec3) = 0;
             virtual void Action() = 0;
             virtual void HandleInput(unsigned char[]) = 0;
+            virtual void HandleMouseInput(int,int) = 0;
     };
     inline Actor::~Actor()
     {//blank

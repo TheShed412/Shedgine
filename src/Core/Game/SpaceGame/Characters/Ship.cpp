@@ -253,3 +253,7 @@ glm::vec3 Ship::GetCoords()
 {
     return glm::vec3((*this->model->GetCtm())[3]);
 }
+
+void Ship::HandleMouseInput(int x, int y) {
+
+}

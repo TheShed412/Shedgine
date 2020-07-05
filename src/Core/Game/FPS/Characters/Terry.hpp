@@ -7,27 +7,18 @@ namespace Game
 {
     namespace Characters
     {
-        class Ship : virtual public Actor
+        class Terry : virtual public Actor
         {
             private:
-                float currentYaw;
-                float currentPitch;
-                float flightSpeed;
-                float maxPitch;
-                float pitchDelta; // This is how much the pitch will change, as it gets closer to max, it goes slower
-                float maxYaw;
-                float yawDelta; // This is how much the yaw will change, as it gets closer to max, it goes slower
-                float maxRoll;
-                float rollDelta; // This is how much the roll will change, as it gets closer to max, it goes slower
-            
+                Rendering::Camera* camera;
             public:
-                Ship();
-                Ship(Rendering::Models::LoadedObject*,
+                Terry();
+                Terry(Rendering::Models::LoadedObject*,
                         GLuint,
                         glm::mat4,
                         glm::mat4,
                         Rendering::Camera*);
-                ~Ship();
+                ~Terry();
                 void Update() override;
                 void Draw() override;
                 void Create() override;
@@ -42,14 +33,11 @@ namespace Game
                 glm::mat4 TurnLeft() override;
                 glm::mat4 TurnUp() override;
                 glm::mat4 TurnDown() override;
-                void HandleInput(unsigned char[]);
                 void HandleMouseInput(int,int) override;
+                void HandleInput(unsigned char[]);
                 void Action() override;
                 void LookAtObject(glm::vec3) override;
-                void SetFlightSpeed(float flightSpeed);
-                void SetPitch(float max, float delta);
-                void SetYaw(float max, float delta);
-                void SetRoll(float max, float delta);
+
                 glm::vec3 GetCoords();
         };
     } // namespace Characters
