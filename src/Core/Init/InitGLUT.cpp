@@ -38,7 +38,7 @@ void InitGLUT::init(const Core::WindowInfo& windowInfo,
    std::cout << "GLUT:initialized" << std::endl;
    //these callbacks are used for rendering
    glEnable(GL_DEBUG_OUTPUT);
-   //glutSetCursor(GLUT_CURSOR_NONE);
+   glutSetCursor(GLUT_CURSOR_NONE);
    glutIdleFunc(idleCallback);
    glutCloseFunc(closeCallback);
    glutDisplayFunc(displayCallback);

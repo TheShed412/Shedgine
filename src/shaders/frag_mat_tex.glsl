@@ -36,7 +36,7 @@ void main()
     float distance = length(position - FragPos);
     float attenuation = 1.0 / (constant + (linear * distance) + (quadratic * (distance * distance)));    
 	// specular
-    vec3 viewDir = normalize(vec3(0.0,4.0,10.0) - FragPos);
+    vec3 viewDir = normalize(position - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);  
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     vec3 specular = specular * spec * Specular.rgb;

@@ -63,7 +63,7 @@ FPSScene::FPSScene()
     camera->setLookAt(glm::vec3(0,-1,-3));
     /* Setting up input */
     models_manager->AddModel("ground", groundModel);
-    // models_manager->AddModel("ship", shipModel);
+    models_manager->AddModel("ship", shipModel);
 }
  
 FPSScene::~FPSScene()
@@ -128,6 +128,8 @@ void FPSScene::notifyMouseInput(int button, int state, int x, int y) {
     //std::cout<< "MOUSE X: " << x << " Y: " << y << std::endl;
 }
 
+int warpNum = 0;
+bool inBuffer = false;
 
 
 void FPSScene::notifyMouseMovementInput(int x, int y) {
@@ -138,12 +140,40 @@ void FPSScene::notifyMouseMovementInput(int x, int y) {
         firstMouse = false;
     }
 
-    float xoffset = x - lastX;
-    float yoffset = lastY - y; // reversed since y-coordinates go from bottom to top
+    
+    
+    if (!inBuffer) {
+        float xoffset = x - lastX;
+        float yoffset = lastY - y; // reversed since y-coordinates go from bottom to top
 
-    lastX = x;
-    lastY = y;
-    camera->processMouseMovement(xoffset, yoffset);
+        lastX = x;
+        lastY = y;
+        camera->processMouseMovement(xoffset, yoffset);
+    }
+    
+
+    glutPostRedisplay();
+
+    int win_h = 1200;
+    int win_w = 1600;
+    int buffer = 100;
+
+    if ( x < buffer || x > win_w - buffer ) {
+        warpNum++;
+        inBuffer = true;
+        lastX = win_w/2;
+        lastY = win_h/2;
+        glutWarpPointer(win_w/2, win_h/2);  //centers the cursor
+    } else if (y < buffer || y > win_h - buffer) {
+        inBuffer = true;
+        lastX = win_w/2;
+        lastY = win_h/2;
+        glutWarpPointer(win_w/2, win_h/2);
+    }
+    else {
+        inBuffer = false;
+    }
+    
 }
  
 void FPSScene::notifyReshape(int width,
