@@ -44,6 +44,7 @@ void InitGLUT::init(const Core::WindowInfo& windowInfo,
    glutDisplayFunc(displayCallback);
    glutReshapeFunc(reshapeCallback);
    glutPassiveMotionFunc(mouseMovementCallback);
+   glutMotionFunc(mouseMovementCallback);
    glutKeyboardFunc(keyboardCallback);
    glutKeyboardUpFunc(keyboardUp);
    glutMouseFunc(mouseCallback);
