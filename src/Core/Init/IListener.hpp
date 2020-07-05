@@ -20,6 +20,10 @@ namespace Core{
                                   int previous_height) = 0;
     protected:
       unsigned char keys[255] = {0};
+      // The mouseBuffer is the area from the outside of the screen where, if the mouse is in, it will be reset
+      int mouseBuffer;
+      // This is a flag that I can check if I am in this buffer
+      bool inBuffer;
   };
  
   inline IListener::~IListener(){

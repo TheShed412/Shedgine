@@ -5,6 +5,7 @@
 #include "../Rendering/Light.hpp"
 #include "../Rendering/Texture/TextureLoader.hpp"
 #include "../Core/Init/IListener.hpp"
+#include "../Core/Init/WindowInfo.hpp"
 #include "../Core/Game/GameObject.hpp"
 #include "../Core/Game/Manager/ObjectManager.hpp"
 #include "../Core/Game/Manager/ActorManager.hpp"
@@ -15,6 +16,7 @@ namespace Managers
   {
     public:
       SceneManager();
+      SceneManager(Core::WindowInfo);
       ~SceneManager();
  
       virtual void notifyBeginFrame();
@@ -37,6 +39,7 @@ namespace Managers
       Game::Managers::ObjectManager* gameObjectManager;
       Game::Managers::ActorManager* actorManager;
       glm::mat4 projection;
+      Core::WindowInfo windowInfo;
 
  };
 }

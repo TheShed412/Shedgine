@@ -12,6 +12,7 @@ namespace Managers
       float lastY;
     public:
       FPSScene();
+      FPSScene(Core::WindowInfo);
       ~FPSScene();
       void notifyBeginFrame() override;
       void notifyDisplayFrame() override;

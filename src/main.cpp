@@ -33,7 +33,7 @@ int main(int argc, char **argv)
         InitGLUT::setListener(debugScene);
     } else if ( argc > 1 && strcmp(argv[1], "fps") == 0) {
         std::cout << "GAME SCENE" << std::endl;
-        IListener* scene = new Managers::FPSScene();
+        IListener* scene = new Managers::FPSScene(window);
         InitGLUT::setListener(scene);
     } else {
         std::cout << "GAME SCENE" << std::endl;

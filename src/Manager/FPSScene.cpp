@@ -64,7 +64,14 @@ FPSScene::FPSScene()
     /* Setting up input */
     models_manager->AddModel("ground", groundModel);
     models_manager->AddModel("ship", shipModel);
+    inBuffer = false;
+    mouseBuffer = 100;
 }
+
+FPSScene::FPSScene(Core::WindowInfo windowInfo) : FPSScene() {
+    this->windowInfo = windowInfo;
+}
+
  
 FPSScene::~FPSScene()
 {
@@ -128,9 +135,6 @@ void FPSScene::notifyMouseInput(int button, int state, int x, int y) {
     //std::cout<< "MOUSE X: " << x << " Y: " << y << std::endl;
 }
 
-int warpNum = 0;
-bool inBuffer = false;
-
 
 void FPSScene::notifyMouseMovementInput(int x, int y) {
     if (firstMouse)
@@ -140,8 +144,8 @@ void FPSScene::notifyMouseMovementInput(int x, int y) {
         firstMouse = false;
     }
 
-    
-    
+    // If I am in the buffer, I don't want to update since I may be in the middle of warping the cursor
+    // back to the center of the screen
     if (!inBuffer) {
         float xoffset = x - lastX;
         float yoffset = lastY - y; // reversed since y-coordinates go from bottom to top
@@ -151,20 +155,17 @@ void FPSScene::notifyMouseMovementInput(int x, int y) {
         camera->processMouseMovement(xoffset, yoffset);
     }
     
-
     glutPostRedisplay();
 
-    int win_h = 1200;
-    int win_w = 1600;
-    int buffer = 100;
+    int win_h = windowInfo.height;
+    int win_w = windowInfo.width;
 
-    if ( x < buffer || x > win_w - buffer ) {
-        warpNum++;
+    if ( x < mouseBuffer || x > win_w - mouseBuffer ) {
         inBuffer = true;
         lastX = win_w/2;
         lastY = win_h/2;
         glutWarpPointer(win_w/2, win_h/2);  //centers the cursor
-    } else if (y < buffer || y > win_h - buffer) {
+    } else if (y < mouseBuffer || y > win_h - mouseBuffer) {
         inBuffer = true;
         lastX = win_w/2;
         lastY = win_h/2;
