@@ -14,7 +14,8 @@ FPSScene::FPSScene()
     gameObjectManager = new Game::Managers::ObjectManager();
     actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
-    camera = new Camera(glm::vec3(0,5,10), glm::vec3(0,1,0), 0.1, 0.05);
+    // TODO: make it so I can control the speed with the player
+    camera = new Camera(glm::vec3(0,0.5,10), glm::vec3(0,1,0), 0.2, 0.1);
     light = new Light(
         glm::vec3(0,10,0),
         glm::vec3(1.0, 1.0, 1.0),

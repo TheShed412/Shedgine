@@ -72,10 +72,10 @@ void Camera::processKeyboard(CameraMovement direction, float deltaTime) {
 
     switch(direction) {
         case FORWARD:
-            position += lookDirection * velocity;
+            position += glm::cross(glm::vec3(0,1.0,0), rightVec) * velocity;
         break;
         case BACKWARD:
-            position -= lookDirection * velocity;
+            position -= glm::cross(glm::vec3(0,1.0,0), rightVec) * velocity;
         break;
         case LEFT:
             position -= rightVec * velocity;
