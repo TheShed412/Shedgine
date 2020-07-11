@@ -1,5 +1,7 @@
 #pragma once
 #include <btBulletDynamicsCommon.h>
+#include <glm/glm.hpp>
+#include <vector>
 
 
 /**
@@ -15,5 +17,7 @@ namespace Physics
             int tag;
         public:
             PhysicsObject();
+            void createShape(std::vector<glm::vec3>, unsigned int, bool);
+            void createBodyWithMass(float);
     };
 } // namespace Game
