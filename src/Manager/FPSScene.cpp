@@ -75,9 +75,12 @@ FPSScene::FPSScene()
     /* Setting up input */
     actorManager->AddActor("player", terry);
     models_manager->AddModel("ground", groundModel);
-    models_manager->AddModel("ship", shipModel);
     inBuffer = false;
     mouseBuffer = 100;
+
+    setupCollisions();
+
+    dynamicsWorld->setGravity(btVector3(0,-10,0));
 }
 
 FPSScene::FPSScene(Core::WindowInfo windowInfo) : FPSScene() {
@@ -87,9 +90,20 @@ FPSScene::FPSScene(Core::WindowInfo windowInfo) : FPSScene() {
  
 FPSScene::~FPSScene()
 {
-   delete shader_manager;
-   delete models_manager;
-   delete camera;
+    for (size_t i = 0; i < collisionShapes.size(); i++)
+    {
+        delete collisionShapes.at(i);
+    }
+    
+
+    delete shader_manager;
+    delete models_manager;
+    delete camera;
+    delete dynamicsWorld;
+    delete overlappingPairCache;
+    delete solver;
+    delete dispatcher;
+    delete collisionConfiguration;
 }
  
 void FPSScene::notifyBeginFrame()
@@ -185,4 +199,14 @@ void FPSScene::notifyReshape(int width,
 {
  //nothing here for the moment 
  
+}
+
+// Setting up physics stuff here
+void FPSScene::setupCollisions() {
+    collisionConfiguration = new btDefaultCollisionConfiguration();
+    dispatcher = new btCollisionDispatcher(collisionConfiguration);
+
+    overlappingPairCache = new btDbvtBroadphase();
+    solver = new btSequentialImpulseConstraintSolver;
+    dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 }

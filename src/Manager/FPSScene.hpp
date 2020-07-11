@@ -1,15 +1,25 @@
 #pragma once
 #include "SceneManager.hpp"
 #include "ModelsManager.hpp"
+#include <btBulletDynamicsCommon.h>
 
 namespace Managers
 {
   class FPSScene : public SceneManager
   {
     private:
+      // Physics collision setup
+      btDiscreteDynamicsWorld* dynamicsWorld;
+      btAlignedObjectArray<btCollisionShape*> collisionShapes;
+      btSequentialImpulseConstraintSolver* solver;
+      btBroadphaseInterface* overlappingPairCache;
+      btCollisionDispatcher* dispatcher;
+      btDefaultCollisionConfiguration* collisionConfiguration;
+
       bool firstMouse = true;
       float lastX;
       float lastY;
+      void setupCollisions();
     public:
       FPSScene();
       FPSScene(Core::WindowInfo);
