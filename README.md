@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.com/TheShed412/Shedgine.svg?branch=development)](https://travis-ci.com/TheShed412/Shedgine)
-
 # Shedgine
 This is a custom engine that is being made to learn graphics libraries and game engine architecture. This was based off of a series of tutorials I found that no longer exists. Linking to the site will just bring you to a sports betting website, and I don't condone that on this Christian GitHub Repo.
 
