@@ -5,6 +5,10 @@ using namespace Managers;
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
 #include "../Core/Game/FPS/Characters/Terry.hpp"
 
+void collisionCheck(btDynamicsWorld *dynamicsWorld, btScalar timeStep) {
+    int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
+}
+
 FPSScene::FPSScene()
 {
     glEnable(GL_CULL_FACE);
@@ -44,8 +48,8 @@ FPSScene::FPSScene()
 
     setupCollisions();
 
-    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(1, 0.0f, false,"src/Models/path.obj");
-    Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(1, 100.0f, false, "src/Models/ship2.obj");
+    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(1, 0.0f, true,"src/Models/path.obj");
+    Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(1, 100.0f, true, "src/Models/ship2.obj");
     Physics::PhysicsObject* cube = new Physics::PhysicsObject(1, 50.0f, false, "src/Models/test_cube.obj");
     shipModel->SetLight(light);
     cube->SetLight(light);
@@ -89,7 +93,7 @@ FPSScene::FPSScene()
     /* Setting up input */
     actorManager->AddActor("player", terry);
     models_manager->AddModel("ground", groundModel);
-    models_manager->AddModel("ship", shipModel);
+    //models_manager->AddModel("ship", shipModel);
     models_manager->AddModel("cube", cube);
     inBuffer = false;
     mouseBuffer = 100;
@@ -101,9 +105,14 @@ FPSScene::FPSScene()
     physicsObjects["ground"] = groundModel;
 
     dynamicsWorld->setGravity(btVector3(0,-10,0));
-    dynamicsWorld->addRigidBody(shipModel->getRigidBody());
+    //dynamicsWorld->addRigidBody(shipModel->getRigidBody());
     dynamicsWorld->addRigidBody(cube->getRigidBody());
     dynamicsWorld->addRigidBody(groundModel->getRigidBody());
+    dynamicsWorld->setInternalTickCallback(collisionCheck);
+
+    collisionShapes.push_back(groundModel->getCollisionShape());
+    collisionShapes.push_back(cube->getCollisionShape());
+    //collisionShapes.push_back(shipModel->getCollisionShape());
 }
 
 FPSScene::FPSScene(Core::WindowInfo windowInfo) : FPSScene() {

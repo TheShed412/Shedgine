@@ -74,7 +74,8 @@ void PhysicsObject::createBodyWithMass(float mass) {
     btRigidBody::btRigidBodyConstructionInfo bodyInfo = btRigidBody::btRigidBodyConstructionInfo(bodyMass, 
                                                                 motionState, shape, bodyInertia);
 
-    bodyInfo.m_restitution = 1.0f;
+    // TODO: these should be values passed in
+    bodyInfo.m_restitution = 0.9f;
     bodyInfo.m_friction = 0.5f;
 
     body = new btRigidBody(bodyInfo);
@@ -84,6 +85,10 @@ void PhysicsObject::createBodyWithMass(float mass) {
 
 btRigidBody* PhysicsObject::getRigidBody() {
     return this->body;
+}
+
+btCollisionShape* PhysicsObject::getCollisionShape() {
+    return this->shape;
 }
 
 void PhysicsObject::setPosition(glm::vec3 pos) {

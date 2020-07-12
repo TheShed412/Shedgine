@@ -26,6 +26,7 @@ namespace Managers
       float lastX;
       float lastY;
       void setupCollisions();
+      //void collisionCheck(btDynamicsWorld *dynamicsWorld, btScalar timeStep);
     public:
       FPSScene();
       FPSScene(Core::WindowInfo);

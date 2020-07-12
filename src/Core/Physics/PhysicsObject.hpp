@@ -29,6 +29,7 @@ namespace Physics
             void createBodyWithMass(float);
             void Create();
             btRigidBody* getRigidBody();
+            btCollisionShape* getCollisionShape();
             void setPosition(glm::vec3);
             glm::vec3 getPosition();
             void updateObjectPosition();
