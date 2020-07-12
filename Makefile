@@ -52,7 +52,7 @@ $(OBJDIR)/%.o: $(LIBDIR)/%.cpp
 	g++ -std=c++11 -g -c -o $@ $<
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	g++ -std=c++11 -g -c -o $@ $<
+	g++ -std=c++11 $(INC) -g -c -o $@ $<
 
 outs:
 	$(MKDIR) obj bin

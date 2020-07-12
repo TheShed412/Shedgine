@@ -42,9 +42,13 @@ FPSScene::FPSScene()
 
     models_manager = new ModelsManager(camera);
 
-    Models::LoadedObject* groundModel = new Models::LoadedObject("src/Models/path.obj");
+    setupCollisions();
+
+    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(1, 0.0f, false,"src/Models/path.obj");
     Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(1, 100.0f, false, "src/Models/ship2.obj");
+    Physics::PhysicsObject* cube = new Physics::PhysicsObject(1, 50.0f, false, "src/Models/test_cube.obj");
     shipModel->SetLight(light);
+    cube->SetLight(light);
     groundModel->SetLight(light);
 
     groundModel->SetProgram(ShaderManager::GetShader("matShader"));
@@ -58,6 +62,16 @@ FPSScene::FPSScene()
     shipModel->SetModelView(camera->getModelView());
     shipModel->SetCamera(this->camera);
     shipModel->Create();
+
+    cube->SetProgram(ShaderManager::GetShader("matShader"));
+    cube->SetProjection(projection);
+    cube->SetModelView(camera->getModelView());
+    cube->SetCamera(this->camera);
+    cube->Create();
+
+    shipModel->setPosition(glm::vec3(0,0.5,0));
+    cube->setPosition(glm::vec3(0,10.0,0));
+    groundModel->setPosition(glm::vec3(0,0,0));
 
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
@@ -76,14 +90,20 @@ FPSScene::FPSScene()
     actorManager->AddActor("player", terry);
     models_manager->AddModel("ground", groundModel);
     models_manager->AddModel("ship", shipModel);
-    physicsObjects["ship"] = shipModel;
+    models_manager->AddModel("cube", cube);
     inBuffer = false;
     mouseBuffer = 100;
 
     setupCollisions();
 
+    physicsObjects["ship"] = shipModel;
+    physicsObjects["cube"] = cube;
+    physicsObjects["ground"] = groundModel;
+
     dynamicsWorld->setGravity(btVector3(0,-10,0));
     dynamicsWorld->addRigidBody(shipModel->getRigidBody());
+    dynamicsWorld->addRigidBody(cube->getRigidBody());
+    dynamicsWorld->addRigidBody(groundModel->getRigidBody());
 }
 
 FPSScene::FPSScene(Core::WindowInfo windowInfo) : FPSScene() {
@@ -127,7 +147,10 @@ void FPSScene::notifyDisplayFrame()
 void FPSScene::notifyEndFrame()
 {
     // TODO: need to change this based on frame rate
-    dynamicsWorld->stepSimulation(btScalar(1.0)/btScalar(60.0), btScalar(1.0)/btScalar(60.0));
+    for (auto physicsObject : physicsObjects){
+        physicsObject.second->updateObjectPosition();
+    }
+    dynamicsWorld->stepSimulation(btScalar(1.0)/btScalar(60.0));
 }
 
 void FPSScene::notifyKeyboardUp(unsigned char key) {

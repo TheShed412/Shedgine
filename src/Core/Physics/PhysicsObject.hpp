@@ -31,5 +31,6 @@ namespace Physics
             btRigidBody* getRigidBody();
             void setPosition(glm::vec3);
             glm::vec3 getPosition();
+            void updateObjectPosition();
     };
 } // namespace Game

@@ -97,3 +97,9 @@ glm::vec3 PhysicsObject::getPosition() {
     btTransform trans = body->getWorldTransform();
     return glm::vec3(trans.getOrigin().x(), trans.getOrigin().y(), trans.getOrigin().z());
 }
+
+void PhysicsObject::updateObjectPosition() {
+    btTransform trans = body->getWorldTransform();
+    glm::vec3 newPos = glm::vec3(trans.getOrigin().x(), trans.getOrigin().y(), trans.getOrigin().z());
+    setPosition(newPos);
+}
