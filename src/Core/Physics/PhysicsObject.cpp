@@ -2,8 +2,36 @@
 
 using namespace Physics;
 
-PhysicsObject::PhysicsObject() {
+std::vector<glm::vec3> getVertsFromVertexFormat(std::vector<Rendering::VertexFormat> vertexFormats) {
+    std::vector<glm::vec3> verts;
 
+    for (size_t i = 0; i < vertexFormats.size(); i++)
+    {
+        verts.push_back(vertexFormats.at(i).position); 
+    }
+    
+    std::cout << "NUM VERTS: " << verts.size() << std::endl;
+    return verts;
+}
+
+PhysicsObject::PhysicsObject(unsigned int tag, float mass, bool isConvex, std::string filename)
+: LoadedObject(filename)
+{
+    std::cout << "PHYSICS OBJECT CONSTRUCTOR: " << filename << std::endl;
+    this->rotationX = 0;
+    this->rotationY = 0;
+    this->rotationZ = 0;
+
+    this->isConvex = isConvex;
+    this->mass = mass;
+}
+
+void PhysicsObject::Create() {
+    LoadedObject::Create();
+
+    this->createShape(getVertsFromVertexFormat(this->getVerts()), tag, isConvex);
+    std::cout << "DONE CREATING MESH" << std::endl;
+    this->createBodyWithMass(mass);
 }
 
 void PhysicsObject::createShape(std::vector<glm::vec3> vertecies, unsigned int tag, bool isConvex) {
@@ -16,9 +44,13 @@ void PhysicsObject::createShape(std::vector<glm::vec3> vertecies, unsigned int t
             ((btConvexHullShape*) shape)->addPoint(btv);
         }
     } else {
+        std::cout << "CREATING MESH" << std::endl;
         btTriangleMesh* mesh = new btTriangleMesh();
+        std::cout << "MESH OBJECT MADE" << std::endl;
 
+        // TODO: more elegantly handle no verts
         for(int i = 0; i < vertecies.size(); i+=3) {
+            std::cout << "ADDING TRIANGLE" << std::endl;
             glm::vec3 vert1 = vertecies[i];
             glm::vec3 vert2 = vertecies[i+1];
             glm::vec3 vert3 = vertecies[i+2];
@@ -26,7 +58,6 @@ void PhysicsObject::createShape(std::vector<glm::vec3> vertecies, unsigned int t
             btVector3 bv1 = btVector3(vert1.x, vert1.y, vert1.z);
             btVector3 bv2 = btVector3(vert2.x, vert2.y, vert2.z);
             btVector3 bv3 = btVector3(vert3.x, vert3.y, vert3.z);
-
             mesh->addTriangle(bv1, bv2, bv3);
         }
         shape = new btBvhTriangleMeshShape(mesh, true);
@@ -35,5 +66,40 @@ void PhysicsObject::createShape(std::vector<glm::vec3> vertecies, unsigned int t
 }
 
 void PhysicsObject::createBodyWithMass(float mass) {
-    
+    btQuaternion rotation;
+    rotation.setEulerZYX(rotationZ, rotationY, rotationX);
+
+    btVector3 position = btVector3(this->currentLocation.x, this->currentLocation.y, this->currentLocation.z);
+
+    btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(rotation, position));
+
+    btScalar bodyMass = mass;
+    btVector3 bodyInertia;
+    shape->calculateLocalInertia(bodyMass, bodyInertia);
+
+    btRigidBody::btRigidBodyConstructionInfo bodyInfo = btRigidBody::btRigidBodyConstructionInfo(bodyMass, 
+                                                                motionState, shape, bodyInertia);
+
+    bodyInfo.m_restitution = 1.0f;
+    bodyInfo.m_friction = 0.5f;
+
+    body = new btRigidBody(bodyInfo);
+    body->setUserPointer((void*) this);
+    body->setLinearFactor(btVector3(1,1,0));
+}
+
+btRigidBody* PhysicsObject::getRigidBody() {
+    return this->body;
+}
+
+void PhysicsObject::setPosition(glm::vec3 pos) {
+    LoadedObject::setPosition(pos);
+    btTransform trans = body->getWorldTransform();
+    trans.setOrigin(btVector3(pos.x, pos.y, pos.z));
+    body->setWorldTransform(trans);
+} 
+
+glm::vec3 PhysicsObject::getPosition() {
+    btTransform trans = body->getWorldTransform();
+    return glm::vec3(trans.getOrigin().x(), trans.getOrigin().y(), trans.getOrigin().z());
 }

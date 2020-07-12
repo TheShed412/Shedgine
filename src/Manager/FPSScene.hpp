@@ -1,6 +1,8 @@
 #pragma once
 #include "SceneManager.hpp"
 #include "ModelsManager.hpp"
+#include "../Core/Physics/PhysicsObject.hpp"
+
 #include <btBulletDynamicsCommon.h>
 
 namespace Managers
@@ -15,6 +17,10 @@ namespace Managers
       btBroadphaseInterface* overlappingPairCache;
       btCollisionDispatcher* dispatcher;
       btDefaultCollisionConfiguration* collisionConfiguration;
+      // TODO: once it is all figured out, seperate this to a manager
+      // update could get pretty complicated with physics objects
+      // it will also more modularize the code in one place
+      std::map<std::string, Physics::PhysicsObject*> physicsObjects;
 
       bool firstMouse = true;
       float lastX;

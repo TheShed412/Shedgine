@@ -4,7 +4,7 @@ using namespace Managers;
 #include "../Rendering/Camera.hpp"
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
 #include "../Core/Game/FPS/Characters/Terry.hpp"
- 
+
 FPSScene::FPSScene()
 {
     glEnable(GL_CULL_FACE);
@@ -43,7 +43,7 @@ FPSScene::FPSScene()
     models_manager = new ModelsManager(camera);
 
     Models::LoadedObject* groundModel = new Models::LoadedObject("src/Models/path.obj");
-    Models::LoadedObject* shipModel = new Models::LoadedObject("src/Models/ship2.obj");
+    Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(1, 100.0f, false, "src/Models/ship2.obj");
     shipModel->SetLight(light);
     groundModel->SetLight(light);
 
@@ -61,7 +61,7 @@ FPSScene::FPSScene()
 
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
-    //models_manager->AddModel("ship", shipModel);
+    
     camera->setLookAt(glm::vec3(0,-1,-3));
 
     Game::Characters::Terry* terry = new Game::Characters::Terry(
@@ -75,12 +75,15 @@ FPSScene::FPSScene()
     /* Setting up input */
     actorManager->AddActor("player", terry);
     models_manager->AddModel("ground", groundModel);
+    models_manager->AddModel("ship", shipModel);
+    physicsObjects["ship"] = shipModel;
     inBuffer = false;
     mouseBuffer = 100;
 
     setupCollisions();
 
     dynamicsWorld->setGravity(btVector3(0,-10,0));
+    dynamicsWorld->addRigidBody(shipModel->getRigidBody());
 }
 
 FPSScene::FPSScene(Core::WindowInfo windowInfo) : FPSScene() {
@@ -123,7 +126,8 @@ void FPSScene::notifyDisplayFrame()
  
 void FPSScene::notifyEndFrame()
 {
- //nothing here for the moment
+    // TODO: need to change this based on frame rate
+    dynamicsWorld->stepSimulation(btScalar(1.0)/btScalar(60.0), btScalar(1.0)/btScalar(60.0));
 }
 
 void FPSScene::notifyKeyboardUp(unsigned char key) {

@@ -36,6 +36,19 @@ void LoadedObject::Create(){
     loadObject();
 }
 
+void LoadedObject::setPosition(glm::vec3 pos) {
+    glm::vec4 top = this->ctm[0];
+    glm::vec4 midTop = this->ctm[1];
+    glm::vec4 midBot = this->ctm[2];
+    glm::vec4 bot = this->ctm[3];
+    this->ctm = glm::mat4(
+        top,
+        midTop,
+        midBot,
+        glm::vec4(pos, bot.w)
+    );
+}
+
 const glm::mat4* LoadedObject::GetCtm() {
     return &this->ctm;
 }
@@ -257,7 +270,7 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
     material->Get(AI_MATKEY_SHININESS, shininess);
     mat.Ns = shininess;
 
-    std::cout<<glm::to_string(mat.Ka)<<std::endl;
+    // std::cout<<glm::to_string(mat.Ka)<<std::endl;
 
     // 1. diffuse maps
     std::vector<TextureFormat> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
@@ -276,6 +289,7 @@ Mesh LoadedObject::processMesh(aiMesh *mesh, const aiScene *scene) {
     // std::reverse(vertices.begin(), vertices.end());
     // std::reverse(indices.begin(), indices.end());
     // std::reverse(textures.begin(), textures.end());
+    this->vertices = vertices;
     return Mesh(vertices, {indices.begin(), indices.end()}, textures, mat, program);
 }
 
@@ -296,4 +310,8 @@ std::vector<VertexFormat> LoadedObject::loadObject() {
     processNode(scene->mRootNode, scene);
 
     return vertecies;
+}
+
+std::vector<VertexFormat> LoadedObject::getVerts() {
+    return this->vertices;
 }

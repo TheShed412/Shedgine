@@ -24,6 +24,8 @@ namespace Rendering
         virtual void Draw() override final;
         virtual const glm::mat4* GetCtm();
         virtual void SetCtm(glm::mat4*);
+        std::vector<VertexFormat> getVerts();
+        void setPosition(glm::vec3);
 
       private:
         std::vector<TextureFormat> textures;
@@ -33,6 +35,7 @@ namespace Rendering
         std::string directory;
         std::vector<VertexFormat> makeObject();
         std::vector<VertexFormat> loadObject();
+        std::vector<VertexFormat> vertices;
         Mesh processMesh(aiMesh *mesh, const aiScene *scene);
         void processNode(aiNode *node, const aiScene *scene);
         std::vector<TextureFormat> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
