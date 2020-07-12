@@ -10,14 +10,12 @@ std::vector<glm::vec3> getVertsFromVertexFormat(std::vector<Rendering::VertexFor
         verts.push_back(vertexFormats.at(i).position); 
     }
     
-    std::cout << "NUM VERTS: " << verts.size() << std::endl;
     return verts;
 }
 
 PhysicsObject::PhysicsObject(unsigned int tag, float mass, bool isConvex, std::string filename)
 : LoadedObject(filename)
 {
-    std::cout << "PHYSICS OBJECT CONSTRUCTOR: " << filename << std::endl;
     this->rotationX = 0;
     this->rotationY = 0;
     this->rotationZ = 0;
@@ -30,7 +28,6 @@ void PhysicsObject::Create() {
     LoadedObject::Create();
 
     this->createShape(getVertsFromVertexFormat(this->getVerts()), tag, isConvex);
-    std::cout << "DONE CREATING MESH" << std::endl;
     this->createBodyWithMass(mass);
 }
 
@@ -44,13 +41,10 @@ void PhysicsObject::createShape(std::vector<glm::vec3> vertecies, unsigned int t
             ((btConvexHullShape*) shape)->addPoint(btv);
         }
     } else {
-        std::cout << "CREATING MESH" << std::endl;
         btTriangleMesh* mesh = new btTriangleMesh();
-        std::cout << "MESH OBJECT MADE" << std::endl;
 
         // TODO: more elegantly handle no verts
         for(int i = 0; i < vertecies.size(); i+=3) {
-            std::cout << "ADDING TRIANGLE" << std::endl;
             glm::vec3 vert1 = vertecies[i];
             glm::vec3 vert2 = vertecies[i+1];
             glm::vec3 vert3 = vertecies[i+2];
