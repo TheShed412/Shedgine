@@ -3,7 +3,10 @@ using namespace Managers;
 
 #include "../Rendering/Camera.hpp"
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
+
+#include <glm/gtc/quaternion.hpp>
  
+ Models::LoadedObject* testshipModel;
 DebugScene::DebugScene()
 {
     glEnable(GL_CULL_FACE);
@@ -41,6 +44,7 @@ DebugScene::DebugScene()
     models_manager = new ModelsManager(camera);
 
     Models::LoadedObject* shipModel = new Models::LoadedObject("src/Models/ship2.obj");
+    testshipModel = shipModel;
     Models::LoadedObject* laserModel = new Models::LoadedObject("src/Models/laser.obj");
     Models::LoadedObject* groundModel = new Models::LoadedObject("src/Models/ground.obj");
     shipModel->SetLight(light);
@@ -83,7 +87,7 @@ DebugScene::DebugScene()
     );
     actorManager->AddActor("player", ship);
     gameObjectManager->AddObject("ship", ship);
-    models_manager->AddModel("ship", groundModel);
+    models_manager->AddModel("ship", shipModel);
 }
  
 DebugScene::~DebugScene()
@@ -92,7 +96,8 @@ DebugScene::~DebugScene()
    delete models_manager;
    delete camera;
 }
- 
+
+bool rotated = false;
 void DebugScene::notifyBeginFrame()
 {
     if(keys['w']) {
@@ -106,6 +111,10 @@ void DebugScene::notifyBeginFrame()
     }
     if(keys['d']) {
         camera->processKeyboard(Rendering::Camera::RIGHT, 1);
+    }
+    if(keys['r']) {
+        //rotY += 0.1;
+        testshipModel->setRotation(glm::vec3(1.0, 0.0, 0.0));
     }
     models_manager->Update();
     gameObjectManager->Update();

@@ -37,16 +37,28 @@ void LoadedObject::Create(){
 }
 
 void LoadedObject::setPosition(glm::vec3 pos) {
-    glm::vec4 top = this->ctm[0];
-    glm::vec4 midTop = this->ctm[1];
-    glm::vec4 midBot = this->ctm[2];
+    // glm::vec4 top = this->ctm[0];
+    // glm::vec4 midTop = this->ctm[1];
+    // glm::vec4 midBot = this->ctm[2];
     glm::vec4 bot = this->ctm[3];
-    this->ctm = glm::mat4(
-        top,
-        midTop,
-        midBot,
-        glm::vec4(pos, bot.w)
-    );
+    // this->ctm = glm::mat4(
+    //     top,
+    //     midTop,
+    //     midBot,
+    //     glm::vec4(pos, bot.w)
+    // );
+
+    glm::vec3 posDiff = glm::vec3(pos.x - bot.x, pos.y - bot.y, pos.z - bot.z);
+    this->SetTranslation(posDiff);
+}
+
+// Should be a vec3 of angles in degrees
+void LoadedObject::setRotation(glm::vec3 eulerAngles) {
+    eulerAngles.x = glm::radians(eulerAngles.x);
+    eulerAngles.y = glm::radians(eulerAngles.y);
+    eulerAngles.z = glm::radians(eulerAngles.z);
+
+    this->SetRotation(glm::quat(eulerAngles));
 }
 
 const glm::mat4* LoadedObject::GetCtm() {

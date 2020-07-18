@@ -49,7 +49,6 @@ void Camera::addToPosition(glm::vec3 diff) {
     position += diff;
 }
 
-static int mouseMove = 0;
 void Camera::processMouseMovement(float xoffset, float yoffset){
     // TODO: probably using the leran opengl implementation
     xoffset *= mouseSensitivity;

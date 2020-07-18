@@ -5,12 +5,16 @@
 #include "../Camera.hpp"
 #include "../Light.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 namespace Rendering
 {
   namespace Models //create another namespace
   {
    class Model :public IGameObject
     {
+      private:
+        void setCtm();
      public:
          Model();
          virtual ~Model();
@@ -23,6 +27,8 @@ namespace Rendering
          virtual void SetCamera(Camera* camera);
          virtual void SetLight(Light* light);
          virtual void Destroy() override;
+         virtual void SetTranslation(glm::vec3);
+         virtual void SetRotation(glm::quat);
          virtual const GLuint GetTexture(std::string textureName) const override;
 				 virtual void SetTexture(std::string textureName, GLuint texture) override;
          virtual void processKeyboard(Movement direction, float deltaTime) override;
@@ -39,6 +45,9 @@ namespace Rendering
         GLuint projection_location;
         GLuint model_view_location;
         glm::vec3 currentLocation;
+        glm::vec3 translation;
+        glm::mat4 rotation;
+        glm::vec3 scale;
         glm::mat4 ctm;
         glm::mat4 projection;
         glm::mat4 model_view;

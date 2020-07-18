@@ -4,6 +4,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <assimp/Importer.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #include "../TextureFormat.hpp"
 #include "Mesh.hpp"
@@ -26,6 +28,7 @@ namespace Rendering
         virtual void SetCtm(glm::mat4*);
         std::vector<VertexFormat> getVerts();
         void setPosition(glm::vec3);
+        void setRotation(glm::vec3);
 
       private:
         std::vector<TextureFormat> textures;

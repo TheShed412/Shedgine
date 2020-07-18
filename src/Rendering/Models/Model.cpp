@@ -3,8 +3,13 @@ using namespace Rendering;
 using namespace Models;
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/string_cast.hpp"
+#include <glm/gtx/quaternion.hpp>
  
-Model::Model(){}
+Model::Model(){
+  this->rotation = glm::mat4(1.0f);
+  this->scale = glm::vec3(1,1,1);
+  this->translation = glm::vec3(0);
+}
  
 Model::~Model()
 {
@@ -58,6 +63,20 @@ GLuint Model::GetVao() const
 const std::vector<GLuint>& Model::GetVbos() const
 {
    return vbos;
+}
+
+void Model::SetTranslation(glm::vec3 pos) {
+  this->translation = pos;
+  this->setCtm();
+}
+
+void Model::setCtm() {
+  this->ctm = this->ctm * this->rotation;
+}
+
+void Model::SetRotation(glm::quat rotation) {
+  this->rotation = glm::toMat4(rotation);
+  this->setCtm();
 }
  
 void Model::Destroy()
