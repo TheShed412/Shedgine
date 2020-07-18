@@ -48,9 +48,9 @@ FPSScene::FPSScene()
 
     setupCollisions();
 
-    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(1, 0.0f, true, 0.6, 0.5,"src/Models/path.obj");
-    Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(1, 100.0f, true, 0.6, 0.5,"src/Models/ship2.obj");
-    Physics::PhysicsObject* cube = new Physics::PhysicsObject(1, 50.0f, false, 0.6, 0.5,"src/Models/test_cube.obj");
+    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(1, 0.0f, true, 0.6, 1.5,"src/Models/path.obj");
+    Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(1, 100.0f, true, 0.6, 1.5,"src/Models/ship2.obj");
+    Physics::PhysicsObject* cube = new Physics::PhysicsObject(1, 50.0f, false, 0.6, 1.5,"src/Models/test_cube.obj");
     shipModel->SetLight(light);
     cube->SetLight(light);
     groundModel->SetLight(light);
@@ -75,7 +75,7 @@ FPSScene::FPSScene()
 
     shipModel->setPosition(glm::vec3(0,0.5,0));
     cube->setPosition(glm::vec3(0,10.0,0));
-    cube->setRotation(glm::vec3(45.0, 45.0, 45.0));
+    cube->setRotation(glm::vec3(1.0, 0.0, 0.0));
     groundModel->setPosition(glm::vec3(0,0,0));
 
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);

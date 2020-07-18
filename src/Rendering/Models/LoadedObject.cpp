@@ -57,7 +57,7 @@ void LoadedObject::setRotation(glm::vec3 eulerAngles) {
     std::cout << glm::to_string(eulerAngles) << std::endl;
     eulerAngles.x = glm::radians(eulerAngles.x);
     eulerAngles.y = glm::radians(eulerAngles.y);
-    eulerAngles.z = glm::radians(eulerAngles.z );
+    eulerAngles.z = glm::radians(eulerAngles.z);
 
     this->SetRotation(glm::quat(eulerAngles));
 }

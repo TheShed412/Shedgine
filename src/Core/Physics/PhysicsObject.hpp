@@ -23,9 +23,8 @@ namespace Physics
             float mass;
             float restitution;
             float friction;
-            float rotationZ;
-            float rotationY;
-            float rotationX;
+            glm::vec3 physicsRotation;
+            void setAngle(float, btVector3);
         public:
             PhysicsObject(unsigned int,float,bool,float,float,std::string);
             void createShape(std::vector<glm::vec3>, unsigned int, bool);
@@ -37,11 +36,7 @@ namespace Physics
             glm::vec3 getPosition();
             void updateObjectPosition();
             // TODO: Make these take vec3s for rotation
-            void setRotationX(float);
-            void setRotationY(float);
-            void setRotationZ(float);
-            float getRotationX();
-            float getRotationY();
-            float getRotationZ();
+            void setRotation(glm::vec3);
+            glm::vec3 getRotation();
     };
 } // namespace Game

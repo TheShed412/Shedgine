@@ -1,5 +1,8 @@
 #include "PhysicsObject.hpp"
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/ext.hpp"
+
 using namespace Physics;
 
 std::vector<glm::vec3> getVertsFromVertexFormat(std::vector<Rendering::VertexFormat> vertexFormats) {
@@ -16,9 +19,7 @@ std::vector<glm::vec3> getVertsFromVertexFormat(std::vector<Rendering::VertexFor
 PhysicsObject::PhysicsObject(unsigned int tag, float mass, bool isConvex, float restitution, float friction, std::string filename)
 : LoadedObject(filename)
 {
-    this->rotationX = 0;
-    this->rotationY = 0;
-    this->rotationZ = 0;
+    this->physicsRotation = glm::vec3(0.0);
 
     this->isConvex = isConvex;
     this->mass = mass;
@@ -64,7 +65,7 @@ void PhysicsObject::createShape(std::vector<glm::vec3> vertecies, unsigned int t
 
 void PhysicsObject::createBodyWithMass(float mass) {
     btQuaternion rotation;
-    rotation.setEulerZYX(rotationZ, rotationY, rotationX);
+    rotation.setEulerZYX(physicsRotation.z, physicsRotation.y, physicsRotation.x);
 
     btVector3 position = btVector3(this->currentLocation.x, this->currentLocation.y, this->currentLocation.z);
 
@@ -109,29 +110,47 @@ glm::vec3 PhysicsObject::getPosition() {
 void PhysicsObject::updateObjectPosition() {
     btTransform trans = body->getWorldTransform();
     glm::vec3 newPos = glm::vec3(trans.getOrigin().x(), trans.getOrigin().y(), trans.getOrigin().z());
+
     setPosition(newPos);
+
+    btMatrix3x3 rotMatrix = btMatrix3x3(body->getWorldTransform().getRotation());
+    float x,y,z;
+    rotMatrix.getEulerZYX(z, y, x);
+    
+    setRotation(glm::vec3(glm::degrees(x), glm::degrees(y), glm::degrees(z)));
 }
 
-void PhysicsObject::setRotationX(float xRotation) {
+const btScalar RADIANS_PER_DEGREE = M_PI / btScalar(180.0);
+void PhysicsObject::setAngle(float angle, btVector3 rotVec) {
+    btTransform trans = body->getWorldTransform();
+    btQuaternion rot = trans.getRotation();
+    btQuaternion diffRot = btQuaternion(rotVec, angle * RADIANS_PER_DEGREE);
+    std::cout << "rads: " << angle * RADIANS_PER_DEGREE << std::endl;
+    rot = diffRot * rot;
 
+    trans.setRotation(rot);
+    body->setWorldTransform(trans);
 }
 
-void PhysicsObject::setRotationY(float xRotation) {
+void PhysicsObject::setRotation(glm::vec3 rotation) {
+    LoadedObject::setRotation(rotation);
 
+    float xAngleDiff = rotation.x - physicsRotation.x;
+    this->setAngle(xAngleDiff, btVector3(1, 0, 0));
+
+    float yAngleDiff = rotation.y - physicsRotation.y;
+    this->setAngle(yAngleDiff, btVector3(0, 1, 0));
+
+    float zAngleDiff = rotation.z - physicsRotation.z;
+    this->setAngle(zAngleDiff, btVector3(0, 0, 1));
+
+    this->physicsRotation = rotation;
 }
 
-void PhysicsObject::setRotationZ(float xRotation) {
-
+glm::vec3 PhysicsObject::getRotation() {
+    btMatrix3x3 rotMatrix = btMatrix3x3(body->getWorldTransform().getRotation());
+    float x,y,z;
+    rotMatrix.getEulerZYX(z, y, x);
+    return glm::vec3(glm::degrees(x), glm::degrees(y), glm::degrees(z));
 }
 
-float PhysicsObject::getRotationX() {
-
-}
-
-float PhysicsObject::getRotationY() {
-
-}
-
-float PhysicsObject::getRotationZ() {
-
-}
