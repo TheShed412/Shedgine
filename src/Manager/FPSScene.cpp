@@ -55,8 +55,6 @@ FPSScene::FPSScene()
     cube->SetLight(light);
     groundModel->SetLight(light);
 
-    //cube->setRotation(glm::vec3(0.0, 0.0, 45.0));
-
     groundModel->SetProgram(ShaderManager::GetShader("matShader"));
     groundModel->SetProjection(projection);
     groundModel->SetModelView(camera->getModelView());
@@ -77,12 +75,13 @@ FPSScene::FPSScene()
 
     shipModel->setPosition(glm::vec3(0,0.5,0));
     cube->setPosition(glm::vec3(0,10.0,0));
+    cube->setRotation(glm::vec3(45.0, 45.0, 45.0));
     groundModel->setPosition(glm::vec3(0,0,0));
 
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
     
-    camera->setLookAt(glm::vec3(0,-1,-3));
+    camera->setLookAt(glm::vec3(0,2,-3));
 
     Game::Characters::Terry* terry = new Game::Characters::Terry(
         NULL,

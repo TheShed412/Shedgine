@@ -65,20 +65,37 @@ const std::vector<GLuint>& Model::GetVbos() const
    return vbos;
 }
 
+bool rotApplied = false;
 void Model::SetTranslation(glm::vec3 pos) {
   this->translation = pos;
   this->setCtm();
 }
 
 void Model::setCtm() {
-  this->ctm = glm::translate(this->ctm, translation);
-  this->ctm = this->ctm * this->rotation;
-  this->ctm = glm::scale(this->ctm, scale);
+  glm::mat4 transMat = glm::translate(glm::mat4(1.0), translation) * rotation;
+  this->ctm = transMat * this->ctm;
+
+  // Reset so that it is only applied once updated
+  this->rotation = glm::mat4(1.0);
+  this->translation = glm::vec3(0);
+  
+  //this->ctm = glm::scale(this->ctm, scale);
 }
 
+// Will make a local rotation
 void Model::SetRotation(glm::quat rotation) {
-  this->rotation = glm::toMat4(rotation);
+  float x = this->ctm[3].x;
+  float y = this->ctm[3].y;
+  float z = this->ctm[3].z;
+  glm::vec3 backToOgVec = glm::vec3(-x, -y, -z);
+  glm::vec3 toPos = glm::vec3(x, y, z);
+  glm::mat4 backToOgMat = glm::translate(glm::mat4(1.0), backToOgVec);
+  glm::mat4 backToPosMat = glm::translate(glm::mat4(1.0), toPos);
+  
+  this->rotation = backToPosMat * glm::toMat4(rotation) * backToOgMat;
+
   this->setCtm();
+  rotApplied = true;
 }
  
 void Model::Destroy()

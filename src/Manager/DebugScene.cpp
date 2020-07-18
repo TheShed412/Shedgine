@@ -97,7 +97,7 @@ DebugScene::~DebugScene()
    delete camera;
 }
 
-bool rotated = false;
+float xPos = 0.0;
 void DebugScene::notifyBeginFrame()
 {
     if(keys['w']) {
@@ -114,7 +114,12 @@ void DebugScene::notifyBeginFrame()
     }
     if(keys['r']) {
         //rotY += 0.1;
-        testshipModel->setRotation(glm::vec3(1.0, 0.0, 0.0));
+        testshipModel->setRotation(glm::vec3(0.0, 0.0, 1.0));
+    }
+    if(keys['t']) {
+        //rotY += 0.1;
+        xPos += 0.1;
+        testshipModel->SetTranslation(glm::vec3(0.1, 0.0, 0.0));
     }
     models_manager->Update();
     gameObjectManager->Update();
