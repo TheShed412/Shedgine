@@ -55,6 +55,8 @@ FPSScene::FPSScene()
     cube->SetLight(light);
     groundModel->SetLight(light);
 
+    //cube->setRotation(glm::vec3(0.0, 0.0, 45.0));
+
     groundModel->SetProgram(ShaderManager::GetShader("matShader"));
     groundModel->SetProjection(projection);
     groundModel->SetModelView(camera->getModelView());

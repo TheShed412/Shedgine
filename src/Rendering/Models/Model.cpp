@@ -71,7 +71,9 @@ void Model::SetTranslation(glm::vec3 pos) {
 }
 
 void Model::setCtm() {
+  this->ctm = glm::translate(this->ctm, translation);
   this->ctm = this->ctm * this->rotation;
+  this->ctm = glm::scale(this->ctm, scale);
 }
 
 void Model::SetRotation(glm::quat rotation) {
