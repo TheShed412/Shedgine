@@ -48,9 +48,9 @@ FPSScene::FPSScene()
 
     setupCollisions();
 
-    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(1, 0.0f, true,"src/Models/path.obj");
-    Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(1, 100.0f, true, "src/Models/ship2.obj");
-    Physics::PhysicsObject* cube = new Physics::PhysicsObject(1, 50.0f, false, "src/Models/test_cube.obj");
+    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(1, 0.0f, true, 0.6, 0.5,"src/Models/path.obj");
+    Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(1, 100.0f, true, 0.6, 0.5,"src/Models/ship2.obj");
+    Physics::PhysicsObject* cube = new Physics::PhysicsObject(1, 50.0f, false, 0.6, 0.5,"src/Models/test_cube.obj");
     shipModel->SetLight(light);
     cube->SetLight(light);
     groundModel->SetLight(light);

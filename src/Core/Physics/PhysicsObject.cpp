@@ -13,7 +13,7 @@ std::vector<glm::vec3> getVertsFromVertexFormat(std::vector<Rendering::VertexFor
     return verts;
 }
 
-PhysicsObject::PhysicsObject(unsigned int tag, float mass, bool isConvex, std::string filename)
+PhysicsObject::PhysicsObject(unsigned int tag, float mass, bool isConvex, float restitution, float friction, std::string filename)
 : LoadedObject(filename)
 {
     this->rotationX = 0;
@@ -22,6 +22,9 @@ PhysicsObject::PhysicsObject(unsigned int tag, float mass, bool isConvex, std::s
 
     this->isConvex = isConvex;
     this->mass = mass;
+
+    this->restitution = restitution;
+    this->friction = friction;
 }
 
 void PhysicsObject::Create() {
@@ -75,8 +78,8 @@ void PhysicsObject::createBodyWithMass(float mass) {
                                                                 motionState, shape, bodyInertia);
 
     // TODO: these should be values passed in
-    bodyInfo.m_restitution = 0.9f;
-    bodyInfo.m_friction = 0.5f;
+    bodyInfo.m_restitution = this->restitution;
+    bodyInfo.m_friction = this->friction;
 
     body = new btRigidBody(bodyInfo);
     body->setUserPointer((void*) this);
@@ -107,4 +110,28 @@ void PhysicsObject::updateObjectPosition() {
     btTransform trans = body->getWorldTransform();
     glm::vec3 newPos = glm::vec3(trans.getOrigin().x(), trans.getOrigin().y(), trans.getOrigin().z());
     setPosition(newPos);
+}
+
+void PhysicsObject::setRotationX(float xRotation) {
+
+}
+
+void PhysicsObject::setRotationY(float xRotation) {
+
+}
+
+void PhysicsObject::setRotationZ(float xRotation) {
+
+}
+
+float PhysicsObject::getRotationX() {
+
+}
+
+float PhysicsObject::getRotationY() {
+
+}
+
+float PhysicsObject::getRotationZ() {
+
 }

@@ -17,14 +17,17 @@ namespace Physics
         private:
             btCollisionShape* shape;
             btRigidBody* body;
+            // TODO: make an enum for tags so behavior can be defined
             int tag;
             bool isConvex;
             float mass;
-            int rotationZ;
-            int rotationY;
-            int rotationX;
+            float restitution;
+            float friction;
+            float rotationZ;
+            float rotationY;
+            float rotationX;
         public:
-            PhysicsObject(unsigned int,float,bool,std::string);
+            PhysicsObject(unsigned int,float,bool,float,float,std::string);
             void createShape(std::vector<glm::vec3>, unsigned int, bool);
             void createBodyWithMass(float);
             void Create();
@@ -33,5 +36,12 @@ namespace Physics
             void setPosition(glm::vec3);
             glm::vec3 getPosition();
             void updateObjectPosition();
+            // TODO: Make these take vec3s for rotation
+            void setRotationX(float);
+            void setRotationY(float);
+            void setRotationZ(float);
+            float getRotationX();
+            float getRotationY();
+            float getRotationZ();
     };
 } // namespace Game
