@@ -35,6 +35,7 @@ namespace Rendering
          virtual glm::vec2 GetRelativeScreenPosition();
          virtual GLuint GetVao() const override;
          virtual const std::vector<GLuint>& GetVbos() const override;
+         void movementMat(glm::mat4);
  
       protected:
         // TODO: camera and light may become lists since we can have more than one effecting an object

@@ -82,6 +82,12 @@ void Model::setCtm() {
   //this->ctm = glm::scale(this->ctm, scale);
 }
 
+void Model::movementMat(glm::mat4 newMovementMat) {
+  this->ctm = newMovementMat;
+  
+  //this->ctm = glm::scale(this->ctm, scale);
+}
+
 // Will make a local rotation
 void Model::SetRotation(glm::quat rotation) {
   float x = this->ctm[3].x;

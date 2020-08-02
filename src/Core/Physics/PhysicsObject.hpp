@@ -19,6 +19,8 @@ namespace Physics
             btRigidBody* body;
             // TODO: make an enum for tags so behavior can be defined
             int tag;
+            bool isStatic; // immovable
+            bool isKinematic; // movable only with code
             bool isConvex;
             float mass;
             float restitution;
@@ -39,8 +41,5 @@ namespace Physics
             void setPosition(glm::vec3);
             glm::vec3 getPosition();
             void updateObjectPosition();
-            // TODO: Make these take vec3s for rotation
-            void setRotation(glm::vec3);
-            glm::vec3 getRotation();
     };
 } // namespace Game
