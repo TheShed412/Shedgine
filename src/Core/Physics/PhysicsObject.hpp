@@ -13,6 +13,13 @@
 */
 namespace Physics
 {
+    enum Tag {
+        GROUND,
+        KINEMATIC,
+        PLAYER,
+        DYNAMIC,
+        ENEMY
+    };
     class PhysicsObject : public Rendering::Models::LoadedObject {
         private:
             btCollisionShape* shape;
@@ -20,7 +27,6 @@ namespace Physics
             // TODO: make an enum for tags so behavior can be defined
             int tag;
             bool isStatic; // immovable
-            bool isKinematic; // movable only with code
             bool isConvex;
             float mass;
             float restitution;
@@ -32,7 +38,7 @@ namespace Physics
             glm::vec3 physicsRotation;
             void setAngle(float, btVector3);
         public:
-            PhysicsObject(unsigned int,float,bool,float,float,std::string);
+            PhysicsObject(Tag,float,bool,float,float,std::string);
             void createShape(std::vector<glm::vec3>, unsigned int, bool);
             void createBodyWithMass(float);
             void Create();

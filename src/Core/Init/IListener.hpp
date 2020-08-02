@@ -19,6 +19,7 @@ namespace Core{
                                   int previous_width,
                                   int previous_height) = 0;
     protected:
+      // TODO: Pull these out in to input handling class
       unsigned char keys[255] = {0};
       // The mouseBuffer is the area from the outside of the screen where, if the mouse is in, it will be reset
       int mouseBuffer;

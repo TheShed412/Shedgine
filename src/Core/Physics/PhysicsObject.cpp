@@ -17,7 +17,7 @@ std::vector<glm::vec3> getVertsFromVertexFormat(std::vector<Rendering::VertexFor
     return verts;
 }
 
-PhysicsObject::PhysicsObject(unsigned int tag, float mass, bool isConvex, float restitution, float friction, std::string filename)
+PhysicsObject::PhysicsObject(Tag tag, float mass, bool isConvex, float restitution, float friction, std::string filename)
 : LoadedObject(filename)
 {
     this->physicsRotation = glm::vec3(0.0);
@@ -101,6 +101,9 @@ btCollisionShape* PhysicsObject::getCollisionShape() {
 }
 
 // TODO: reimplement to set angle as well
+/*
+    This should be the method to set kinematic objetc movement and angles
+*/
 void PhysicsObject::setPosition(glm::vec3 pos) {
     LoadedObject::setPosition(pos);
     btTransform trans = body->getWorldTransform();

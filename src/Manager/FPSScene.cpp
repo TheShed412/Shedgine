@@ -48,9 +48,9 @@ FPSScene::FPSScene()
 
     setupCollisions();
 
-    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(1, 0.0f, true, 0.6, 1.5,"src/Models/path.obj");
-    Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(1, 100.0f, true, 0.6, 1.5,"src/Models/ship2.obj");
-    Physics::PhysicsObject* cube = new Physics::PhysicsObject(1, 50.0f, true, 0.6, 1.5,"src/Models/test_cube.obj");
+    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.6, 1.5,"src/Models/path.obj");
+    Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(Physics::DYNAMIC, 100.0f, true, 0.6, 1.5,"src/Models/ship2.obj");
+    Physics::PhysicsObject* cube = new Physics::PhysicsObject(Physics::DYNAMIC, 50.0f, true, 0.6, 1.5,"src/Models/test_cube.obj");
     shipModel->SetLight(light);
     cube->SetLight(light);
     groundModel->SetLight(light);
@@ -73,9 +73,8 @@ FPSScene::FPSScene()
     cube->SetCamera(this->camera);
     cube->Create();
 
-    shipModel->setPosition(glm::vec3(0,0.5,0));
+    shipModel->setPosition(glm::vec3(0,10.0,0));
     cube->setPosition(glm::vec3(0,10.0,0));
-    cube->setRotation(glm::vec3(0.0, 0.0, 0.0));
     groundModel->setPosition(glm::vec3(0,0,0));
 
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
@@ -94,8 +93,8 @@ FPSScene::FPSScene()
     /* Setting up input */
     actorManager->AddActor("player", terry);
     models_manager->AddModel("ground", groundModel);
-    //models_manager->AddModel("ship", shipModel);
-    models_manager->AddModel("cube", cube);
+    models_manager->AddModel("ship", shipModel);
+    // models_manager->AddModel("cube", cube);
     inBuffer = false;
     mouseBuffer = 100;
 
@@ -106,8 +105,8 @@ FPSScene::FPSScene()
     physicsObjects["ground"] = groundModel;
 
     dynamicsWorld->setGravity(btVector3(0,-10,0));
-    //dynamicsWorld->addRigidBody(shipModel->getRigidBody());
-    dynamicsWorld->addRigidBody(cube->getRigidBody());
+    dynamicsWorld->addRigidBody(shipModel->getRigidBody());
+    // dynamicsWorld->addRigidBody(cube->getRigidBody());
     dynamicsWorld->addRigidBody(groundModel->getRigidBody());
     dynamicsWorld->setInternalTickCallback(collisionCheck);
 
@@ -170,18 +169,7 @@ void FPSScene::notifyKeyboardUp(unsigned char key) {
 }
 
 void FPSScene::notifyKeyboardInput(unsigned char key) {
-    // if(key == 'w') {
-    //     camera->processKeyboard(FORWARD, 1);
-    // }
-    // if(key == 's') {
-    //     camera->processKeyboard(BACKWARD, 1);
-    // }
-    // if(key == 'a') {
-    //     camera->processKeyboard(LEFT, 1);
-    // }
-    // if(key == 'd') {
-    //     camera->processKeyboard(RIGHT, 1);
-    // }
+
     keys[key] = true;
 }
 
