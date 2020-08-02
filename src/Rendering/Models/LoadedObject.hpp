@@ -31,6 +31,7 @@ namespace Rendering
         void setRotation(glm::vec3);
 
       private:
+        glm::vec3 lastAngles;
         std::vector<TextureFormat> textures;
         std::vector<Mesh> meshes;
         int vectors;

@@ -23,6 +23,10 @@ namespace Physics
             float mass;
             float restitution;
             float friction;
+            // The temp accumulator for x
+            float totalXDiff = 0.0;
+            float totalYDiff = 0.0;
+            float totalZDiff = 0.0;
             glm::vec3 physicsRotation;
             void setAngle(float, btVector3);
         public:

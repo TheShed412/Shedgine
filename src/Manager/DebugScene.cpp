@@ -98,6 +98,7 @@ DebugScene::~DebugScene()
 }
 
 float xPos = 0.0;
+float rotY = 0.0;
 void DebugScene::notifyBeginFrame()
 {
     if(keys['w']) {
@@ -113,8 +114,8 @@ void DebugScene::notifyBeginFrame()
         camera->processKeyboard(Rendering::Camera::RIGHT, 1);
     }
     if(keys['r']) {
-        //rotY += 0.1;
-        testshipModel->setRotation(glm::vec3(0.0, 0.0, 1.0));
+        rotY += 0.02;
+        testshipModel->setRotation(glm::vec3(0.0, 0.0, rotY));
     }
     if(keys['t']) {
         //rotY += 0.1;

@@ -4,6 +4,7 @@
 #include "../Core/Physics/PhysicsObject.hpp"
 
 #include <btBulletDynamicsCommon.h>
+#include <LinearMath/btIDebugDraw.h>
 
 namespace Managers
 {

@@ -50,7 +50,7 @@ FPSScene::FPSScene()
 
     Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(1, 0.0f, true, 0.6, 1.5,"src/Models/path.obj");
     Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(1, 100.0f, true, 0.6, 1.5,"src/Models/ship2.obj");
-    Physics::PhysicsObject* cube = new Physics::PhysicsObject(1, 50.0f, false, 0.6, 1.5,"src/Models/test_cube.obj");
+    Physics::PhysicsObject* cube = new Physics::PhysicsObject(1, 50.0f, true, 0.6, 1.5,"src/Models/test_cube.obj");
     shipModel->SetLight(light);
     cube->SetLight(light);
     groundModel->SetLight(light);
@@ -75,13 +75,13 @@ FPSScene::FPSScene()
 
     shipModel->setPosition(glm::vec3(0,0.5,0));
     cube->setPosition(glm::vec3(0,10.0,0));
-    cube->setRotation(glm::vec3(1.0, 0.0, 0.0));
+    cube->setRotation(glm::vec3(0.0, 0.0, 0.0));
     groundModel->setPosition(glm::vec3(0,0,0));
 
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
     
-    camera->setLookAt(glm::vec3(0,2,-3));
+    camera->setLookAt(glm::vec3(0,0.5,-3));
 
     Game::Characters::Terry* terry = new Game::Characters::Terry(
         NULL,
@@ -99,7 +99,7 @@ FPSScene::FPSScene()
     inBuffer = false;
     mouseBuffer = 100;
 
-    setupCollisions();
+    //setupCollisions();
 
     physicsObjects["ship"] = shipModel;
     physicsObjects["cube"] = cube;
@@ -152,6 +152,7 @@ void FPSScene::notifyDisplayFrame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     models_manager->Draw();
     gameObjectManager->Update();
+
 }
  
 void FPSScene::notifyEndFrame()
@@ -161,6 +162,7 @@ void FPSScene::notifyEndFrame()
         physicsObject.second->updateObjectPosition();
     }
     dynamicsWorld->stepSimulation(btScalar(1.0)/btScalar(60.0));
+
 }
 
 void FPSScene::notifyKeyboardUp(unsigned char key) {

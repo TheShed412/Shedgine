@@ -115,36 +115,97 @@ void PhysicsObject::updateObjectPosition() {
 
     btMatrix3x3 rotMatrix = btMatrix3x3(body->getWorldTransform().getRotation());
     float x,y,z;
+    //btQuaternion
+    // Values are returned from -180 to 180
     rotMatrix.getEulerZYX(z, y, x);
-    
-    setRotation(glm::vec3(glm::degrees(x), glm::degrees(y), glm::degrees(z)));
+
+    setRotation(glm::vec3(x, y, z));
 }
 
 const btScalar RADIANS_PER_DEGREE = M_PI / btScalar(180.0);
 void PhysicsObject::setAngle(float angle, btVector3 rotVec) {
+
     btTransform trans = body->getWorldTransform();
     btQuaternion rot = trans.getRotation();
     btQuaternion diffRot = btQuaternion(rotVec, angle * RADIANS_PER_DEGREE);
-    std::cout << "rads: " << angle * RADIANS_PER_DEGREE << std::endl;
     rot = diffRot * rot;
 
     trans.setRotation(rot);
     body->setWorldTransform(trans);
 }
 
+float getDiff(float prevX, float currX, std::string let) {
+    float xAngleDiff = prevX - currX;
+
+    // // Spinning from +180 to -180
+    // if (prevX > glm::radians(175.0) && currX < 0) {
+    //     float prevDiff = M_PI - abs(prevX);
+    //     float currDiff = M_PI - abs(currX);
+    //     xAngleDiff = prevDiff + currDiff;
+    // }
+    // // Spinning from -180 to +180
+    // if (currX > glm::radians(175.0) && prevX < 0) {
+    //     float prevDiff = M_PI - abs(prevX);
+    //     float currDiff = M_PI - abs(currX);
+    //     xAngleDiff = -1 * (prevDiff + currDiff);
+    // }
+    // // going from -1 to +1
+    // if (prevX < glm::radians(20.0) && prevX > 0 && currX < 0) {
+    //     float prevDiff = 0 + abs(prevX);
+    //     float currDiff = 0 + abs(currX);
+    //     xAngleDiff = -1 * (prevDiff + currDiff);
+    // }
+    // // going from +1 to -1
+    // if (currX < glm::radians(20.0) && currX > 0 && prevX < 0) {
+    //     float prevDiff = 0 + abs(prevX);
+    //     float currDiff = 0 + abs(currX);
+    //     xAngleDiff = (prevDiff + currDiff);
+    // }
+
+
+    return xAngleDiff;
+}
+
+
 void PhysicsObject::setRotation(glm::vec3 rotation) {
-    LoadedObject::setRotation(rotation);
 
-    float xAngleDiff = rotation.x - physicsRotation.x;
-    this->setAngle(xAngleDiff, btVector3(1, 0, 0));
+    float prevX = physicsRotation.x;
+    float currX = rotation.x;
 
-    float yAngleDiff = rotation.y - physicsRotation.y;
-    this->setAngle(yAngleDiff, btVector3(0, 1, 0));
+    float prevY = physicsRotation.y;
+    float currY = rotation.y;
 
-    float zAngleDiff = rotation.z - physicsRotation.z;
-    this->setAngle(zAngleDiff, btVector3(0, 0, 1));
+    float prevZ = physicsRotation.z;
+    float currZ = rotation.z;
 
+    float xAngleDiff = getDiff(prevX, currX, "X");
+    //this->setAngle(currX, btVector3(1, 0, 0));
+
+    float yAngleDiff = getDiff(prevY, currY, "Y");
+    //this->setAngle(currY, btVector3(0, 1, 0));
+
+    float zAngleDiff = getDiff(prevZ, currZ, "Z");
+    //this->setAngle(currZ, btVector3(0, 0, 1));
+
+    // std::cout << " prev x:\t\t" << glm::degrees(physicsRotation.x) << std::endl;
     this->physicsRotation = rotation;
+
+
+    // float newX = rotation.x;
+    totalXDiff += xAngleDiff;
+
+    // float newY = rotation.y;
+    totalYDiff += yAngleDiff;
+
+    float newZ = rotation.z;
+    totalZDiff += zAngleDiff;
+    // std::cout << " new x:\t\t\t" << glm::degrees(rotation.x) << std::endl;
+    // std::cout << " new diff x:\t\t" << glm::degrees(xAngleDiff) << std::endl;
+    // std::cout << " x:\t\t\t" << glm::degrees(totalXDiff) << std::endl;
+
+    // This sets the position of an object to the given value
+    // it is up to the caller to do the accumulation
+    LoadedObject::setRotation(glm::vec3(totalXDiff, totalYDiff, totalZDiff));
 }
 
 glm::vec3 PhysicsObject::getRotation() {

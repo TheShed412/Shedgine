@@ -28,6 +28,7 @@ LoadedObject::LoadedObject(std::string filename) {
  
 void LoadedObject::Create(){
     ctm = glm::mat4(1.0);
+    lastAngles = glm::vec3(0.0);
 
     ctm_location = glGetUniformLocation(program, "ctm");
     projection_location = glGetUniformLocation(program, "projection");
@@ -52,14 +53,27 @@ void LoadedObject::setPosition(glm::vec3 pos) {
     this->SetTranslation(posDiff);
 }
 
+glm::vec3 toDeg(glm::vec3 inRads) {
+    glm::vec3 inDeg = glm::vec3(0.0);
+
+    inDeg.x = glm::degrees(inRads.x);
+    inDeg.y = glm::degrees(inRads.y);
+    inDeg.z = glm::degrees(inRads.z);
+
+    return inDeg;
+}
+
 // Should be a vec3 of angles in degrees
 void LoadedObject::setRotation(glm::vec3 eulerAngles) {
-    std::cout << glm::to_string(eulerAngles) << std::endl;
-    eulerAngles.x = glm::radians(eulerAngles.x);
-    eulerAngles.y = glm::radians(eulerAngles.y);
-    eulerAngles.z = glm::radians(eulerAngles.z);
 
-    this->SetRotation(glm::quat(eulerAngles));
+    float xRad = (lastAngles.x - eulerAngles.x);
+    float yRad = (lastAngles.y - eulerAngles.y);
+    float zRad = (lastAngles.z - eulerAngles.z);
+
+    lastAngles = eulerAngles;
+
+    Model::SetRotation(glm::quat(glm::vec3(xRad, yRad, zRad)));
+    //Model::SetRotation(glm::quat(eulerAngles));
 }
 
 const glm::mat4* LoadedObject::GetCtm() {
