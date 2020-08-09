@@ -41,7 +41,7 @@ namespace Physics
             PhysicsObject(Tag,float,bool,float,float,std::string);
             void createShape(std::vector<glm::vec3>, unsigned int, bool);
             void createBodyWithMass(float);
-            void Create();
+            void Create(std::vector<Rendering::VertexFormat>);
             btRigidBody* getRigidBody();
             btCollisionShape* getCollisionShape();
             void setPosition(glm::vec3);

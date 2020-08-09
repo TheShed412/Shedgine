@@ -46,7 +46,7 @@ DebugScene::DebugScene()
     Models::LoadedObject* shipModel = new Models::LoadedObject("src/Models/ship2.obj");
     testshipModel = shipModel;
     Models::LoadedObject* laserModel = new Models::LoadedObject("src/Models/laser.obj");
-    Models::LoadedObject* groundModel = new Models::LoadedObject("src/Models/ground.obj");
+    Models::LoadedObject* groundModel = new Models::LoadedObject("src/Models/big_floor.obj");
     shipModel->SetLight(light);
     laserModel->SetLight(light);
     groundModel->SetLight(light);
@@ -87,7 +87,7 @@ DebugScene::DebugScene()
     );
     actorManager->AddActor("player", ship);
     gameObjectManager->AddObject("ship", ship);
-    models_manager->AddModel("ship", shipModel);
+    models_manager->AddModel("ship", groundModel);
 }
  
 DebugScene::~DebugScene()

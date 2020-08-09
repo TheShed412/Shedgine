@@ -33,10 +33,18 @@ PhysicsObject::PhysicsObject(Tag tag, float mass, bool isConvex, float restituti
     this->friction = friction;
 }
 
-void PhysicsObject::Create() {
+void PhysicsObject::Create(std::vector<Rendering::VertexFormat> vertecies) {
     LoadedObject::Create();
 
-    this->createShape(getVertsFromVertexFormat(this->getVerts()), tag, isConvex);
+    std::cout << "VERT SIZE:" << vertecies.size() << std::endl;
+
+    if (vertecies.size() == 0) {
+        this->createShape(getVertsFromVertexFormat(this->getVerts()), tag, isConvex);
+    } else {
+        this->createShape(getVertsFromVertexFormat(vertecies), tag, isConvex);
+    }
+    
+    
     this->createBodyWithMass(mass);
 }
 

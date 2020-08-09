@@ -2,6 +2,7 @@
 using namespace Managers;
 
 #include "../Rendering/Camera.hpp"
+#include "../Rendering/Models/LoadedObject.hpp"
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
 #include "../Core/Game/FPS/Characters/Terry.hpp"
 
@@ -19,15 +20,15 @@ FPSScene::FPSScene()
     actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
     // TODO: make it so I can control the speed with the player
-    camera = new Camera(glm::vec3(0,0.5,10), glm::vec3(0,1,0), 0.2, 0.1);
+    camera = new Camera(glm::vec3(10,0.5,20), glm::vec3(0,1,0), 0.2, 0.1);
     light = new Light(
         glm::vec3(0,10,0),
         glm::vec3(1.0, 1.0, 1.0),
         glm::vec3(1.0, 1.0, 1.0),
         glm::vec3(1.0, 1.0, 1.0),
-        0.1,
-        0.001,
-        0.001
+        1.0,
+        0.01,
+        0.01
     );
     projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     //models_manager = new ModelsManager();
@@ -48,7 +49,10 @@ FPSScene::FPSScene()
 
     setupCollisions();
 
-    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.6, 1.5,"src/Models/path.obj");
+    Rendering::Models::LoadedObject* groundCollider = new Rendering::Models::LoadedObject("src/Models/big_floor_collision.obj");
+    groundCollider->Create();
+
+    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.6, 1.5,"src/Models/big_floor.obj");
     Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(Physics::DYNAMIC, 100.0f, true, 0.6, 1.5,"src/Models/ship2.obj");
     Physics::PhysicsObject* cube = new Physics::PhysicsObject(Physics::DYNAMIC, 50.0f, true, 0.6, 1.5,"src/Models/test_cube.obj");
     shipModel->SetLight(light);
@@ -59,22 +63,22 @@ FPSScene::FPSScene()
     groundModel->SetProjection(projection);
     groundModel->SetModelView(camera->getModelView());
     groundModel->SetCamera(this->camera);
-    groundModel->Create();
+    groundModel->Create(groundCollider->getVerts());
 
     shipModel->SetProgram(ShaderManager::GetShader("matShader"));
     shipModel->SetProjection(projection);
     shipModel->SetModelView(camera->getModelView());
     shipModel->SetCamera(this->camera);
-    shipModel->Create();
+    shipModel->Create(std::vector<VertexFormat>());
 
     cube->SetProgram(ShaderManager::GetShader("matShader"));
     cube->SetProjection(projection);
     cube->SetModelView(camera->getModelView());
     cube->SetCamera(this->camera);
-    cube->Create();
+    cube->Create(std::vector<VertexFormat>());
 
     shipModel->setPosition(glm::vec3(0,10.0,0));
-    cube->setPosition(glm::vec3(0,10.0,0));
+    cube->setPosition(glm::vec3(10,10.0,10)); // TODO: way to mark, "rest on ground surface"
     groundModel->setPosition(glm::vec3(0,0,0));
 
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
@@ -93,8 +97,8 @@ FPSScene::FPSScene()
     /* Setting up input */
     actorManager->AddActor("player", terry);
     models_manager->AddModel("ground", groundModel);
-    models_manager->AddModel("ship", shipModel);
-    // models_manager->AddModel("cube", cube);
+    // models_manager->AddModel("ship", shipModel);
+    models_manager->AddModel("cube", cube);
     inBuffer = false;
     mouseBuffer = 100;
 
@@ -105,14 +109,16 @@ FPSScene::FPSScene()
     physicsObjects["ground"] = groundModel;
 
     dynamicsWorld->setGravity(btVector3(0,-10,0));
-    dynamicsWorld->addRigidBody(shipModel->getRigidBody());
-    // dynamicsWorld->addRigidBody(cube->getRigidBody());
+    // dynamicsWorld->addRigidBody(shipModel->getRigidBody());
+    dynamicsWorld->addRigidBody(cube->getRigidBody());
     dynamicsWorld->addRigidBody(groundModel->getRigidBody());
     dynamicsWorld->setInternalTickCallback(collisionCheck);
 
     collisionShapes.push_back(groundModel->getCollisionShape());
     collisionShapes.push_back(cube->getCollisionShape());
     //collisionShapes.push_back(shipModel->getCollisionShape());
+
+    delete groundCollider;
 }
 
 FPSScene::FPSScene(Core::WindowInfo windowInfo) : FPSScene() {
