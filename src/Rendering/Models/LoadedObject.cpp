@@ -155,6 +155,7 @@ std::vector<TextureFormat> LoadedObject::loadMaterialTextures(aiMaterial *mat, a
     {
         aiString str;
         mat->GetTexture(type, i, &str);
+        std::cout << "TEXTURE FILE: " << str.C_Str() << std::endl;
         // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
         bool skip = false;
         for(unsigned int j = 0; j < textures.size(); j++) {
@@ -170,9 +171,9 @@ std::vector<TextureFormat> LoadedObject::loadMaterialTextures(aiMaterial *mat, a
             texture.id = TextureFromFile(str.C_Str(), directory);
             texture.type = typeName;
             texture.path = str.C_Str();
-            textures.push_back(texture);
             textures.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
-            std::cout << "filename: " << texture.path << std::endl;
+            std::cout << "UNIFORM LOCATION: " << typeName.c_str() << std::endl;
+            std::cout << "TEXTURE ID: " << texture.id << std::endl;
         }
     }
     return textures;
@@ -197,6 +198,8 @@ unsigned int LoadedObject::TextureFromFile(const char *path, const std::string &
         else if (nrComponents == 4)
             format = GL_RGBA;
 
+        std::cout << "WIDTH: " << width << std::endl;
+        std::cout << "HEIGHT: " << height << std::endl;
         glBindTexture(GL_TEXTURE_2D, textureID);
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);

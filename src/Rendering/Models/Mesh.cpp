@@ -80,6 +80,9 @@ void Mesh::Draw(glm::mat4 ctm,
     unsigned int specularNr = 1;
     unsigned int normalNr   = 1;
     unsigned int heightNr   = 1;
+
+    glUseProgram(program);
+
     for(unsigned int i = 0; i < textures.size(); i++) {
         glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
         // retrieve texture number (the N in diffuse_textureN)
@@ -100,11 +103,7 @@ void Mesh::Draw(glm::mat4 ctm,
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
     }
 
-    // glActiveTexture(GL_TEXTURE0);
-    // glBindTexture(GL_TEXTURE_2D, this->GetTexture("crate"));
-    // unsigned int textureLocation = glGetUniformLocation(program, "texture1");
-    // glUniform1i(textureLocation, 0);
-    glUseProgram(program);
+
     glUniformMatrix4fv(ctm_location, 1, GL_FALSE, (GLfloat *) &ctm);
     glUniformMatrix4fv(projection_location, 1, GL_FALSE, (GLfloat *) &projection);
     glUniformMatrix4fv(model_view_location, 1, GL_FALSE, (GLfloat *) &model_view);
@@ -115,6 +114,7 @@ void Mesh::Draw(glm::mat4 ctm,
     glUniform1f(constant_location, light->getConstant());
     glUniform1f(linear_location, light->getLinear());
     glUniform1f(quadratic_location, light->getQuadratic());
+
 
     GLuint matIndex =  glGetUniformBlockIndex(program, "MatBlock");
     glUniformBlockBinding(program, matIndex, 0);

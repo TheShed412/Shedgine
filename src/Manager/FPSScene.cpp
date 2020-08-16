@@ -32,9 +32,9 @@ FPSScene::FPSScene()
     );
     projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     //models_manager = new ModelsManager();
-    shader_manager->CreateProgram("textureShader",
-                                    "src/shaders/vertex_shader.glsl",
-                                    "src/shaders/fragment_shader.glsl");
+    shader_manager->CreateProgram("n64Shader",
+                                    "src/shaders/n64_vert.glsl",
+                                    "src/shaders/n64_frag.glsl");
     shader_manager->CreateProgram("colorShader",
                                     "src/shaders/vertex_shader_color.glsl",
                                     "src/shaders/fragment_shader_color.glsl");
@@ -54,7 +54,7 @@ FPSScene::FPSScene()
 
     Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.6, 1.5,"src/Models/big_floor.obj");
     Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(Physics::DYNAMIC, 100.0f, true, 0.6, 1.5,"src/Models/ship2.obj");
-    Physics::PhysicsObject* cube = new Physics::PhysicsObject(Physics::DYNAMIC, 50.0f, true, 0.6, 1.5,"src/Models/test_cube.obj");
+    Physics::PhysicsObject* cube = new Physics::PhysicsObject(Physics::DYNAMIC, 50.0f, true, 0.6, 1.5,"src/Models/new_crate.obj");
     shipModel->SetLight(light);
     cube->SetLight(light);
     groundModel->SetLight(light);
@@ -71,7 +71,7 @@ FPSScene::FPSScene()
     shipModel->SetCamera(this->camera);
     shipModel->Create(std::vector<VertexFormat>());
 
-    cube->SetProgram(ShaderManager::GetShader("matShader"));
+    cube->SetProgram(ShaderManager::GetShader("n64Shader"));
     cube->SetProjection(projection);
     cube->SetModelView(camera->getModelView());
     cube->SetCamera(this->camera);

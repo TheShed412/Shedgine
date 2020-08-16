@@ -43,13 +43,8 @@ DebugScene::DebugScene()
 
     models_manager = new ModelsManager(camera);
 
-    Models::LoadedObject* shipModel = new Models::LoadedObject("src/Models/ship2.obj");
-    testshipModel = shipModel;
-    Models::LoadedObject* laserModel = new Models::LoadedObject("src/Models/laser.obj");
-    Models::LoadedObject* groundModel = new Models::LoadedObject("src/Models/big_floor.obj");
-    shipModel->SetLight(light);
-    laserModel->SetLight(light);
-    groundModel->SetLight(light);
+    Models::LoadedObject* boxModel = new Models::LoadedObject("src/Models/new_crate.obj");
+    boxModel->SetLight(light);
 
     Models::Grid* grid = new Models::Grid();
 
@@ -59,18 +54,11 @@ DebugScene::DebugScene()
     grid->SetCamera(this->camera);
     grid->Create();
 
-    laserModel->SetProgram(ShaderManager::GetShader("matShader"));
-    laserModel->SetProjection(projection);
-    laserModel->SetModelView(camera->getModelView());
-    laserModel->SetCamera(this->camera);
-    laserModel->Create();
-
-    groundModel->SetProgram(ShaderManager::GetShader("matShader"));
-    groundModel->SetProjection(projection);
-    groundModel->SetModelView(camera->getModelView());
-    groundModel->SetCamera(this->camera);
-    groundModel->Create();
-
+    boxModel->SetProgram(ShaderManager::GetShader("textureShader"));
+    boxModel->SetProjection(projection);
+    boxModel->SetModelView(camera->getModelView());
+    boxModel->SetCamera(this->camera);
+    boxModel->Create();
 
     models_manager->AddModel("grid", grid);
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
@@ -78,16 +66,7 @@ DebugScene::DebugScene()
     //models_manager->AddModel("ship", shipModel);
     camera->setLookAt(glm::vec3(0,-1,-3));
     /* Setting up input */
-    Game::Characters::Ship* ship = new Game::Characters::Ship(
-        shipModel,
-        ShaderManager::GetShader("matShader"),
-        projection,
-        camera->getModelView(),
-        camera
-    );
-    actorManager->AddActor("player", ship);
-    gameObjectManager->AddObject("ship", ship);
-    models_manager->AddModel("ship", groundModel);
+    models_manager->AddModel("box", boxModel);
 }
  
 DebugScene::~DebugScene()

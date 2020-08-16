@@ -1,10 +1,17 @@
 #version 300 es
 layout(location = 0) in vec3 in_position;
-layout(location = 1) in vec2 in_texture;
+layout(location = 2) in vec2 in_texture;
 uniform mat4 ctm;
 uniform mat4 projection;
 uniform mat4 modelView;
 out vec2 texcoord;
+
+uniform MatBlock {
+	vec4 aAmbient;
+	vec4 aDiffuse;
+	vec4 aSpecular;
+	float aShine;
+} Mat;
  
 void main()
 {
