@@ -29,6 +29,7 @@ namespace Rendering
         std::vector<VertexFormat> getVerts();
         void setPosition(glm::vec3);
         void setRotation(glm::vec3);
+        void setScale(glm::vec3);
 
       private:
         glm::vec3 lastAngles;

@@ -72,20 +72,19 @@ void Model::SetTranslation(glm::vec3 pos) {
 }
 
 void Model::setCtm() {
-  glm::mat4 transMat = glm::translate(glm::mat4(1.0), translation) * rotation;
+  std::cout << "SCALE: " << glm::to_string(this->scale) << std::endl;
+  glm::mat4 transMat = glm::scale(glm::translate(glm::mat4(1.0), translation) * rotation, this->scale);
   this->ctm = transMat * this->ctm;
 
   // Reset so that it is only applied once updated
   this->rotation = glm::mat4(1.0);
   this->translation = glm::vec3(0);
-  
-  //this->ctm = glm::scale(this->ctm, scale);
 }
 
 void Model::movementMat(glm::mat4 newMovementMat) {
   this->ctm = newMovementMat;
   
-  //this->ctm = glm::scale(this->ctm, scale);
+  this->ctm = glm::scale(this->ctm, scale);
 }
 
 // Will make a local rotation
@@ -102,6 +101,12 @@ void Model::SetRotation(glm::quat rotation) {
 
   this->setCtm();
   rotApplied = true;
+}
+
+void Model::SetScale(glm::vec3 scale) {
+  this->scale = scale;
+
+  this->setCtm();
 }
  
 void Model::Destroy()

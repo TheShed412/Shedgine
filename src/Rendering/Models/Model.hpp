@@ -36,6 +36,7 @@ namespace Rendering
          virtual GLuint GetVao() const override;
          virtual const std::vector<GLuint>& GetVbos() const override;
          void movementMat(glm::mat4);
+         void SetScale(glm::vec3);
  
       protected:
         // TODO: camera and light may become lists since we can have more than one effecting an object

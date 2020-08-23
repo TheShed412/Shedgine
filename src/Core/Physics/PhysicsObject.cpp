@@ -36,12 +36,11 @@ PhysicsObject::PhysicsObject(Tag tag, float mass, bool isConvex, float restituti
 void PhysicsObject::Create(std::vector<Rendering::VertexFormat> vertecies) {
     LoadedObject::Create();
 
-    std::cout << "VERT SIZE:" << vertecies.size() << std::endl;
-
     if (vertecies.size() == 0) {
         this->createShape(getVertsFromVertexFormat(this->getVerts()), tag, isConvex);
     } else {
-        this->createShape(getVertsFromVertexFormat(vertecies), tag, isConvex);
+        this->hitbox = getVertsFromVertexFormat(vertecies);
+        this->createShape(this->hitbox, tag, isConvex);
     }
     
     
@@ -117,6 +116,12 @@ void PhysicsObject::setPosition(glm::vec3 pos) {
     btTransform trans = body->getWorldTransform();
     trans.setOrigin(btVector3(pos.x, pos.y, pos.z));
     body->setWorldTransform(trans);
+}
+
+void PhysicsObject::setScale(glm::vec3 scale) {
+    LoadedObject::setScale(scale);
+    this->shape->setLocalScaling(btVector3(scale.x, scale.y, scale.z));
+    btTransform trans = body->getWorldTransform();
 } 
 
 glm::vec3 PhysicsObject::getPosition() {

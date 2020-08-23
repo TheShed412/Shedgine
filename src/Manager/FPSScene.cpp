@@ -20,7 +20,7 @@ FPSScene::FPSScene()
     actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
     // TODO: make it so I can control the speed with the player
-    camera = new Camera(glm::vec3(10,0.5,20), glm::vec3(0,1,0), 0.2, 0.1);
+    camera = new Camera(glm::vec3(10,3,20), glm::vec3(0,1,0), 0.2, 0.1);
     light = new Light(
         glm::vec3(0,10,0),
         glm::vec3(1.0, 1.0, 1.0),
@@ -52,11 +52,9 @@ FPSScene::FPSScene()
     Rendering::Models::LoadedObject* groundCollider = new Rendering::Models::LoadedObject("src/Models/big_floor_collision.obj");
     groundCollider->Create();
 
-    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.6, 1.5,"src/Models/big_floor.obj");
-    Physics::PhysicsObject* shipModel = new Physics::PhysicsObject(Physics::DYNAMIC, 100.0f, true, 0.6, 1.5,"src/Models/ship2.obj");
-    Physics::PhysicsObject* cube = new Physics::PhysicsObject(Physics::DYNAMIC, 50.0f, true, 0.6, 1.5,"src/Models/new_crate.obj");
-    shipModel->SetLight(light);
-    cube->SetLight(light);
+    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.4, 1.5,"src/Models/big_floor.obj");
+    Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 50.0f, true, 0.2, 1.5,"src/Models/new_crate.obj");
+    crate->SetLight(light);
     groundModel->SetLight(light);
 
     groundModel->SetProgram(ShaderManager::GetShader("matShader"));
@@ -65,20 +63,15 @@ FPSScene::FPSScene()
     groundModel->SetCamera(this->camera);
     groundModel->Create(groundCollider->getVerts());
 
-    shipModel->SetProgram(ShaderManager::GetShader("matShader"));
-    shipModel->SetProjection(projection);
-    shipModel->SetModelView(camera->getModelView());
-    shipModel->SetCamera(this->camera);
-    shipModel->Create(std::vector<VertexFormat>());
+    crate->SetProgram(ShaderManager::GetShader("n64Shader"));
+    crate->SetProjection(projection);
+    crate->SetModelView(camera->getModelView());
+    crate->SetCamera(this->camera);
+    crate->Create(std::vector<VertexFormat>());
 
-    cube->SetProgram(ShaderManager::GetShader("n64Shader"));
-    cube->SetProjection(projection);
-    cube->SetModelView(camera->getModelView());
-    cube->SetCamera(this->camera);
-    cube->Create(std::vector<VertexFormat>());
-
-    shipModel->setPosition(glm::vec3(0,10.0,0));
-    cube->setPosition(glm::vec3(10,10.0,10)); // TODO: way to mark, "rest on ground surface"
+     // TODO: way to mark, "rest on ground surface"
+    crate->setPosition(glm::vec3(10,10.0,10));
+    crate->setScale(glm::vec3(1));
     groundModel->setPosition(glm::vec3(0,0,0));
 
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
@@ -97,25 +90,22 @@ FPSScene::FPSScene()
     /* Setting up input */
     actorManager->AddActor("player", terry);
     models_manager->AddModel("ground", groundModel);
-    // models_manager->AddModel("ship", shipModel);
-    models_manager->AddModel("cube", cube);
+    models_manager->AddModel("cube", crate);
     inBuffer = false;
     mouseBuffer = 100;
 
     //setupCollisions();
-
-    physicsObjects["ship"] = shipModel;
-    physicsObjects["cube"] = cube;
+    physicsObjects["cube"] = crate;
     physicsObjects["ground"] = groundModel;
 
     dynamicsWorld->setGravity(btVector3(0,-10,0));
     // dynamicsWorld->addRigidBody(shipModel->getRigidBody());
-    dynamicsWorld->addRigidBody(cube->getRigidBody());
+    dynamicsWorld->addRigidBody(crate->getRigidBody());
     dynamicsWorld->addRigidBody(groundModel->getRigidBody());
     dynamicsWorld->setInternalTickCallback(collisionCheck);
 
     collisionShapes.push_back(groundModel->getCollisionShape());
-    collisionShapes.push_back(cube->getCollisionShape());
+    collisionShapes.push_back(crate->getCollisionShape());
     //collisionShapes.push_back(shipModel->getCollisionShape());
 
     delete groundCollider;

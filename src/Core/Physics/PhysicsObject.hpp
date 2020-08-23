@@ -36,6 +36,8 @@ namespace Physics
             float totalYDiff = 0.0;
             float totalZDiff = 0.0;
             glm::vec3 physicsRotation;
+            // TODO: Need to find a way to scale and move this hitbox when it isn't null
+            std::vector<glm::vec3> hitbox;
             void setAngle(float, btVector3);
         public:
             PhysicsObject(Tag,float,bool,float,float,std::string);
@@ -47,5 +49,6 @@ namespace Physics
             void setPosition(glm::vec3);
             glm::vec3 getPosition();
             void updateObjectPosition();
+            void setScale(glm::vec3);
     };
 } // namespace Game

@@ -53,6 +53,14 @@ void LoadedObject::setPosition(glm::vec3 pos) {
     this->SetTranslation(posDiff);
 }
 
+void LoadedObject::setScale(glm::vec3 scale) {
+    // glm::vec4 top = this->ctm[0];
+    // glm::vec4 midTop = this->ctm[1];
+    // glm::vec4 midBot = this->ctm[2];
+
+    this->SetScale(scale);
+}
+
 glm::vec3 toDeg(glm::vec3 inRads) {
     glm::vec3 inDeg = glm::vec3(0.0);
 
