@@ -63,11 +63,10 @@ FPSScene::FPSScene()
     addToScene(crate, std::vector<VertexFormat>(), "n64Shader", "crate1");
     addToScene(groundModel, groundCollider->getVerts(), "matShader", "ground");
 
-    crate->setPosition(glm::vec3(9,30,10.5));
+    crate->setPosition(glm::vec3(9,4,9));
     crate->setScale(glm::vec3(1));
-    crate2->setPosition(glm::vec3(9,2.0,9));
+    crate2->setPosition(glm::vec3(9,2,9));
     crate2->setScale(glm::vec3(1));
-    crate->setRotation(glm::vec3(0, glm::radians(90.0) , 0));
     groundModel->setPosition(glm::vec3(0,0,0));
 
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
@@ -175,7 +174,7 @@ void FPSScene::notifyKeyboardInput(unsigned char key) {
 }
 
 void FPSScene::notifyMouseInput(int button, int state, int x, int y) {
-    //std::cout<< "MOUSE X: " << x << " Y: " << y << std::endl;
+
 }
 
 

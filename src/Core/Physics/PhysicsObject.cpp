@@ -96,8 +96,7 @@ void PhysicsObject::createBodyWithMass(float mass) {
 
     body = new btRigidBody(bodyInfo);
     body->setUserPointer((void*) this);
-    body->setLinearFactor(btVector3(1,1,0));
-    body->setActivationState(DISABLE_DEACTIVATION);
+    body->setLinearFactor(btVector3(1,1,1));
 }
 
 btRigidBody* PhysicsObject::getRigidBody() {
