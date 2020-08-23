@@ -53,8 +53,10 @@ FPSScene::FPSScene()
     groundCollider->Create();
 
     Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.4, 1.5,"src/Models/big_floor.obj");
-    Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 50.0f, true, 0.2, 1.5,"src/Models/new_crate.obj");
+    Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 50.0f, true, 0.3, 1.5,"src/Models/new_crate.obj");
+    Physics::PhysicsObject* crate2 = new Physics::PhysicsObject(Physics::DYNAMIC, 50.0f, true, 0.3, 1.5,"src/Models/new_crate.obj");
     crate->SetLight(light);
+    crate2->SetLight(light);
     groundModel->SetLight(light);
 
     groundModel->SetProgram(ShaderManager::GetShader("matShader"));
@@ -69,9 +71,17 @@ FPSScene::FPSScene()
     crate->SetCamera(this->camera);
     crate->Create(std::vector<VertexFormat>());
 
+    crate2->SetProgram(ShaderManager::GetShader("n64Shader"));
+    crate2->SetProjection(projection);
+    crate2->SetModelView(camera->getModelView());
+    crate2->SetCamera(this->camera);
+    crate2->Create(std::vector<VertexFormat>());
+
      // TODO: way to mark, "rest on ground surface"
-    crate->setPosition(glm::vec3(10,10.0,10));
+    crate->setPosition(glm::vec3(10,20.0,10));
     crate->setScale(glm::vec3(1));
+    crate2->setPosition(glm::vec3(10,5.0,10));
+    crate2->setScale(glm::vec3(1));
     groundModel->setPosition(glm::vec3(0,0,0));
 
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
@@ -91,16 +101,19 @@ FPSScene::FPSScene()
     actorManager->AddActor("player", terry);
     models_manager->AddModel("ground", groundModel);
     models_manager->AddModel("cube", crate);
+    models_manager->AddModel("cube2", crate2);
     inBuffer = false;
     mouseBuffer = 100;
 
     //setupCollisions();
     physicsObjects["cube"] = crate;
+    physicsObjects["cube2"] = crate2;
     physicsObjects["ground"] = groundModel;
 
     dynamicsWorld->setGravity(btVector3(0,-10,0));
     // dynamicsWorld->addRigidBody(shipModel->getRigidBody());
     dynamicsWorld->addRigidBody(crate->getRigidBody());
+    dynamicsWorld->addRigidBody(crate2->getRigidBody());
     dynamicsWorld->addRigidBody(groundModel->getRigidBody());
     dynamicsWorld->setInternalTickCallback(collisionCheck);
 
