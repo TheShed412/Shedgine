@@ -78,7 +78,6 @@ FPSScene::FPSScene()
     // crate2->Create(std::vector<VertexFormat>());
 
     //  // TODO: way to mark, "rest on ground surface"
-    setupCollisions();
     dynamicsWorld->setGravity(btVector3(0,-10,0));
 
     addToScene(groundModel, groundCollider->getVerts(), "matShader", "ground");
