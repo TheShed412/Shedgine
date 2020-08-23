@@ -97,6 +97,7 @@ void PhysicsObject::createBodyWithMass(float mass) {
     body = new btRigidBody(bodyInfo);
     body->setUserPointer((void*) this);
     body->setLinearFactor(btVector3(1,1,0));
+    body->setActivationState(DISABLE_DEACTIVATION);
 }
 
 btRigidBody* PhysicsObject::getRigidBody() {
@@ -118,6 +119,13 @@ void PhysicsObject::setPosition(glm::vec3 pos) {
     body->setWorldTransform(trans);
 }
 
+void PhysicsObject::setRotation(glm::vec3 rotation) {
+    LoadedObject::setRotation(rotation);
+    btTransform trans = body->getWorldTransform();
+    trans.setRotation(btQuaternion(rotation.x, rotation.y, rotation.z));
+    body->setWorldTransform(trans);
+}
+
 void PhysicsObject::setScale(glm::vec3 scale) {
     LoadedObject::setScale(scale);
     this->shape->setLocalScaling(btVector3(scale.x, scale.y, scale.z));
@@ -134,7 +142,7 @@ void PhysicsObject::updateObjectPosition() {
     if (!isStatic) {
         btTransform t;
         body->getMotionState()->getWorldTransform(t);
-        float moveMat[16];
+        btScalar moveMat[16] = {0};
         t.getOpenGLMatrix(moveMat);
 
         glm::mat4 newMat = glm::make_mat4(moveMat);

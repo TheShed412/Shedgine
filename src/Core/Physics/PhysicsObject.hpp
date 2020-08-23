@@ -47,6 +47,7 @@ namespace Physics
             btRigidBody* getRigidBody();
             btCollisionShape* getCollisionShape();
             void setPosition(glm::vec3);
+            void setRotation(glm::vec3);
             glm::vec3 getPosition();
             void updateObjectPosition();
             void setScale(glm::vec3);
