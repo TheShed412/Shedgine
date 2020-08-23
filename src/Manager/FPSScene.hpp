@@ -27,6 +27,9 @@ namespace Managers
       float lastX;
       float lastY;
       void setupCollisions();
+      void addToScene(Rendering::Models::LoadedObject*, std::string, std::string);
+      void addToScene(Game::Actor*, std::vector<VertexFormat>, std::string, std::string);
+      void addToScene(Physics::PhysicsObject*, std::vector<VertexFormat>, std::string, std::string);
       //void collisionCheck(btDynamicsWorld *dynamicsWorld, btScalar timeStep);
     public:
       FPSScene();
