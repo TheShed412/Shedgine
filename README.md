@@ -8,7 +8,7 @@ Right now, this engine can only be built on Linux. I don't own a Windows machine
 The `.travis.yml` is a good list of the dependencies that need installed. This command should install all of them on a Ubuntu based system, other distros can figure it out on their own.
 
 ```
-sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev libglew-dev libglm-dev assimp-utils libassimp-dev
+sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev libglew-dev libglm-dev assimp-utils libassimp-dev g++
 ```
 After installing these, go in to the root directory and do
 ```
