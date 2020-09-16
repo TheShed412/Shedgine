@@ -5,10 +5,15 @@ using namespace Managers;
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
 
 #include <glm/gtc/quaternion.hpp>
- 
- Models::LoadedObject* testshipModel;
+#include <time.h>
+
+time_t startingTime;
+time_t endTime;
+
+Models::LoadedObject* testshipModel;
 DebugScene::DebugScene()
 {
+    startingTime = time(NULL);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
     glFrontFace(GL_CCW);  
@@ -43,7 +48,7 @@ DebugScene::DebugScene()
 
     models_manager = new ModelsManager(camera);
 
-    Models::LoadedObject* boxModel = new Models::LoadedObject("src/Models/new_crate.obj");
+    Models::LoadedObject* boxModel = new Models::LoadedObject("src/Models/pyramids.obj");
     boxModel->SetLight(light);
 
     Models::Grid* grid = new Models::Grid();
@@ -54,7 +59,7 @@ DebugScene::DebugScene()
     grid->SetCamera(this->camera);
     grid->Create();
 
-    boxModel->SetProgram(ShaderManager::GetShader("textureShader"));
+    boxModel->SetProgram(ShaderManager::GetShader("matShader"));
     boxModel->SetProjection(projection);
     boxModel->SetModelView(camera->getModelView());
     boxModel->SetCamera(this->camera);
@@ -67,6 +72,9 @@ DebugScene::DebugScene()
     camera->setLookAt(glm::vec3(0,-1,-3));
     /* Setting up input */
     models_manager->AddModel("box", boxModel);
+    endTime = time(NULL);
+
+    std::cout << "LOAD TIME: " << endTime - startingTime << std::endl;
 }
  
 DebugScene::~DebugScene()
@@ -107,7 +115,7 @@ void DebugScene::notifyBeginFrame()
  
 void DebugScene::notifyDisplayFrame()
 {
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(0.53, 0.81, 0.92, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     models_manager->Draw();
     gameObjectManager->Update();
