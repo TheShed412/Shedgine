@@ -49,21 +49,28 @@ FPSScene::FPSScene()
 
     setupCollisions();
 
-    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.4, 1.5,"src/Models/pyramids.obj");
+    // Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.4, 1.5,"src/Models/pyramids.obj");
     // Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 50.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
     // Physics::PhysicsObject* crate2 = new Physics::PhysicsObject(Physics::DYNAMIC, 50.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
-
+    Models::LoadedObject* groundModel = new Models::LoadedObject("src/Models/pyramids.obj");
     dynamicsWorld->setGravity(btVector3(0,-15,0));
     dynamicsWorld->setInternalTickCallback(collisionCheck);
 
     // addToScene(crate2, std::vector<VertexFormat>(), "n64Shader", "crate2");
     // addToScene(crate, std::vector<VertexFormat>(), "n64Shader", "crate1");
-    addToScene(groundModel, std::vector<VertexFormat>(), "matShader", "ground");
+    // addToScene(groundModel, std::vector<VertexFormat>(), "n64Shader", "ground");
 
     // crate->setPosition(glm::vec3(9,5,9));
     // crate->setScale(glm::vec3(1));
     // crate2->setPosition(glm::vec3(9,2,9));
     // crate2->setScale(glm::vec3(1));
+    groundModel->SetProgram(shader_manager->GetShader("matShader"));
+    groundModel->SetProjection(projection);
+    groundModel->SetModelView(camera->getModelView());
+    groundModel->SetCamera(this->camera);
+    groundModel->SetLight(this->light);
+    groundModel->Create();
+    
     groundModel->setPosition(glm::vec3(0,0,0));
     groundModel->setScale(glm::vec3(1));
 
@@ -79,6 +86,7 @@ FPSScene::FPSScene()
     );
 
     /* Setting up input */
+    models_manager->AddModel("groundBoi", groundModel);
     actorManager->AddActor("player", terry);
     inBuffer = false;
     mouseBuffer = 100;
