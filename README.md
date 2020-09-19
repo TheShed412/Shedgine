@@ -37,6 +37,9 @@ Bullet3Dynamics - libBullet3Dynamics.a libBullet3Dynamics.so libBullet3Dynamics.
 Bullet2FileLoader - libBullet2FileLoader.a libBullet2FileLoader.so libBullet2FileLoader.so.2.89
 LinearMath - libLinearMath.a libLinearMath.so libLinearMath.so.2.89
 BulletDynamics - libBulletDynamics.a libBulletDynamics.so libBulletDynamics.so.2.89
+Bullet3Collision - libBullet3Collisions.a libBullet3Collisions.so libBullet3Collisions.so.2.89
+Bullet3Dynamics - libBullet3Dynamics.a libBullet3Dynamics.so libBullet3Dynamics.so.2.89
+BulletCollision - libBulletCollision.a libBulletCollision.so libBulletCollision.so.2.89
 ```
 Once those are moved, you should be able to do 
 ```
