@@ -49,9 +49,6 @@ FPSScene::FPSScene()
 
     setupCollisions();
 
-    Rendering::Models::LoadedObject* groundCollider = new Rendering::Models::LoadedObject("src/Models/big_floor_collision.obj");
-    groundCollider->Create();
-
     Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.4, 1.5,"src/Models/big_floor.obj");
     Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
     Physics::PhysicsObject* crate2 = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
@@ -61,7 +58,7 @@ FPSScene::FPSScene()
 
     addToScene(crate2, std::vector<VertexFormat>(), "n64Shader", "crate2");
     addToScene(crate, std::vector<VertexFormat>(), "n64Shader", "crate1");
-    addToScene(groundModel, groundCollider->getVerts(), "matShader", "ground");
+    addToScene(groundModel, std::vector<VertexFormat>(), "matShader", "ground");
 
     crate->setPosition(glm::vec3(9,4,9));
     crate->setScale(glm::vec3(1));
@@ -86,8 +83,6 @@ FPSScene::FPSScene()
     actorManager->AddActor("player", terry);
     inBuffer = false;
     mouseBuffer = 100;
-
-    delete groundCollider;
 }
 
 FPSScene::FPSScene(Core::WindowInfo windowInfo) : FPSScene() {

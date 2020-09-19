@@ -18,6 +18,7 @@ in vec4 Ambient;
 in vec4 Diffuse;
 in vec4 Specular;
 in float shininess;
+in float logz;
  
 uniform vec3 viewPos;// should be camera pos
  
@@ -46,4 +47,5 @@ void main()
 	  
     vec3 result = ambient + diffuse + specular;
     FragColor = vec4(result, 1.0);
+    gl_FragDepth = logz;
 }
