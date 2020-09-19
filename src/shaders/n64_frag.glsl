@@ -7,5 +7,4 @@ void main()
 {
   mediump vec4 color1 = texture(objTexture, texcoord);
   out_color = color1;
-  gl_FragDepth = logz;
 }
