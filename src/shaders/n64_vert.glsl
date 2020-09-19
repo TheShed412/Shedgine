@@ -12,10 +12,22 @@ uniform MatBlock {
 	vec4 aSpecular;
 	float aShine;
 } Mat;
+out float logz;
  
 void main()
 {
   texcoord = in_texture;
   vec4 tmp_pos = vec4(in_position, 1);
-  gl_Position = projection * modelView * ctm * tmp_pos / tmp_pos.w;
+
+	int far = 1000;
+	int near = 1;
+	float C = 0.01;
+
+	float FC = 1.0/log(far*C + 1);
+	
+    vec4 tmp_pos = vec4(aPos, 1);
+
+  	gl_Position = projection * modelView * ctm * tmp_pos / tmp_pos.w;
+	logz = log(gl_Position.w*C + 1)*FC;
+	gl_Position.z = (2*logz - 1)*gl_Position.w;
 }
