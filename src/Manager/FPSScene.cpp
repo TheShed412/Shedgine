@@ -53,14 +53,14 @@ FPSScene::FPSScene()
     Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
     Physics::PhysicsObject* crate2 = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
 
-    dynamicsWorld->setGravity(btVector3(0,-15,0));
+    dynamicsWorld->setGravity(btVector3(0,-18,0));
     dynamicsWorld->setInternalTickCallback(collisionCheck);
 
     addToScene(crate2, std::vector<VertexFormat>(), "n64Shader", "crate2");
     addToScene(crate, std::vector<VertexFormat>(), "n64Shader", "crate1");
     addToScene(groundModel, std::vector<VertexFormat>(), "matShader", "ground");
 
-    crate->setPosition(glm::vec3(9,4,9));
+    crate->setPosition(glm::vec3(10,15,10));
     crate->setScale(glm::vec3(1));
     crate2->setPosition(glm::vec3(9,2,9));
     crate2->setScale(glm::vec3(1));
@@ -164,7 +164,7 @@ void FPSScene::notifyEndFrame()
     for (auto physicsObject : physicsObjects){
         physicsObject.second->updateObjectPosition();
     }
-    dynamicsWorld->stepSimulation(btScalar(1.0)/btScalar(60.0), 0);
+    dynamicsWorld->stepSimulation(btScalar(elapsedTime/1000.0f), 1, btScalar(1.0)/btScalar(60.0));
 
 }
 
