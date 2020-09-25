@@ -20,7 +20,7 @@ FPSScene::FPSScene()
     actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
     // TODO: make it so I can control the speed with the player
-    camera = new Camera(glm::vec3(10,3,25), glm::vec3(0,1,0), 0.2, 0.3);
+    camera = new Camera(glm::vec3(10,3,25), glm::vec3(0,1,0), 0.2, 20.0);
     light = new Light(
         glm::vec3(0,10,0),
         glm::vec3(1.0, 1.0, 1.0),
@@ -83,6 +83,10 @@ FPSScene::FPSScene()
     actorManager->AddActor("player", terry);
     inBuffer = false;
     mouseBuffer = 100;
+
+    elapsedTime = 0;
+    currentTime = 0;
+    previousTime = 0;
 }
 
 FPSScene::FPSScene(Core::WindowInfo windowInfo) : FPSScene() {
@@ -135,7 +139,12 @@ void FPSScene::addToScene(Game::Actor* newObject, std::vector<VertexFormat> hitB
 
 void FPSScene::notifyBeginFrame()
 {
-    actorManager->GetActor("player").HandleInput(keys);
+    // Do the time shit
+    previousTime = currentTime;
+    currentTime = glutGet(GLUT_ELAPSED_TIME);
+    elapsedTime = currentTime - previousTime;
+
+    actorManager->GetActor("player").HandleInput(keys, elapsedTime);
     models_manager->Update();
     gameObjectManager->Update();
 }

@@ -139,7 +139,7 @@ float generateTiltMatrices(glm::mat4* rotationMat, glm::mat4* translationMat, fl
 
 bool needToLook = true;
 // TODO: pull some of this logic out
-void Ship::HandleInput(unsigned char keys[] ) {
+void Ship::HandleInput(unsigned char keys[], int deltaTime) {
     if(keys['w'] || keys['a'] || keys['s'] || keys['d']) {
         needToLook = true;
         glm::vec2 relScreenPos = model->GetRelativeScreenPosition();
