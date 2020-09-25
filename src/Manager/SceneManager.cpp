@@ -91,7 +91,7 @@ SceneManager::~SceneManager()
 
 void SceneManager::notifyBeginFrame()
 {
-    actorManager->GetActor("player").HandleInput(keys);
+    actorManager->GetActor("player").HandleInput(keys, 1);
     actorManager->GetActor("player").LookAtObject(glm::vec3(0,15,25));
 
     models_manager->Update();

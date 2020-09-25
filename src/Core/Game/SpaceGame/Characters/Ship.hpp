@@ -42,7 +42,7 @@ namespace Game
                 glm::mat4 TurnLeft() override;
                 glm::mat4 TurnUp() override;
                 glm::mat4 TurnDown() override;
-                void HandleInput(unsigned char[]);
+                void HandleInput(unsigned char[], int);
                 void HandleMouseInput(int,int) override;
                 void Action() override;
                 void LookAtObject(glm::vec3) override;

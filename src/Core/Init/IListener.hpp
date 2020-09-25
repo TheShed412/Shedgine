@@ -25,6 +25,11 @@ namespace Core{
       int mouseBuffer;
       // This is a flag that I can check if I am in this buffer
       bool inBuffer;
+      int previousTime;
+      int elapsedTime;
+      int currentTime;
+
+      
   };
  
   inline IListener::~IListener(){

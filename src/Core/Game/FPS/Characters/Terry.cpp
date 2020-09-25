@@ -99,23 +99,23 @@ void Terry::Action()
 {
 }
 
-void Terry::HandleInput(unsigned char keys[] ) {
+void Terry::HandleInput(unsigned char keys[], int deltaTime) {
     if(keys['w'] || keys['a'] || keys['s'] || keys['d']) {
         if (keys['w'])
         {
-            camera->processKeyboard(Rendering::Camera::FORWARD, 1);
+            camera->processKeyboard(Rendering::Camera::FORWARD, deltaTime/1000.0f);
         }
         if (keys['a'])
         {
-            camera->processKeyboard(Rendering::Camera::LEFT, 1);
+            camera->processKeyboard(Rendering::Camera::LEFT, deltaTime/1000.0f);
         }
         if (keys['s'])
         {
-            camera->processKeyboard(Rendering::Camera::BACKWARD, 1);
+            camera->processKeyboard(Rendering::Camera::BACKWARD, deltaTime/1000.0f);
         }
         if (keys['d'])
         {
-            camera->processKeyboard(Rendering::Camera::RIGHT, 1);
+            camera->processKeyboard(Rendering::Camera::RIGHT, deltaTime/1000.0f);
         }
     }
 }
