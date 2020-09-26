@@ -35,6 +35,8 @@ PhysicsObject::PhysicsObject(Tag tag, float mass, bool isConvex, float restituti
 
 void PhysicsObject::Create(std::vector<Rendering::VertexFormat> vertecies) {
     LoadedObject::Create();
+    // TODO: I may not want to do this for all shapes
+    this->SetScale(glm::vec3(scaleValue, scaleValue, scaleValue));
 
     if (vertecies.size() == 0) {
         this->createShape(getVertsFromVertexFormat(this->getVerts()), tag, isConvex);

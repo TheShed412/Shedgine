@@ -2,6 +2,7 @@
 #include "SceneManager.hpp"
 #include "ModelsManager.hpp"
 #include "../Core/Physics/PhysicsObject.hpp"
+#include "../Core/Physics/Debugger/GLDebugDrawer.hpp"
 
 #include <btBulletDynamicsCommon.h>
 #include <LinearMath/btIDebugDraw.h>
@@ -18,6 +19,7 @@ namespace Managers
       btBroadphaseInterface* overlappingPairCache;
       btCollisionDispatcher* dispatcher;
       btDefaultCollisionConfiguration* collisionConfiguration;
+      GLDebugDrawer* debugDrawer;
       // TODO: once it is all figured out, seperate this to a manager
       // update could get pretty complicated with physics objects
       // it will also more modularize the code in one place

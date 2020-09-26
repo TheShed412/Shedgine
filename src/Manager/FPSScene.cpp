@@ -5,6 +5,7 @@ using namespace Managers;
 #include "../Rendering/Models/LoadedObject.hpp"
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
 #include "../Core/Game/FPS/Characters/Terry.hpp"
+#include "../Core/Physics/Debugger/GLDebugDrawer.hpp"
 
 void collisionCheck(btDynamicsWorld *dynamicsWorld, btScalar timeStep) {
     int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
@@ -16,9 +17,11 @@ FPSScene::FPSScene()
     glCullFace(GL_FRONT);
     glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
+
     gameObjectManager = new Game::Managers::ObjectManager();
     actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
+    debugDrawer = new GLDebugDrawer();
     // TODO: make it so I can control the speed with the player
     camera = new Camera(glm::vec3(10,3,25), glm::vec3(0,1,0), 0.2, 20.0);
     light = new Light(
@@ -53,17 +56,15 @@ FPSScene::FPSScene()
     Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
     Physics::PhysicsObject* crate2 = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
 
-    dynamicsWorld->setGravity(btVector3(0,-18,0));
+    dynamicsWorld->setGravity(btVector3(0,-15,0));
     dynamicsWorld->setInternalTickCallback(collisionCheck);
 
     addToScene(crate2, std::vector<VertexFormat>(), "n64Shader", "crate2");
     addToScene(crate, std::vector<VertexFormat>(), "n64Shader", "crate1");
     addToScene(groundModel, std::vector<VertexFormat>(), "matShader", "ground");
 
-    crate->setPosition(glm::vec3(10,15,10));
-    crate->setScale(glm::vec3(1));
+    crate->setPosition(glm::vec3(9,10,9));
     crate2->setPosition(glm::vec3(9,2,9));
-    crate2->setScale(glm::vec3(1));
     groundModel->setPosition(glm::vec3(0,0,0));
 
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);

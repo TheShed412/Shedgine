@@ -22,6 +22,10 @@ namespace Physics
     };
     class PhysicsObject : public Rendering::Models::LoadedObject {
         private:
+            // Bullet has a margin gap that will create a gap between the models.
+            // This will scale the model and not the collider so that it appears they are touching.
+            // Apperantly this is the recommended solution: https://pybullet.org/Bullet/phpBB3/viewtopic.php?t=2358
+            const float scaleValue = 1.04;
             btCollisionShape* shape;
             btRigidBody* body;
             // TODO: make an enum for tags so behavior can be defined
