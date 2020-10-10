@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     // TODO: make the window size variable at least between my development machines
     WindowInfo window(std::string("Shedgine"),
                             400, 200,//position
-                            900, 700, //size
+                            1800, 1400, //size
                             true);//reshape
     
     ContextInfo context(4, 5, true);

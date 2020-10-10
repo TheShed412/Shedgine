@@ -72,7 +72,6 @@ void Model::SetTranslation(glm::vec3 pos) {
 }
 
 void Model::setCtm() {
-  std::cout << "SCALE: " << glm::to_string(this->scale) << std::endl;
   glm::mat4 transMat = glm::scale(glm::translate(glm::mat4(1.0), translation) * rotation, this->scale);
   this->ctm = transMat * this->ctm;
 
