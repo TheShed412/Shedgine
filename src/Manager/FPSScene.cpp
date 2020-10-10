@@ -50,20 +50,21 @@ FPSScene::FPSScene()
     setupCollisions();
 
     Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.4, 1.5,"src/Models/big_floor.obj");
-    Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
-    Physics::PhysicsObject* crate2 = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
 
     dynamicsWorld->setGravity(btVector3(0,-18,0));
     dynamicsWorld->setInternalTickCallback(collisionCheck);
+    
 
-    addToScene(crate2, std::vector<VertexFormat>(), "n64Shader", "crate2");
-    addToScene(crate, std::vector<VertexFormat>(), "n64Shader", "crate1");
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 6; j++) {
+            Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
+            addToScene(crate, std::vector<VertexFormat>(), "n64Shader", "crate" + std::to_string(i) + std::to_string(j));
+            crate->setPosition(glm::vec3(i*5, 2, (j * 5) + 5));
+            crate->setScale(glm::vec3(1));
+        }
+    }
+
     addToScene(groundModel, std::vector<VertexFormat>(), "matShader", "ground");
-
-    crate->setPosition(glm::vec3(10,15,10));
-    crate->setScale(glm::vec3(1));
-    crate2->setPosition(glm::vec3(9,2,9));
-    crate2->setScale(glm::vec3(1));
     groundModel->setPosition(glm::vec3(0,0,0));
 
     //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
