@@ -19,9 +19,26 @@ GLuint program;
 int main(int argc, char **argv)
 {
     // TODO: make the window size variable at least between my development machines
+    char* windowWidth = std::getenv("SHED_W");
+    char* windowHeight = std::getenv("SHED_H");
+    int width = 1200;
+    int height = 800;
+
+    try {
+        if (windowWidth) {
+            width = stoi(windowWidth);
+        }
+        if (windowHeight) {
+            height = stoi(windowHeight);
+        }
+    } catch (...) {
+        std::cerr << "WIDTH OR HEIGHT NOT A NUMBER" << std::endl;
+        std::cerr << "WIDTH: " << windowWidth << " HEIGHT: " << windowHeight << std::endl;
+    }
+
     WindowInfo window(std::string("Shedgine"),
                             400, 200,//position
-                            1800, 1400, //size
+                            width, height, //size
                             true);//reshape
     
     ContextInfo context(4, 5, true);

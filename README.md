@@ -28,7 +28,12 @@ export bulletPath={path to bullet library}
 ```
 After that is set, also set the linker library path, this will be important later. Add this to the same profile script.
 ```
-export export LD_LIBRARY_PATH=/usr/local/lib/
+export LD_LIBRARY_PATH=/usr/local/lib/
+```
+Add the desired width and height to the same profile script.
+```
+export SHED_H=800
+export SHED_W=1200
 ```
 Next, go through these directories and copy these files to `/usr/local/lib`
 ```
