@@ -21,7 +21,7 @@ namespace Rendering
         LoadedObject(std::string filename);
        ~LoadedObject();
  
-        void Create();
+        void Create(std::map<std::string, unsigned char *>*, std::map<std::string, const aiScene*>*);
         virtual void Update() override final;
         virtual void Draw() override final;
         virtual const glm::mat4* GetCtm();
@@ -41,6 +41,8 @@ namespace Rendering
         std::vector<VertexFormat> makeObject();
         std::vector<VertexFormat> loadObject();
         std::vector<VertexFormat> vertices;
+        std::map<std::string, unsigned char *>* textureStore;
+        std::map<std::string, const aiScene*>* objStore;
         Mesh processMesh(aiMesh *mesh, const aiScene *scene);
         void processNode(aiNode *node, const aiScene *scene);
         std::vector<TextureFormat> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);

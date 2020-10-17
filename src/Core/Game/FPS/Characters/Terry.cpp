@@ -43,7 +43,7 @@ void Terry::Draw()
 
 void Terry::Create()
 {
-    model->Create();
+    //model->Create();
 }
 
 void Terry::Destroy() {

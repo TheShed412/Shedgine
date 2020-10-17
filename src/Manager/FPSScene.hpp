@@ -24,6 +24,12 @@ namespace Managers
       // update could get pretty complicated with physics objects
       // it will also more modularize the code in one place
       std::map<std::string, Physics::PhysicsObject*> physicsObjects;
+      // Should make another manager type thing for these
+      // These will be singletones that all objects reference
+      // Can be freed once the scene is loaded
+      std::map<std::string, unsigned char *> textureStore;
+      std::map<std::string, const aiScene*> objStore;
+
 
       bool firstMouse = true;
       float lastX;

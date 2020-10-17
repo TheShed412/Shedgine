@@ -43,30 +43,30 @@ DebugScene::DebugScene()
 
     models_manager = new ModelsManager(camera);
 
-    Models::LoadedObject* boxModel = new Models::LoadedObject("src/Models/new_crate.obj");
-    boxModel->SetLight(light);
+    // Models::LoadedObject* boxModel = new Models::LoadedObject("src/Models/new_crate.obj");
+    // boxModel->SetLight(light);
 
-    Models::Grid* grid = new Models::Grid();
+    // Models::Grid* grid = new Models::Grid();
 
-    grid->SetProgram(ShaderManager::GetShader("colorShader"));
-    grid->SetProjection(projection);
-    grid->SetModelView(camera->getModelView());
-    grid->SetCamera(this->camera);
-    grid->Create();
+    // grid->SetProgram(ShaderManager::GetShader("colorShader"));
+    // grid->SetProjection(projection);
+    // grid->SetModelView(camera->getModelView());
+    // grid->SetCamera(this->camera);
+    // grid->Create();
 
-    boxModel->SetProgram(ShaderManager::GetShader("textureShader"));
-    boxModel->SetProjection(projection);
-    boxModel->SetModelView(camera->getModelView());
-    boxModel->SetCamera(this->camera);
-    boxModel->Create();
+    // boxModel->SetProgram(ShaderManager::GetShader("textureShader"));
+    // boxModel->SetProjection(projection);
+    // boxModel->SetModelView(camera->getModelView());
+    // boxModel->SetCamera(this->camera);
+    // boxModel->Create();
 
-    models_manager->AddModel("grid", grid);
-    //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
+    // models_manager->AddModel("grid", grid);
+    // //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
-    //models_manager->AddModel("ship", shipModel);
-    camera->setLookAt(glm::vec3(0,-1,-3));
-    /* Setting up input */
-    models_manager->AddModel("box", boxModel);
+    // //models_manager->AddModel("ship", shipModel);
+    // camera->setLookAt(glm::vec3(0,-1,-3));
+    // /* Setting up input */
+    // models_manager->AddModel("box", boxModel);
 }
  
 DebugScene::~DebugScene()

@@ -24,7 +24,7 @@ Rendering::Camera* camera)
     shipModel->SetProjection(projection);
     shipModel->SetModelView(camera->getModelView());
     shipModel->SetCamera(camera);
-    shipModel->Create();
+    //shipModel->Create();
 
     currentPitch = 0;
     currentYaw = 0;
@@ -44,7 +44,7 @@ void Ship::Draw()
 
 void Ship::Create()
 {
-    model->Create();
+    //model->Create();
 }
 
 void Ship::Destroy() {

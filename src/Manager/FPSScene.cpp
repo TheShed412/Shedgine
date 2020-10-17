@@ -18,6 +18,8 @@ FPSScene::FPSScene()
     glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
 
+    textureStore = std::map<std::string, unsigned char *>();
+    objStore = std::map<std::string, const aiScene*>();
     gameObjectManager = new Game::Managers::ObjectManager();
     actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
@@ -127,7 +129,7 @@ void FPSScene::addToScene(Physics::PhysicsObject* newObject, std::vector<VertexF
     newObject->SetProjection(projection);
     newObject->SetModelView(camera->getModelView());
     newObject->SetCamera(this->camera);
-    newObject->Create(hitBox);
+    newObject->Create(hitBox, &this->textureStore, &this->objStore);
 
     models_manager->AddModel(modelName, newObject);
     physicsObjects[modelName] = newObject;

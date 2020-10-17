@@ -33,8 +33,8 @@ PhysicsObject::PhysicsObject(Tag tag, float mass, bool isConvex, float restituti
     this->friction = friction;
 }
 
-void PhysicsObject::Create(std::vector<Rendering::VertexFormat> vertecies) {
-    LoadedObject::Create();
+void PhysicsObject::Create(std::vector<Rendering::VertexFormat> vertecies, std::map<std::string, unsigned char *>* textureStore, std::map<std::string, const aiScene*>* objStore) {
+    LoadedObject::Create(textureStore, objStore);
     // TODO: I may not want to do this for all shapes
     this->SetScale(glm::vec3(scaleValue, scaleValue, scaleValue));
 

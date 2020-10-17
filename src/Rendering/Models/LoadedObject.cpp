@@ -26,13 +26,16 @@ LoadedObject::LoadedObject(std::string filename) {
     this->filename = filename;
 }
  
-void LoadedObject::Create(){
+void LoadedObject::Create(std::map<std::string, unsigned char *>* textureStore, std::map<std::string, const aiScene*>* objStore){
     ctm = glm::mat4(1.0);
     lastAngles = glm::vec3(0.0);
 
     ctm_location = glGetUniformLocation(program, "ctm");
     projection_location = glGetUniformLocation(program, "projection");
     model_view_location = glGetUniformLocation(program, "modelView");
+
+    this->textureStore = textureStore;
+    this->objStore = objStore;
 
     loadObject();
 }
@@ -192,7 +195,18 @@ unsigned int LoadedObject::TextureFromFile(const char *path, const std::string &
     glGenTextures(1, &textureID);
 
     int width, height, nrComponents;
-    unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+    unsigned char *data;
+    //data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+
+    if (this->textureStore->size() == 0 || this->textureStore->find(filename) == this->textureStore->end()) {
+        data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+        (*this->textureStore)[filename] = data;
+        std::cout<< "saved to storage" << std::endl;
+    } else {
+        data = (*this->textureStore)[filename];
+        std::cout<< "loaded from storage" << std::endl;
+    }
+
     if (data)
     {
         GLenum format;
@@ -212,7 +226,7 @@ unsigned int LoadedObject::TextureFromFile(const char *path, const std::string &
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        stbi_image_free(data);
+        //stbi_image_free(data);
     }
     else
     {
@@ -330,7 +344,17 @@ std::vector<VertexFormat> LoadedObject::loadObject() {
     std::vector<VertexFormat> vertecies;
 
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(filename.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+    const aiScene* scene;
+
+    scene = importer.ReadFile(filename.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+
+    // if (this->objStore->size() == 0 || this->objStore->find(filename) != this->objStore->end()) {
+    //     (*this->objStore)[filename] = scene;
+    // } else {
+    //     scene = (*this->objStore)[filename];
+    //     std::cout << "Getting from storage" << std::endl;
+    // }
+    
         // check for errors
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
     {
