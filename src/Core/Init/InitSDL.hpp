@@ -7,7 +7,7 @@
 #include "FrameBufferInfo.hpp"
 #include "WindowInfo.hpp"
 #include "InitGLEW.hpp"
-#include "IListener.hpp"
+#include "IListenerSDL.hpp"
 #include "DebugOutput.hpp"
  
 namespace Core {
@@ -15,7 +15,7 @@ namespace Core {
  
       class InitSDL {
       private:
-            static Core::IListener* listener;
+            static Core::IListenerSDL* listener;
             static Core::WindowInfo windowInformation;
             static SDL_Window* sdlWindow;
             static SDL_GLContext glContext;
@@ -29,7 +29,7 @@ namespace Core {
       public:
          static void run();//called from outside
          static void close();
-         static void setListener(Core::IListener*& iListener);
+         static void setListener(Core::IListenerSDL*& iListener);
  
          void enterFullscreen();
          void exitFullscreen();
@@ -41,11 +41,11 @@ namespace Core {
             static void idleCallback(void);
             static void displayCallback(void);
             static void reshapeCallback(int width, int height);
-            static void keyboardCallback(unsigned char key, int mousex, int mousey);
+            static void keyboardCallback(SDL_Keysym key);
             static void mouseCallback(int button, int state, int x, int y);
             static void mouseMovementCallback(int x, int y);
             static void closeCallback();
-            static void keyboardUp(unsigned char key, int x, int y);
+            static void keyboardUp(SDL_Keysym key, int x, int y);
       };
    }
 }

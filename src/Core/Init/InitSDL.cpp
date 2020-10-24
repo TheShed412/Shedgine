@@ -2,7 +2,7 @@
 
 using namespace Core::Init;
 
-Core::IListener* InitSDL::listener = NULL;
+Core::IListenerSDL* InitSDL::listener = NULL;
 Core::WindowInfo InitSDL::windowInformation;
 SDL_Window* InitSDL::sdlWindow = NULL;
 SDL_GLContext InitSDL::glContext = NULL;
@@ -42,6 +42,7 @@ void InitSDL::init(const Core::WindowInfo& windowInfo,
 
     if (sdlWindow == NULL) {
         std::cerr << "::SDL WINDOW CREATION ERROR::" << std::endl;
+        std::cerr << SDL_GetError() << std::endl;
         exit(EXIT_FAILURE);
     }
 
@@ -49,6 +50,7 @@ void InitSDL::init(const Core::WindowInfo& windowInfo,
 
     if (glContext == NULL) {
         std::cerr << "::SDL GL CONTEXT CREATION ERROR::" << std::endl;
+        std::cerr << SDL_GetError() << std::endl;
         exit(EXIT_FAILURE);
     }
 
@@ -66,9 +68,14 @@ void InitSDL::run() {
     while(!quit) {
         SDL_Event event;
         if (SDL_PollEvent(&event)){
-            if (event.type == SDL_QUIT){
-                // Break out of the loop on quit
+            switch(event.type){
+                case SDL_QUIT:
                 quit = true;
+                break;
+
+                case SDL_KEYDOWN:
+                keyboardCallback(event.key.keysym);
+                break;
             }
         }
         displayCallback();
@@ -82,8 +89,19 @@ void InitSDL::close() {
     SDL_Quit();
 }
  
-void InitSDL::enterFullscreen() {}
-void InitSDL::exitFullscreen() {}
+void InitSDL::enterFullscreen() {
+    if (SDL_SetWindowFullscreen(sdlWindow, SDL_WINDOW_FULLSCREEN) < 0) {
+        std::cerr << "::FAILED TO FULLSCREEN::" << std::endl;
+        std::cerr << SDL_GetError() << std::endl;
+    }
+}
+
+void InitSDL::exitFullscreen() {
+    if (SDL_SetWindowFullscreen(sdlWindow, 0) < 0) {
+        std::cerr << "::FAILED TO WINDOW::" << std::endl;
+        std::cerr << SDL_GetError() << std::endl;
+    }
+}
 
 void InitSDL::idleCallback(void) {}
 
@@ -113,7 +131,7 @@ void InitSDL::reshapeCallback(int width, int height) {
     }
 }
 
-void InitSDL::keyboardCallback(unsigned char key, int mousex, int mousey) {
+void InitSDL::keyboardCallback(SDL_Keysym key) {
     if(listener) {
         listener->notifyKeyboardInput(key);
     }
@@ -132,9 +150,14 @@ void InitSDL::mouseMovementCallback(int x, int y) {
 }
 
 void InitSDL::closeCallback(){}
-void InitSDL::keyboardUp(unsigned char key, int x, int y){}
 
-void InitSDL::setListener(Core::IListener*& iListener)
+void InitSDL::keyboardUp(SDL_Keysym key, int x, int y) {
+    if(listener) {
+        listener->notifyKeyboardUp(key);
+    }
+}
+
+void InitSDL::setListener(Core::IListenerSDL*& iListener)
 {
    listener = iListener;
 }
