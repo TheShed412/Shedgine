@@ -18,6 +18,7 @@ namespace Core {
             static Core::IListener* listener;
             static Core::WindowInfo windowInformation;
             static SDL_Window* sdlWindow;
+            static SDL_GLContext glContext;
             static bool quit;
  
        public:             //use the structures from Part II

@@ -5,6 +5,7 @@ using namespace Core::Init;
 Core::IListener* InitSDL::listener = NULL;
 Core::WindowInfo InitSDL::windowInformation;
 SDL_Window* InitSDL::sdlWindow = NULL;
+SDL_GLContext InitSDL::glContext = NULL;
 bool InitSDL::quit = false;
 
 void InitSDL::init(const Core::WindowInfo& windowInfo,
@@ -44,7 +45,21 @@ void InitSDL::init(const Core::WindowInfo& windowInfo,
         exit(EXIT_FAILURE);
     }
 
+    glContext = SDL_GL_CreateContext(sdlWindow);
+
+    if (glContext == NULL) {
+        std::cerr << "::SDL GL CONTEXT CREATION ERROR::" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    Init::InitGLEW::Init();
+    glDebugMessageCallback(DebugOutput::Callback, NULL);
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE,
+                      GL_DONT_CARE, 0, NULL, GL_TRUE);
+
+    printOpenGLInfo(windowInfo, contextInfo);
     glEnable(GL_DEBUG_OUTPUT);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void InitSDL::run() {
@@ -56,24 +71,84 @@ void InitSDL::run() {
                 quit = true;
             }
         }
+        displayCallback();
     }
     close();
 }
 
 void InitSDL::close() {
     SDL_DestroyWindow(sdlWindow);
+    SDL_GL_DeleteContext(glContext); 
     SDL_Quit();
 }
-void InitSDL::setListener(Core::IListener*& iListener) {}
  
 void InitSDL::enterFullscreen() {}
 void InitSDL::exitFullscreen() {}
 
 void InitSDL::idleCallback(void) {}
-void InitSDL::displayCallback(void){}
-void InitSDL::reshapeCallback(int width, int height){}
-void InitSDL::keyboardCallback(unsigned char key, int mousex, int mousey){}
-void InitSDL::mouseCallback(int button, int state, int x, int y){}
-void InitSDL::mouseMovementCallback(int x, int y){}
+
+void InitSDL::displayCallback(void) {
+    if (listener){
+        listener->notifyBeginFrame();
+        listener->notifyDisplayFrame();
+        glClearColor(1.f, 0.f, 1.f, 0.f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        SDL_GL_SwapWindow(sdlWindow);
+   
+        listener->notifyEndFrame();
+    }
+}
+
+void InitSDL::reshapeCallback(int width, int height) {
+    if (windowInformation.isReshapable == true) {
+        if (listener){
+            listener->notifyReshape(width,
+                                 height,
+                                 windowInformation.width,
+                                 windowInformation.height);
+        }
+        windowInformation.width = width;
+        windowInformation.height = height;
+    }
+}
+
+void InitSDL::keyboardCallback(unsigned char key, int mousex, int mousey) {
+    if(listener) {
+        listener->notifyKeyboardInput(key);
+    }
+}
+
+void InitSDL::mouseCallback(int button, int state, int x, int y) {
+    if(listener) {
+        listener->notifyMouseInput(button, state, x, y);
+    }
+}
+
+void InitSDL::mouseMovementCallback(int x, int y) {
+    if(listener) {
+        listener->notifyMouseMovementInput(x, y);
+    }
+}
+
 void InitSDL::closeCallback(){}
 void InitSDL::keyboardUp(unsigned char key, int x, int y){}
+
+void InitSDL::setListener(Core::IListener*& iListener)
+{
+   listener = iListener;
+}
+
+void InitSDL::printOpenGLInfo(const Core::WindowInfo& windowInfo,
+                                const Core::ContextInfo& contextInfo){
+ 
+    const unsigned char* renderer = glGetString(GL_RENDERER);
+    const unsigned char* vendor = glGetString(GL_VENDOR);
+    const unsigned char* version = glGetString(GL_VERSION);
+    
+    std::cout << "******************************************************************************" << std::endl;
+    std::cout << "SDL:Initialise" << std::endl;
+    std::cout << "SDL:\tVendor : " << vendor << std::endl;
+    std::cout << "SDL:\tRenderer : " << renderer << std::endl;
+    std::cout << "SDL:\tOpenGl version: " << version << std::endl;
+}
