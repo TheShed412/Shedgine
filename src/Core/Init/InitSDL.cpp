@@ -109,9 +109,6 @@ void InitSDL::displayCallback(void) {
     if (listener){
         listener->notifyBeginFrame();
         listener->notifyDisplayFrame();
-        glClearColor(1.f, 0.f, 1.f, 0.f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         SDL_GL_SwapWindow(sdlWindow);
    
         listener->notifyEndFrame();

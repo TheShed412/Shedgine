@@ -11,6 +11,7 @@
 #include "Manager/SceneManager.hpp"
 #include "Manager/DebugScene.hpp"
 #include "Manager/FPSScene.hpp"
+#include "Manager/FPSSceneSDL.hpp"
 
 
 GLuint program;
@@ -58,7 +59,9 @@ int main(int argc, char **argv)
         Core::Init::InitGLUT::run();
     } else if ( argc > 1 && strcmp(argv[1], "sdl") == 0) {
         Core::Init::InitSDL::init(window, context, frameBufferInfo);
+        Core::IListenerSDL* scene = new Managers::FPSSceneSDL(window);
         std::cout << "SDL SCENE" << std::endl;
+        Core::Init::InitSDL::setListener(scene);
         Core::Init::InitSDL::run();
     } else {
         Core::Init::InitGLUT::init(window, context, frameBufferInfo);
