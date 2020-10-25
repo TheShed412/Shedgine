@@ -46,7 +46,7 @@ namespace Managers
       ~FPSScene();
       void notifyBeginFrame() override;
       void notifyDisplayFrame() override;
-      void notifyKeyboardInput(unsigned char key) override;
+      void notifyKeyboardInput(unsigned char key, bool pressed) override;
       void notifyKeyboardUp(SDL_Keysym key) override;
       void notifyMouseInput(int button, int state, int x, int y) override;
       void notifyMouseMovementInput(int x, int y) override;

@@ -158,7 +158,7 @@ void FPSScene::notifyBeginFrame()
     currentTime = SDL_GetTicks();
     elapsedTime = currentTime - previousTime;
 
-    // actorManager->GetActor("player").HandleInput(keys, elapsedTime);
+    actorManager->GetActor("player").HandleInput(elapsedTime);
 
     models_manager->Update();
     gameObjectManager->Update();
@@ -187,11 +187,11 @@ void FPSScene::notifyKeyboardUp(SDL_Keysym key) {
     keys[key.sym] = false;
 }
 
-void FPSScene::notifyKeyboardInput(unsigned char key) {
+void FPSScene::notifyKeyboardInput(unsigned char key, bool pressed) {
     if (key != SDLK_UNKNOWN) {
         Commands::Command* command = this->inputHandler->handleInput(key);
         if (command) {
-            command->execute(actorManager->GetActor("player"), elapsedTime);
+            command->execute(actorManager->GetActor("player"), pressed);
         }
     }
 }

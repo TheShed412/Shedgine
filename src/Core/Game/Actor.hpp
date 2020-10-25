@@ -16,10 +16,10 @@ namespace Game
     {
         public:
             virtual ~Actor() = 0;
-            virtual void MoveForward(int deltaTime) = 0;
-            virtual void MoveBackward(int deltaTime)= 0;
-            virtual void MoveRight(int deltaTime)= 0;
-            virtual void MoveLeft(int deltaTime) = 0;
+            virtual void MoveForward(bool) = 0;
+            virtual void MoveBackward(bool)= 0;
+            virtual void MoveRight(bool)= 0;
+            virtual void MoveLeft(bool) = 0;
             virtual void MoveUp(int deltaTime) = 0;
             virtual void MoveDown(int deltaTime) = 0;
             virtual void TurnRight(int deltaTime) = 0;
@@ -28,7 +28,7 @@ namespace Game
             virtual void TurnDown(int deltaTime) = 0;
             virtual void LookAtObject(glm::vec3) = 0;
             virtual void Action(int deltaTime) = 0;
-            virtual void HandleInput(bool[], int) = 0;
+            virtual void HandleInput(int deltaTime) = 0;
             virtual void HandleMouseInput(int,int) = 0;
     };
     inline Actor::~Actor()

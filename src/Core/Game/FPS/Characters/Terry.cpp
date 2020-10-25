@@ -29,6 +29,10 @@ Rendering::Camera* camera)
 
     this->model = model;
     this->camera = camera;
+    this->moveForward = false;
+    this->moveBack = false;
+    this->moveLeft = false;
+    this->moveRight = false;
 }
 
 void Terry::Update()
@@ -50,24 +54,24 @@ void Terry::Destroy() {
     model->Destroy();
 }
 
-void Terry::MoveForward(int deltaTime)
+void Terry::MoveForward(bool move)
 {
-    camera->processKeyboard(Rendering::Camera::FORWARD, deltaTime/1000.0f);
+    moveForward = move;
 }
 
-void Terry::MoveBackward(int deltaTime)
+void Terry::MoveBackward(bool move)
 {
-    camera->processKeyboard(Rendering::Camera::BACKWARD, deltaTime/1000.0f);
+    moveBack = move;
 }
 
-void Terry::MoveRight(int deltaTime)
+void Terry::MoveRight(bool move)
 {
-    camera->processKeyboard(Rendering::Camera::RIGHT, deltaTime/1000.0f);
+    moveRight = move;
 }
 
-void Terry::MoveLeft(int deltaTime)
+void Terry::MoveLeft(bool move)
 {
-    camera->processKeyboard(Rendering::Camera::LEFT, deltaTime/1000.0f);
+    moveLeft = move;
 }
 
 void Terry::MoveUp(int deltaTime)
@@ -102,24 +106,22 @@ void Terry::Action(int deltaTime)
 {
 }
 
-void Terry::HandleInput(bool keys[], int deltaTime) {
-    if(keys['w'] || keys['a'] || keys['s'] || keys['d']) {
-        if (keys['w'])
-        {
+void Terry::HandleInput(int deltaTime) {
+    if (moveForward)
+    {
             camera->processKeyboard(Rendering::Camera::FORWARD, deltaTime/1000.0f);
-        }
-        if (keys['a'])
-        {
-            camera->processKeyboard(Rendering::Camera::LEFT, deltaTime/1000.0f);
-        }
-        if (keys['s'])
-        {
-            camera->processKeyboard(Rendering::Camera::BACKWARD, deltaTime/1000.0f);
-        }
-        if (keys['d'])
-        {
-            camera->processKeyboard(Rendering::Camera::RIGHT, deltaTime/1000.0f);
-        }
+    }
+    if (moveLeft)
+    {
+        camera->processKeyboard(Rendering::Camera::LEFT, deltaTime/1000.0f);
+    }
+    if (moveBack)
+     {
+        camera->processKeyboard(Rendering::Camera::BACKWARD, deltaTime/1000.0f);
+    }
+    if (moveRight)
+    {
+        camera->processKeyboard(Rendering::Camera::RIGHT, deltaTime/1000.0f);
     }
 }
 

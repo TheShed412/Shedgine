@@ -11,6 +11,10 @@ namespace Game
         {
             private:
                 Rendering::Camera* camera;
+                bool moveForward = false;
+                bool moveBack = false;
+                bool moveLeft = false;
+                bool moveRight = false;
             public:
                 Terry();
                 Terry(Rendering::Models::LoadedObject*,
@@ -23,10 +27,10 @@ namespace Game
                 void Draw() override;
                 void Create() override;
                 void Destroy() override;
-                void MoveForward(int deltaTime) override;
-                void MoveBackward(int deltaTime) override;
-                void MoveRight(int deltaTime) override;
-                void MoveLeft(int deltaTime) override;
+                void MoveForward(bool) override;
+                void MoveBackward(bool) override;
+                void MoveRight(bool) override;
+                void MoveLeft(bool) override;
                 void MoveUp(int deltaTime) override;
                 void MoveDown(int deltaTime) override;
                 void TurnRight(int deltaTime) override;
@@ -34,7 +38,7 @@ namespace Game
                 void TurnUp(int deltaTime) override;
                 void TurnDown(int deltaTime) override;
                 void HandleMouseInput(int,int) override;
-                void HandleInput(bool[], int);
+                void HandleInput(int deltaTime);
                 void Action(int deltaTime) override;
                 void LookAtObject(glm::vec3) override;
 

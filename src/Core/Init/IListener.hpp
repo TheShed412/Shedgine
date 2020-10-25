@@ -15,7 +15,7 @@ namespace Core{
       virtual void notifyBeginFrame() = 0;
       virtual void notifyDisplayFrame() = 0;
       virtual void notifyEndFrame() = 0;
-      virtual void notifyKeyboardInput(unsigned char key) = 0;
+      virtual void notifyKeyboardInput(unsigned char key, bool pressed) = 0;
       virtual void notifyKeyboardUp(SDL_Keysym key) = 0;
       virtual void notifyMouseInput(int button, int state, int x, int y) = 0;
       virtual void notifyMouseMovementInput(int x, int y) = 0;
