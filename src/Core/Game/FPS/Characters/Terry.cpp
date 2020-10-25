@@ -50,52 +50,55 @@ void Terry::Destroy() {
     model->Destroy();
 }
 
-glm::mat4 Terry::MoveForward()
+void Terry::MoveForward(int deltaTime)
 {
-    return glm::mat4(0);
+    camera->processKeyboard(Rendering::Camera::FORWARD, deltaTime/1000.0f);
 }
 
-glm::mat4 Terry::MoveBackward()
+void Terry::MoveBackward(int deltaTime)
+{
+    camera->processKeyboard(Rendering::Camera::BACKWARD, deltaTime/1000.0f);
+}
+
+void Terry::MoveRight(int deltaTime)
+{
+    camera->processKeyboard(Rendering::Camera::RIGHT, deltaTime/1000.0f);
+}
+
+void Terry::MoveLeft(int deltaTime)
+{
+    camera->processKeyboard(Rendering::Camera::LEFT, deltaTime/1000.0f);
+}
+
+void Terry::MoveUp(int deltaTime)
 {
 }
 
-glm::mat4 Terry::MoveRight()
+void Terry::MoveDown(int deltaTime)
 {
 }
 
-glm::mat4 Terry::MoveLeft()
-{
-}
-
-glm::mat4 Terry::MoveUp()
-{
-}
-
-glm::mat4 Terry::MoveDown()
-{
-}
-
-glm::mat4 Terry::TurnRight()
-{
-
-}
-
-glm::mat4 Terry::TurnLeft()
+void Terry::TurnRight(int deltaTime)
 {
 
 }
 
-glm::mat4 Terry::TurnUp()
+void Terry::TurnLeft(int deltaTime)
 {
 
 }
 
-glm::mat4 Terry::TurnDown()
+void Terry::TurnUp(int deltaTime)
 {
 
 }
 
-void Terry::Action()
+void Terry::TurnDown(int deltaTime)
+{
+
+}
+
+void Terry::Action(int deltaTime)
 {
 }
 

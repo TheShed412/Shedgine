@@ -5,6 +5,7 @@ using namespace Managers;
 #include "../Rendering/Models/LoadedObject.hpp"
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
 #include "../Core/Game/FPS/Characters/Terry.hpp"
+#include "../Core/Game/Commands/Command.hpp"
 #include "../Core/Physics/Debugger/GLDebugDrawer.hpp"
 #include "../Core/Init/InitSDL.hpp"
 
@@ -18,6 +19,13 @@ FPSScene::FPSScene()
     glCullFace(GL_FRONT);
     glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
+
+    inputHandler = new Input::InputHandler();
+
+    inputHandler->bindW(new Commands::ForwardCommand());
+    inputHandler->bindA(new Commands::LeftCommand());
+    inputHandler->bindS(new Commands::BackwardCommand());
+    inputHandler->bindD(new Commands::RightCommand());
 
     sdlWindow = Core::Init::InitSDL::sdlWindow;
     gameObjectManager = new Game::Managers::ObjectManager();
@@ -150,7 +158,8 @@ void FPSScene::notifyBeginFrame()
     currentTime = SDL_GetTicks();
     elapsedTime = currentTime - previousTime;
 
-    actorManager->GetActor("player").HandleInput(keys, elapsedTime);
+    // actorManager->GetActor("player").HandleInput(keys, elapsedTime);
+
     models_manager->Update();
     gameObjectManager->Update();
 }
@@ -178,8 +187,13 @@ void FPSScene::notifyKeyboardUp(SDL_Keysym key) {
     keys[key.sym] = false;
 }
 
-void FPSScene::notifyKeyboardInput(SDL_Keysym key) {
-    keys[key.sym] = true;
+void FPSScene::notifyKeyboardInput(unsigned char key) {
+    if (key != SDLK_UNKNOWN) {
+        Commands::Command* command = this->inputHandler->handleInput(key);
+        if (command) {
+            command->execute(actorManager->GetActor("player"), elapsedTime);
+        }
+    }
 }
 
 void FPSScene::notifyMouseInput(int button, int state, int x, int y) {

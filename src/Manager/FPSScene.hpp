@@ -4,6 +4,7 @@
 #include "../Core/Init/IListener.hpp"
 #include "../Core/Physics/Debugger/GLDebugDrawer.hpp"
 #include "../Core/Game/Manager/ActorManager.hpp"
+#include "../Core/Game/Input/InputHandler.hpp"
 #include "../Core/Game/Manager/ObjectManager.hpp"
 #include "../Core/Init/WindowInfo.hpp"
 
@@ -29,6 +30,7 @@ namespace Managers
       // it will also more modularize the code in one place
       std::map<std::string, Physics::PhysicsObject*> physicsObjects;
       SDL_Window* sdlWindow;
+      Input::InputHandler* inputHandler;
 
       bool firstMouse = true;
       float lastX;
@@ -44,7 +46,7 @@ namespace Managers
       ~FPSScene();
       void notifyBeginFrame() override;
       void notifyDisplayFrame() override;
-      void notifyKeyboardInput(SDL_Keysym key) override;
+      void notifyKeyboardInput(unsigned char key) override;
       void notifyKeyboardUp(SDL_Keysym key) override;
       void notifyMouseInput(int button, int state, int x, int y) override;
       void notifyMouseMovementInput(int x, int y) override;

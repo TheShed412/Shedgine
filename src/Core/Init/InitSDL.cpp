@@ -79,11 +79,11 @@ void InitSDL::run() {
                 break;
 
                 case SDL_KEYDOWN:
-                keyboardCallback(event.key.keysym);
+                keyboardCallback(event.key.keysym.sym);
                 break;
 
                 case SDL_KEYUP:
-                keyboardUp(event.key.keysym, 0, 0);
+                keyboardCallback(SDLK_UNKNOWN);
                 break;
 
                 case SDL_MOUSEMOTION:
@@ -142,7 +142,7 @@ void InitSDL::reshapeCallback(int width, int height) {
     }
 }
 
-void InitSDL::keyboardCallback(SDL_Keysym key) {
+void InitSDL::keyboardCallback(unsigned char key) {
     if(listener) {
         listener->notifyKeyboardInput(key);
     }

@@ -39,7 +39,7 @@ namespace Core {
             static void idleCallback(void);
             static void displayCallback(void);
             static void reshapeCallback(int width, int height);
-            static void keyboardCallback(SDL_Keysym key);
+            static void keyboardCallback(unsigned char key);
             static void mouseCallback(int button, int state, int x, int y);
             static void mouseMovementCallback(int x, int y);
             static void closeCallback();

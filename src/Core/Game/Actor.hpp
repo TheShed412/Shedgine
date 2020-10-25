@@ -16,18 +16,18 @@ namespace Game
     {
         public:
             virtual ~Actor() = 0;
-            virtual glm::mat4 MoveForward() = 0;
-            virtual glm::mat4 MoveBackward()= 0;
-            virtual glm::mat4 MoveRight()= 0;
-            virtual glm::mat4 MoveLeft() = 0;
-            virtual glm::mat4 MoveUp() = 0;
-            virtual glm::mat4 MoveDown() = 0;
-            virtual glm::mat4 TurnRight() = 0;
-            virtual glm::mat4 TurnLeft() = 0;
-            virtual glm::mat4 TurnUp() = 0;
-            virtual glm::mat4 TurnDown() = 0;
+            virtual void MoveForward(int deltaTime) = 0;
+            virtual void MoveBackward(int deltaTime)= 0;
+            virtual void MoveRight(int deltaTime)= 0;
+            virtual void MoveLeft(int deltaTime) = 0;
+            virtual void MoveUp(int deltaTime) = 0;
+            virtual void MoveDown(int deltaTime) = 0;
+            virtual void TurnRight(int deltaTime) = 0;
+            virtual void TurnLeft(int deltaTime) = 0;
+            virtual void TurnUp(int deltaTime) = 0;
+            virtual void TurnDown(int deltaTime) = 0;
             virtual void LookAtObject(glm::vec3) = 0;
-            virtual void Action() = 0;
+            virtual void Action(int deltaTime) = 0;
             virtual void HandleInput(bool[], int) = 0;
             virtual void HandleMouseInput(int,int) = 0;
     };
