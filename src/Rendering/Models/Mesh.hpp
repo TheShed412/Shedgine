@@ -5,7 +5,6 @@
 #include <assimp/Importer.hpp>
 #include <vector>
 #include <GL/glew.h>
-#include <GL/freeglut.h>
 
 #include "../VertexFormat.hpp"
 #include "../TextureFormat.hpp"

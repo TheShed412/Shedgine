@@ -6,6 +6,7 @@ using namespace Managers;
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
 #include "../Core/Game/FPS/Characters/Terry.hpp"
 #include "../Core/Physics/Debugger/GLDebugDrawer.hpp"
+#include "../Core/Init/InitSDL.hpp"
 
 void collisionCheck(btDynamicsWorld *dynamicsWorld, btScalar timeStep) {
     int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
@@ -18,6 +19,7 @@ FPSScene::FPSScene()
     glFrontFace(GL_CCW);  
     glEnable(GL_DEPTH_TEST);
 
+    sdlWindow = Core::Init::InitSDL::sdlWindow;
     gameObjectManager = new Game::Managers::ObjectManager();
     actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
@@ -145,7 +147,7 @@ void FPSScene::notifyBeginFrame()
 {
     // Do the time shit
     previousTime = currentTime;
-    currentTime = glutGet(GLUT_ELAPSED_TIME);
+    currentTime = SDL_GetTicks();
     elapsedTime = currentTime - previousTime;
 
     actorManager->GetActor("player").HandleInput(keys, elapsedTime);
@@ -172,13 +174,12 @@ void FPSScene::notifyEndFrame()
 
 }
 
-void FPSScene::notifyKeyboardUp(unsigned char key) {
-    keys[key] = false;
+void FPSScene::notifyKeyboardUp(SDL_Keysym key) {
+    keys[key.sym] = false;
 }
 
-void FPSScene::notifyKeyboardInput(unsigned char key) {
-
-    keys[key] = true;
+void FPSScene::notifyKeyboardInput(SDL_Keysym key) {
+    keys[key.sym] = true;
 }
 
 void FPSScene::notifyMouseInput(int button, int state, int x, int y) {
@@ -187,44 +188,8 @@ void FPSScene::notifyMouseInput(int button, int state, int x, int y) {
 
 
 void FPSScene::notifyMouseMovementInput(int x, int y) {
-    if (firstMouse)
-    {
-        lastX = x;
-        lastY = y;
-        firstMouse = false;
-    }
+    actorManager->GetActor("player").HandleMouseInput(x, -y);
 
-    // If I am in the buffer, I don't want to update since I may be in the middle of warping the cursor
-    // back to the center of the screen
-    if (!inBuffer) {
-        float xoffset = x - lastX;
-        float yoffset = lastY - y; // reversed since y-coordinates go from bottom to top
-
-        lastX = x;
-        lastY = y;
-        actorManager->GetActor("player").HandleMouseInput(xoffset, yoffset);
-    }
-    
-    glutPostRedisplay();
-
-    int win_h = windowInfo.height;
-    int win_w = windowInfo.width;
-
-    if ( x < mouseBuffer || x > win_w - mouseBuffer ) {
-        inBuffer = true;
-        lastX = win_w/2;
-        lastY = win_h/2;
-        glutWarpPointer(win_w/2, win_h/2);  //centers the cursor
-    } else if (y < mouseBuffer || y > win_h - mouseBuffer) {
-        inBuffer = true;
-        lastX = win_w/2;
-        lastY = win_h/2;
-        glutWarpPointer(win_w/2, win_h/2);
-    }
-    else {
-        inBuffer = false;
-    }
-    
 }
  
 void FPSScene::notifyReshape(int width,

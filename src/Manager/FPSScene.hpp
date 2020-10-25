@@ -1,15 +1,19 @@
 #pragma once
-#include "SceneManager.hpp"
 #include "ModelsManager.hpp"
 #include "../Core/Physics/PhysicsObject.hpp"
+#include "../Core/Init/IListener.hpp"
 #include "../Core/Physics/Debugger/GLDebugDrawer.hpp"
+#include "../Core/Game/Manager/ActorManager.hpp"
+#include "../Core/Game/Manager/ObjectManager.hpp"
+#include "../Core/Init/WindowInfo.hpp"
 
 #include <btBulletDynamicsCommon.h>
 #include <LinearMath/btIDebugDraw.h>
+#include <SDL2/SDL.h>
 
 namespace Managers
 {
-  class FPSScene : public SceneManager
+  class FPSScene : public Core::IListener
   {
     private:
       // Physics collision setup
@@ -24,6 +28,7 @@ namespace Managers
       // update could get pretty complicated with physics objects
       // it will also more modularize the code in one place
       std::map<std::string, Physics::PhysicsObject*> physicsObjects;
+      SDL_Window* sdlWindow;
 
       bool firstMouse = true;
       float lastX;
@@ -39,15 +44,26 @@ namespace Managers
       ~FPSScene();
       void notifyBeginFrame() override;
       void notifyDisplayFrame() override;
-      void notifyKeyboardInput(unsigned char key) override;
+      void notifyKeyboardInput(SDL_Keysym key) override;
+      void notifyKeyboardUp(SDL_Keysym key) override;
       void notifyMouseInput(int button, int state, int x, int y) override;
       void notifyMouseMovementInput(int x, int y) override;
-      void notifyKeyboardUp(unsigned char key) override;
       void notifyEndFrame() override;
       void notifyReshape(int width,
                                  int height,
                                  int previous_width,
                                  int previous_height) override;
+
+    protected:
+      Managers::ShaderManager* shader_manager;
+      Managers::ModelsManager* models_manager;
+      Rendering::TextureLoader* textureLoader;
+      Rendering::Light* light;
+      Rendering::Camera* camera;
+      Game::Managers::ObjectManager* gameObjectManager;
+      Game::Managers::ActorManager* actorManager;
+      glm::mat4 projection;
+      Core::WindowInfo windowInfo;
 
  };
 }

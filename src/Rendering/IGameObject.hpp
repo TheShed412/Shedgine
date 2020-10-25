@@ -2,7 +2,6 @@
 #include <vector>
 #include <iostream>
 #include <GL/glew.h>
-#include <GL/freeglut.h>
 #include "VertexFormat.hpp"
 #include "Light.hpp"
  

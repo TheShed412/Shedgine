@@ -99,7 +99,7 @@ void Terry::Action()
 {
 }
 
-void Terry::HandleInput(unsigned char keys[], int deltaTime) {
+void Terry::HandleInput(bool keys[], int deltaTime) {
     if(keys['w'] || keys['a'] || keys['s'] || keys['d']) {
         if (keys['w'])
         {

@@ -1,7 +1,6 @@
 #pragma once
 #include <LinearMath/btIDebugDraw.h>
 #include <GL/glew.h>
-#include <GL/freeglut.h>
 #include <glm/glm.hpp>
 
 class GLDebugDrawer : public btIDebugDraw

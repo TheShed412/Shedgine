@@ -1,6 +1,5 @@
 #include "Mesh.hpp"
 #include <GL/glew.h>
-#include <GL/freeglut.h>
 #include<iostream>
 using namespace Rendering;
 using namespace Models;

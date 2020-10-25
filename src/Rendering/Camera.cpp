@@ -9,7 +9,7 @@ using namespace Rendering;
 
 Camera::Camera() {}
 
-Camera::Camera(glm::vec3 _position, glm::vec3 _worldUp, GLfloat _mouseSensitivity, GLfloat _movementSpeed) {
+Camera::Camera(glm::vec3 _position, glm::vec3 _worldUp, float _mouseSensitivity, float _movementSpeed) {
     position = _position;
     worldUpVec = _worldUp;
     mouseSensitivity = _mouseSensitivity;
@@ -19,7 +19,7 @@ Camera::Camera(glm::vec3 _position, glm::vec3 _worldUp, GLfloat _mouseSensitivit
     updateVectors();
 }
 
-void Camera::setProgram(GLuint program) {
+void Camera::setProgram(unsigned int program) {
     this->program = program;
 }
 

@@ -1,5 +1,4 @@
 #pragma once
-#include <GL/glut.h>
 #include "glm/gtc/matrix_transform.hpp"
 
 namespace Rendering {
@@ -17,13 +16,13 @@ namespace Rendering {
             };
             Camera();
             ~Camera();
-            Camera(glm::vec3 _position, glm::vec3 _worldUp, GLfloat _mouseSensitivity, GLfloat _movementSpeed);
+            Camera(glm::vec3 _position, glm::vec3 _worldUp, float _mouseSensitivity, float _movementSpeed);
             void processMouseMovement(float xoffset, float yoffset);
             void processKeyboard(CameraMovement direction, float deltaTime);
             void setLookAt(glm::vec3 target);
             void addToPosition(glm::vec3 diff);
             glm::mat4 getModelView();
-            void setProgram(GLuint program);
+            void setProgram(unsigned int program);
 
         private:
             glm::vec3 position;// current location, WASD
@@ -31,11 +30,11 @@ namespace Rendering {
             glm::vec3 rightVec;// = {0, 1, 0};
             glm::vec3 upVec;// calculated with look direction and rightVec
             glm::vec3 worldUpVec;
-            GLfloat movementSpeed;
-            GLfloat mouseSensitivity;
-            GLfloat yaw;
-            GLfloat pitch;
-            GLuint program;
+            float movementSpeed;
+            float mouseSensitivity;
+            float yaw;
+            float pitch;
+            unsigned int program;
             void updateVectors();
     };
 

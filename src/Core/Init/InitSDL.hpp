@@ -4,10 +4,9 @@
 #include <SDL2/SDL.h>
 
 #include "ContextInfo.hpp"
-#include "FrameBufferInfo.hpp"
 #include "WindowInfo.hpp"
 #include "InitGLEW.hpp"
-#include "IListenerSDL.hpp"
+#include "IListener.hpp"
 #include "DebugOutput.hpp"
  
 namespace Core {
@@ -15,21 +14,20 @@ namespace Core {
  
       class InitSDL {
       private:
-            static Core::IListenerSDL* listener;
+            static Core::IListener* listener;
             static Core::WindowInfo windowInformation;
-            static SDL_Window* sdlWindow;
             static SDL_GLContext glContext;
             static bool quit;
  
-       public:             //use the structures from Part II
+       public:
+         static SDL_Window* sdlWindow;            //use the structures from Part II
          static void init(const Core::WindowInfo& window,
-                          const Core::ContextInfo& context,
-                          const Core::FramebufferInfo& framebufferInfo);
+                          const Core::ContextInfo& context);
  
       public:
          static void run();//called from outside
          static void close();
-         static void setListener(Core::IListenerSDL*& iListener);
+         static void setListener(Core::IListener*& iListener);
  
          void enterFullscreen();
          void exitFullscreen();

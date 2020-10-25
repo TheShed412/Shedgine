@@ -1,4 +1,6 @@
 #pragma once
+#include <SDL2/SDL.h>
+
 #include "GameObject.hpp"
 
 
@@ -26,7 +28,7 @@ namespace Game
             virtual glm::mat4 TurnDown() = 0;
             virtual void LookAtObject(glm::vec3) = 0;
             virtual void Action() = 0;
-            virtual void HandleInput(unsigned char[], int) = 0;
+            virtual void HandleInput(bool[], int) = 0;
             virtual void HandleMouseInput(int,int) = 0;
     };
     inline Actor::~Actor()

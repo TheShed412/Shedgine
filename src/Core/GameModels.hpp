@@ -3,7 +3,6 @@
  
 #pragma once
 #include <GL/glew.h>
-#include <GL/freeglut.h>
 #include "VertexFormat.hpp"
 #include <vector>
 #include <map>

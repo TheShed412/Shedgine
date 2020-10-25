@@ -2,15 +2,14 @@
 
 using namespace Core::Init;
 
-Core::IListenerSDL* InitSDL::listener = NULL;
+Core::IListener* InitSDL::listener = NULL;
 Core::WindowInfo InitSDL::windowInformation;
 SDL_Window* InitSDL::sdlWindow = NULL;
 SDL_GLContext InitSDL::glContext = NULL;
 bool InitSDL::quit = false;
 
 void InitSDL::init(const Core::WindowInfo& windowInfo,
-                     const Core::ContextInfo& contextInfo,
-                     const Core::FramebufferInfo& framebufferInfo)
+                     const Core::ContextInfo& contextInfo)
 {
     int bpp = 0;
     int flags = 0;
@@ -28,6 +27,8 @@ void InitSDL::init(const Core::WindowInfo& windowInfo,
     SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 5 );
     SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );
     SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 
     flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 
@@ -65,22 +66,35 @@ void InitSDL::init(const Core::WindowInfo& windowInfo,
 }
 
 void InitSDL::run() {
+    int xpos = windowInformation.width / 2;
+    int ypos = windowInformation.height / 2;
     while(!quit) {
         SDL_Event event;
-        if (SDL_PollEvent(&event)){
+        while (SDL_PollEvent(&event) && !quit){
             switch(event.type){
                 case SDL_QUIT:
+                closeCallback();
+                close();
                 quit = true;
                 break;
 
                 case SDL_KEYDOWN:
                 keyboardCallback(event.key.keysym);
                 break;
+
+                case SDL_KEYUP:
+                keyboardUp(event.key.keysym, 0, 0);
+                break;
+
+                case SDL_MOUSEMOTION:
+                xpos += event.motion.xrel;
+                ypos += event.motion.yrel;
+                mouseMovementCallback(event.motion.xrel, event.motion.yrel);
+                break;
             }
         }
         displayCallback();
     }
-    close();
 }
 
 void InitSDL::close() {
@@ -154,7 +168,7 @@ void InitSDL::keyboardUp(SDL_Keysym key, int x, int y) {
     }
 }
 
-void InitSDL::setListener(Core::IListenerSDL*& iListener)
+void InitSDL::setListener(Core::IListener*& iListener)
 {
    listener = iListener;
 }
