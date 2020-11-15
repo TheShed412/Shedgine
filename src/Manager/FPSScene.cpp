@@ -1,5 +1,6 @@
 #include "FPSScene.hpp"
-using namespace Managers;
+using namespace Graphics::Managers;
+using namespace Game::Managers;
 
 #include "../Rendering/Camera.hpp"
 #include "../Rendering/Models/LoadedObject.hpp"

@@ -1,7 +1,7 @@
 #include "ModelsManager.hpp"
 #include "../Rendering/Camera.hpp"
  
-using namespace Managers;
+using namespace Graphics::Managers;
 using namespace Rendering;
 
 ModelsManager::ModelsManager(){}

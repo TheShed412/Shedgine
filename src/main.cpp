@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     
 
     Core::Init::InitSDL::init(window, context);
-    Core::IListener* scene = new Managers::FPSScene(window);
+    Core::IListener* scene = new Graphics::Managers::FPSScene(window);
     std::cout << "SDL SCENE" << std::endl;
     Core::Init::InitSDL::setListener(scene);
     Core::Init::InitSDL::run();

@@ -8,24 +8,26 @@
 #include "../Rendering/Texture/TextureLoader.hpp"
  
 using namespace Rendering;
-namespace Managers
-{
-  class ModelsManager
-   {
-     public:
-         ModelsManager();
-         ModelsManager(Camera* camera);
-        ~ModelsManager();
- 
-         void Draw();
-         void Update();
-         void DeleteModel(const std::string& gameModelName);
-         void AddModel(const std::string& gameModelName, IGameObject* gameModel);
-         void SetCamera(Camera* camera);
-         IGameObject& GetModel(const std::string& gameModelName) const;
- 
-     private:
-        std::map<std::string, IGameObject*> gameModelList;
-        Camera* camera;
-   };
+namespace Graphics {
+  namespace Managers
+  {
+    class ModelsManager
+    {
+      public:
+          ModelsManager();
+          ModelsManager(Camera* camera);
+          ~ModelsManager();
+  
+          void Draw();
+          void Update();
+          void DeleteModel(const std::string& gameModelName);
+          void AddModel(const std::string& gameModelName, IGameObject* gameModel);
+          void SetCamera(Camera* camera);
+          IGameObject& GetModel(const std::string& gameModelName) const;
+  
+      private:
+          std::map<std::string, IGameObject*> gameModelList;
+          Camera* camera;
+    };
+  }
 }

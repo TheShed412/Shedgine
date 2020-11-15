@@ -3,7 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../Core/stb_image.h"
 
-using namespace Managers;
+using namespace Graphics::Managers;
 
 
 
@@ -18,11 +18,9 @@ TextureManager::~TextureManager() {
 
 
 std::shared_ptr<TexInfo> TextureManager::add(const std::string& filePath) {
-    std::cout << "GETTING TEXTURES" << std::endl;
     auto it = assets.find(filePath);
 
     if (it != assets.end()) {
-        std::cout << "FOUND: " << filePath << std::endl;
         return it->second;
     }
 
@@ -36,7 +34,6 @@ std::shared_ptr<TexInfo> TextureManager::add(const std::string& filePath) {
 
     assets.insert(std::make_pair(filePath, asset));
 
-    std::cout << "ADDED: " << filePath << std::endl;
     return asset;
 }
 

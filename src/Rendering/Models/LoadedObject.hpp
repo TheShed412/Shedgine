@@ -31,10 +31,10 @@ namespace Rendering
         void setPosition(glm::vec3);
         void setRotation(glm::vec3);
         void setScale(glm::vec3);
-        void setTextureManager(Managers::TextureManager*);
+        void setTextureManager(Graphics::Managers::TextureManager*);
 
       private:
-        Managers::TextureManager* textureManager;
+        Graphics::Managers::TextureManager* textureManager;
         glm::vec3 lastAngles;
         std::vector<TextureFormat> textures;
         std::vector<Mesh> meshes;

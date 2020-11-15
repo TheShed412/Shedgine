@@ -1,7 +1,7 @@
 #include "ShaderManager.hpp"
 #include <iostream>
  
-using namespace Managers;
+using namespace Graphics::Managers;
  
 //don't forget about this little static guy in cpp
 std::map<std::string, GLuint> ShaderManager::programs;

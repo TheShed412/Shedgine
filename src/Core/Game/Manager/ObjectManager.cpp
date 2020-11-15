@@ -1,7 +1,7 @@
 #include "ObjectManager.hpp"
 
 using namespace Game;
-using namespace Managers;
+using namespace Game::Managers;
 
 ObjectManager::ObjectManager(){}
 

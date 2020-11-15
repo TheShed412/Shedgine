@@ -6,6 +6,8 @@
 #include <deque>
 #include <algorithm>
 
+using namespace Graphics::Managers;
+
 /**
  * I need to add the ability to add mtl from objs here. 
  * http://www.programmersought.com/article/5130383977/
@@ -179,7 +181,6 @@ std::vector<TextureFormat> LoadedObject::loadMaterialTextures(aiMaterial *mat, a
             textures.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
         }
     }
-    std::cout << "Returning textures" << std::endl;
     return textures;
 }
 
@@ -192,7 +193,7 @@ unsigned int LoadedObject::TextureFromFile(const char *path, const std::string &
 
     int width, height, nrComponents;
 
-    Managers::TexInfo* texData = this->textureManager->add(filename).get();
+    Graphics::Managers::TexInfo* texData = this->textureManager->add(filename).get();
     unsigned char *data = texData->data;
     width = texData->width;
     height = texData->height;
@@ -220,7 +221,7 @@ unsigned int LoadedObject::TextureFromFile(const char *path, const std::string &
         std::cout << "Texture failed to load at path: " << path << std::endl;
         //stbi_image_free(data);
     }
-    std::cout << "Got texture from file" << std::endl;
+
     return textureID;
 }
 
@@ -350,6 +351,6 @@ std::vector<VertexFormat> LoadedObject::getVerts() {
     return this->vertices;
 }
 
-void LoadedObject::setTextureManager(Managers::TextureManager* manager) {
+void LoadedObject::setTextureManager(Graphics::Managers::TextureManager* manager) {
     this->textureManager = manager;
 }
