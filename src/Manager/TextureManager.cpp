@@ -41,6 +41,12 @@ std::shared_ptr<TexInfo> TextureManager::add(const std::string& filePath) {
 void TextureManager::remove(const std::string& filePath) {
     // probably should do a check if it exists or something
     // and free the texture info
+    auto it = assets.find(filePath);
+
+    if (it == assets.end()) {
+        return;
+    }
+    stbi_image_free(it->second.get()->data);
     assets.erase(filePath);
 }
 
