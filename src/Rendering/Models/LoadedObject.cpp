@@ -1,7 +1,5 @@
 #include "LoadedObject.hpp"
 #include "../ObjectLoader.hpp"
-#define STB_IMAGE_IMPLEMENTATION
-#include "../../Core/stb_image.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/ext.hpp"
 
@@ -181,6 +179,7 @@ std::vector<TextureFormat> LoadedObject::loadMaterialTextures(aiMaterial *mat, a
             textures.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
         }
     }
+    std::cout << "Returning textures" << std::endl;
     return textures;
 }
 
@@ -192,9 +191,13 @@ unsigned int LoadedObject::TextureFromFile(const char *path, const std::string &
     glGenTextures(1, &textureID);
 
     int width, height, nrComponents;
-    unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-    if (data)
-    {
+
+    Managers::TexInfo* texData = this->textureManager->add(filename).get();
+    unsigned char *data = texData->data;
+    width = texData->width;
+    height = texData->height;
+    nrComponents = texData->nrComponents;
+    if (data) {
         GLenum format;
         if (nrComponents == 1)
             format = GL_RED;
@@ -212,14 +215,12 @@ unsigned int LoadedObject::TextureFromFile(const char *path, const std::string &
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        stbi_image_free(data);
-    }
-    else
-    {
+        //stbi_image_free(data);
+    } else {
         std::cout << "Texture failed to load at path: " << path << std::endl;
-        stbi_image_free(data);
+        //stbi_image_free(data);
     }
-
+    std::cout << "Got texture from file" << std::endl;
     return textureID;
 }
 
@@ -347,4 +348,8 @@ std::vector<VertexFormat> LoadedObject::loadObject() {
 
 std::vector<VertexFormat> LoadedObject::getVerts() {
     return this->vertices;
+}
+
+void LoadedObject::setTextureManager(Managers::TextureManager* manager) {
+    this->textureManager = manager;
 }

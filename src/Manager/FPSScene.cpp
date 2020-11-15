@@ -27,6 +27,7 @@ FPSScene::FPSScene()
     inputHandler->bindS(new Commands::BackwardCommand());
     inputHandler->bindD(new Commands::RightCommand());
 
+    textureManager = new Managers::TextureManager();
     sdlWindow = Core::Init::InitSDL::sdlWindow;
     gameObjectManager = new Game::Managers::ObjectManager();
     actorManager = new Game::Managers::ActorManager();
@@ -131,6 +132,7 @@ void FPSScene::addToScene(Rendering::Models::LoadedObject* newObject, std::strin
 }
 
 void FPSScene::addToScene(Physics::PhysicsObject* newObject, std::vector<VertexFormat> hitBox, std::string shaderName, std::string modelName) {
+    newObject->setTextureManager(this->textureManager);
     newObject->SetLight(light);
 
     newObject->SetProgram(ShaderManager::GetShader(shaderName));

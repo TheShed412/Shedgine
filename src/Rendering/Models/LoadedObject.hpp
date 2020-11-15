@@ -8,6 +8,7 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include "../TextureFormat.hpp"
+#include "../../Manager/TextureManager.hpp"
 #include "Mesh.hpp"
 
 namespace Rendering
@@ -30,8 +31,10 @@ namespace Rendering
         void setPosition(glm::vec3);
         void setRotation(glm::vec3);
         void setScale(glm::vec3);
+        void setTextureManager(Managers::TextureManager*);
 
       private:
+        Managers::TextureManager* textureManager;
         glm::vec3 lastAngles;
         std::vector<TextureFormat> textures;
         std::vector<Mesh> meshes;

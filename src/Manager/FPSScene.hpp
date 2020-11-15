@@ -1,5 +1,6 @@
 #pragma once
 #include "ModelsManager.hpp"
+#include "TextureManager.hpp"
 #include "../Core/Physics/PhysicsObject.hpp"
 #include "../Core/Init/IListener.hpp"
 #include "../Core/Physics/Debugger/GLDebugDrawer.hpp"
@@ -57,6 +58,7 @@ namespace Managers
                                  int previous_height) override;
 
     protected:
+      Managers::TextureManager* textureManager;
       Managers::ShaderManager* shader_manager;
       Managers::ModelsManager* models_manager;
       Rendering::TextureLoader* textureLoader;
