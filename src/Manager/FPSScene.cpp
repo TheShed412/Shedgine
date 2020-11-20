@@ -50,12 +50,6 @@ FPSScene::FPSScene()
     shader_manager->CreateProgram("n64Shader",
                                     "src/shaders/n64_vert.glsl",
                                     "src/shaders/n64_frag.glsl");
-    shader_manager->CreateProgram("colorShader",
-                                    "src/shaders/vertex_shader_color.glsl",
-                                    "src/shaders/fragment_shader_color.glsl");
-    shader_manager->CreateProgram("loadedShader",
-                                    "src/shaders/vert_obj.glsl",
-                                    "src/shaders/frag_obj.glsl");
     shader_manager->CreateProgram("matShader",
                                     "src/shaders/vert_mat_tex.glsl",
                                     "src/shaders/frag_mat_tex.glsl");
@@ -82,7 +76,7 @@ FPSScene::FPSScene()
     addToScene(groundModel, std::vector<VertexFormat>(), "matShader", "ground");
     groundModel->setPosition(glm::vec3(0,0,0));
 
-    //unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
+    unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
     
     camera->setLookAt(glm::vec3(0,0.5,-3));
