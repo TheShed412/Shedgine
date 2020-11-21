@@ -31,7 +31,7 @@ int main(int argc, char **argv)
         std::cerr << "WIDTH: " << windowWidth << " HEIGHT: " << windowHeight << std::endl;
     }
 
-    Core::WindowInfo window(std::string("Shedgine"),
+    Core::WindowInfo window(std::string("Hell Itself"),
                             400, 200,//position
                             width, height, //size
                             true);//reshape

@@ -37,13 +37,13 @@ FPSScene::FPSScene()
     // TODO: make it so I can control the speed with the player
     camera = new Camera(glm::vec3(10,3,25), glm::vec3(0,1,0), 0.2, 20.0);
     light = new Light(
-        glm::vec3(0,10,0),
+        glm::vec3(0,30,0),
         glm::vec3(1.0, 1.0, 1.0),
         glm::vec3(1.0, 1.0, 1.0),
         glm::vec3(1.0, 1.0, 1.0),
         1.0,
-        0.01,
-        0.01
+        0.001,
+        0.0001
     );
     projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.001f, 10000.0f);
     //models_manager = new ModelsManager();
@@ -62,21 +62,19 @@ FPSScene::FPSScene()
 
     dynamicsWorld->setGravity(btVector3(0,-15,0));
     dynamicsWorld->setInternalTickCallback(collisionCheck);
-    
 
-    for (int i = 0; i < 6; i++) {
-        for (int j = 0; j < 6; j++) {
-            Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
-            addToScene(crate, std::vector<VertexFormat>(), "n64Shader", "crate" + std::to_string(i) + std::to_string(j));
-            crate->setPosition(glm::vec3(i*5, 2, (j * 5) + 5));
-            crate->setScale(glm::vec3(1));
-        }
-    }
+    Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
+    addToScene(crate, std::vector<VertexFormat>(), "n64Shader", "crate");
+    crate->setPosition(glm::vec3(15, 2, 15));
+    crate->setScale(glm::vec3(1));
+
+    Physics::PhysicsObject* hotBall = new Physics::PhysicsObject(Physics::DYNAMIC, 100.0f, true, 0.1, 0.5,"src/Models/hot_ball.obj");
+    addToScene(hotBall, std::vector<VertexFormat>(), "matShader", "hot_ball");
+    hotBall->setPosition(glm::vec3(15, 60, 15));
+    hotBall->setScale(glm::vec3(7));
 
     addToScene(groundModel, std::vector<VertexFormat>(), "matShader", "ground");
     groundModel->setPosition(glm::vec3(0,0,0));
-
-    unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
 
     
     camera->setLookAt(glm::vec3(0,0.5,-3));
