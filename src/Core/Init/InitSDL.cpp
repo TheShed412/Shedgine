@@ -22,11 +22,11 @@ void InitSDL::init(const Core::WindowInfo& windowInfo,
     int width = windowInfo.width;
     int height = windowInfo.height;
     
-    SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 5 );
-    SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 5 );
-    SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 5 );
-    SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );
-    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+    SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 5);
+    SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 5);
+    SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 5);
+    SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16);
+    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1);
 
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
@@ -73,13 +73,15 @@ void InitSDL::run() {
         while (SDL_PollEvent(&event) && !quit){
             switch(event.type){
                 case SDL_QUIT:
-                closeCallback();
-                close();
                 quit = true;
                 break;
 
                 case SDL_KEYDOWN:
-                keyboardCallback(event.key.keysym.sym, true);
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    quit = true;
+                } else {
+                    keyboardCallback(event.key.keysym.sym, true);
+                }
                 break;
 
                 case SDL_KEYUP:
@@ -95,6 +97,8 @@ void InitSDL::run() {
         }
         displayCallback();
     }
+    closeCallback();
+    close();
 }
 
 void InitSDL::close() {
