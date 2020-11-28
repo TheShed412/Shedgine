@@ -6,6 +6,7 @@ using namespace Game::Managers;
 #include "../Rendering/Models/LoadedObject.hpp"
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
 #include "../Core/Game/FPS/Characters/Terry.hpp"
+#include "../Core/Game/FPS/Crosshairs/OpenGL/SimpleCross.hpp"
 #include "../Core/Game/Commands/Command.hpp"
 #include "../Core/Physics/Debugger/GLDebugDrawer.hpp"
 #include "../Core/Init/InitSDL.hpp"
@@ -53,6 +54,9 @@ FPSScene::FPSScene()
     shader_manager->CreateProgram("matShader",
                                     "src/shaders/vert_mat_tex.glsl",
                                     "src/shaders/frag_mat_tex.glsl");
+    shader_manager->CreateProgram("chShader",
+                                    "src/shaders/crosshair_vert.glsl",
+                                    "src/shaders/crosshair_frag.glsl");
 
     models_manager = new ModelsManager(camera);
 
@@ -88,6 +92,12 @@ FPSScene::FPSScene()
         camera->getModelView(),
         camera
     );
+
+    Game::Crosshairs::SimpleCross* crosshair = new Game::Crosshairs::SimpleCross(windowInfo.width, windowInfo.height);
+    crosshair->SetProgram(ShaderManager::GetShader("chShader"));
+    crosshair->Create();
+    crosshair->SetCamera(this->camera);
+    models_manager->AddModel("crosshair", crosshair);
 
     /* Setting up input */
     actorManager->AddActor("player", terry);

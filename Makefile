@@ -12,12 +12,13 @@ FPS=$(LIBDIR)/Game/FPS/Characters
 GAMEDIR=$(LIBDIR)/Game
 INPUTDIR=$(GAMEDIR)/Input
 GAMEMANDIR=$(GAMEDIR)/Manager
+OPENCH=$(LIBDIR)/Game/FPS/Crosshairs/OpenGL
 MANDIR=$(SRCDIR)/Manager
 MKDIR=mkdir -p
 INC=-I${bulletPath}
 LIBFLAGS=-lBulletCollision -lLinearMath -lBulletDynamics -lGLEW -lGLU -lm -lGL -lassimp `sdl2-config --cflags --libs` -lSDL2 -lSDL2_mixer -lSDL2_image -lSDL2_ttf
-LIBMEMBERS=$(MANDIR)/TextureManager.cpp $(INPUTDIR)/InputHandler.cpp $(MANDIR)/FPSScene.cpp $(INITDIR)/InitSDL.cpp $(PHYDIR)/Debugger/GLDebugDrawer.cpp $(PHYDIR)/PhysicsObject.cpp $(FPS)/Terry.cpp $(RENDDIR)/Light.cpp $(GAMEMANDIR)/ActorManager.cpp $(GAMEMANDIR)/ObjectManager.cpp $(CHARACTER)/Ship.cpp $(MODELDIR)/Mesh.cpp $(MODELDIR)/LoadedObject.cpp $(RENDDIR)/ObjectLoader.cpp $(TEXDIR)/TextureLoader.cpp $(MODELDIR)/Grid.cpp $(RENDDIR)/Camera.cpp $(MODELDIR)/Model.cpp $(MANDIR)/ModelsManager.cpp $(MODELDIR)/Cube.cpp $(LIBDIR)/ShaderLoader.cpp $(LIBDIR)/GameModels.cpp $(MANDIR)/ShaderManager.cpp $(INITDIR)/InitGLEW.cpp
-OBJMEMBERS=$(OBJDIR)/TextureManager.o $(OBJDIR)/InputHandler.o  $(OBJDIR)/FPSScene.o $(OBJDIR)/InitSDL.o $(OBJDIR)/GLDebugDrawer.o $(OBJDIR)/PhysicsObject.o $(OBJDIR)/Terry.o $(OBJDIR)/Light.o $(OBJDIR)/ActorManager.o $(OBJDIR)/ObjectManager.o $(OBJDIR)/Ship.o $(OBJDIR)/Mesh.o $(OBJDIR)/LoadedObject.o $(OBJDIR)/ObjectLoader.o $(OBJDIR)/TextureLoader.o $(OBJDIR)/Grid.o $(OBJDIR)/Camera.o $(OBJDIR)/Model.o $(OBJDIR)/ModelsManager.o $(OBJDIR)/Cube.o $(OBJDIR)/ShaderLoader.o $(OBJDIR)/GameModels.o $(OBJDIR)/ShaderManager.o  $(OBJDIR)/InitGLEW.o
+LIBMEMBERS=$(OPENCH)/SimpleCross.cpp $(MANDIR)/TextureManager.cpp $(INPUTDIR)/InputHandler.cpp $(MANDIR)/FPSScene.cpp $(INITDIR)/InitSDL.cpp $(PHYDIR)/Debugger/GLDebugDrawer.cpp $(PHYDIR)/PhysicsObject.cpp $(FPS)/Terry.cpp $(RENDDIR)/Light.cpp $(GAMEMANDIR)/ActorManager.cpp $(GAMEMANDIR)/ObjectManager.cpp $(CHARACTER)/Ship.cpp $(MODELDIR)/Mesh.cpp $(MODELDIR)/LoadedObject.cpp $(RENDDIR)/ObjectLoader.cpp $(TEXDIR)/TextureLoader.cpp $(MODELDIR)/Grid.cpp $(RENDDIR)/Camera.cpp $(MODELDIR)/Model.cpp $(MANDIR)/ModelsManager.cpp $(MODELDIR)/Cube.cpp $(LIBDIR)/ShaderLoader.cpp $(LIBDIR)/GameModels.cpp $(MANDIR)/ShaderManager.cpp $(INITDIR)/InitGLEW.cpp
+OBJMEMBERS=$(OBJDIR)/SimpleCross.o $(OBJDIR)/TextureManager.o $(OBJDIR)/InputHandler.o  $(OBJDIR)/FPSScene.o $(OBJDIR)/InitSDL.o $(OBJDIR)/GLDebugDrawer.o $(OBJDIR)/PhysicsObject.o $(OBJDIR)/Terry.o $(OBJDIR)/Light.o $(OBJDIR)/ActorManager.o $(OBJDIR)/ObjectManager.o $(OBJDIR)/Ship.o $(OBJDIR)/Mesh.o $(OBJDIR)/LoadedObject.o $(OBJDIR)/ObjectLoader.o $(OBJDIR)/TextureLoader.o $(OBJDIR)/Grid.o $(OBJDIR)/Camera.o $(OBJDIR)/Model.o $(OBJDIR)/ModelsManager.o $(OBJDIR)/Cube.o $(OBJDIR)/ShaderLoader.o $(OBJDIR)/GameModels.o $(OBJDIR)/ShaderManager.o  $(OBJDIR)/InitGLEW.o
 
 $(OBJDIR)/%.o: $(MANDIR)/%.cpp
 	g++ -std=c++11 $(INC) -g -c -o $@ $<
@@ -41,6 +42,9 @@ $(OBJDIR)/%.o: $(CHARACTER)/%.cpp
 	g++ -std=c++11 -g -c -o $@ $<
 
 $(OBJDIR)/%.o: $(FPS)/%.cpp
+	g++ -std=c++11 -g -c -o $@ $<
+
+$(OBJDIR)/%.o: $(OPENCH)/%.cpp
 	g++ -std=c++11 -g -c -o $@ $<
 
 $(OBJDIR)/%.o: $(MODELDIR)/%.cpp
