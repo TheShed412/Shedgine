@@ -68,8 +68,8 @@ FPSScene::FPSScene()
     dynamicsWorld->setInternalTickCallback(collisionCheck);
     
 
-    for (int i = 0; i < 6; i++) {
-        for (int j = 0; j < 6; j++) {
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
             Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
             addToScene(crate, std::vector<VertexFormat>(), "n64Shader", "crate" + std::to_string(i) + std::to_string(j));
             crate->setPosition(glm::vec3(i*5, 2, (j * 5) + 5));
@@ -204,7 +204,24 @@ void FPSScene::notifyKeyboardInput(unsigned char key, bool pressed) {
 }
 
 void FPSScene::notifyMouseInput(int button, int state, int x, int y) {
+    // They are coming in as screen coords
+    float xNorm = (2.0 * x) / windowInfo.width - 1.0;
+    float yNorm = 1.0 - (2.0 * y) / windowInfo.height;
+    glm::vec4 rayClip = glm::vec4(xNorm, yNorm, -1.0, 1.0);
 
+    glm::vec4 rayEyeSpace = glm::inverse(this->projection) * rayClip;
+    rayEyeSpace = glm::vec4(rayEyeSpace.x, rayEyeSpace.y, -1.0, 0.0);
+    glm::vec4 tmpInverse = glm::inverse(this->camera->getModelView()) * rayEyeSpace;
+    glm::vec3 rayWorld = glm::normalize(glm::vec3(tmpInverse.x, tmpInverse.y, tmpInverse.z));
+
+    /**
+     * After this, I can use the rayTest bullet method to do pick/testing whether this ray collides with a bullet collider
+    */
+
+    std::cout << "button: " << button << std::endl;
+    std::cout << "state: " << state << std::endl;
+    std::cout << "position: (" << rayWorld.x << ", " << rayWorld.y << ", " << rayWorld.z << ")" << std::endl;
+    std::cout << std::endl;
 }
 
 

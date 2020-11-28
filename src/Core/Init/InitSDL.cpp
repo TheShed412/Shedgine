@@ -93,6 +93,14 @@ void InitSDL::run() {
                 ypos += event.motion.yrel;
                 mouseMovementCallback(event.motion.xrel, event.motion.yrel);
                 break;
+
+                case SDL_MOUSEBUTTONDOWN:
+                mouseCallback(event.button.button, 1, xpos, ypos);
+                break;
+
+                case SDL_MOUSEBUTTONUP:
+                // mouseCallback(event.button.button, 0, event.motion.xrel, event.motion.yrel);
+                break;
             }
         }
         displayCallback();

@@ -107,20 +107,19 @@ void Terry::Action(int deltaTime)
 }
 
 void Terry::HandleInput(int deltaTime) {
-    if (moveForward)
-    {
-            camera->processKeyboard(Rendering::Camera::FORWARD, deltaTime/1000.0f);
+    if (moveForward) {
+        camera->processKeyboard(Rendering::Camera::FORWARD, deltaTime/1000.0f);
     }
-    if (moveLeft)
-    {
+
+    if (moveLeft) {
         camera->processKeyboard(Rendering::Camera::LEFT, deltaTime/1000.0f);
     }
-    if (moveBack)
-     {
+
+    if (moveBack) {
         camera->processKeyboard(Rendering::Camera::BACKWARD, deltaTime/1000.0f);
     }
-    if (moveRight)
-    {
+
+    if (moveRight) {
         camera->processKeyboard(Rendering::Camera::RIGHT, deltaTime/1000.0f);
     }
 }
