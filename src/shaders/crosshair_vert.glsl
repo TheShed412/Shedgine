@@ -1,9 +1,9 @@
-#version 330 core
-layout(location = 0) in vec3 in_position;
-layout(location = 1) in vec4 in_color;
-uniform mat4 ctm;
-uniform mat4 projection;
-out vec4 color;
+#version 300 es
+layout(location = 0) in mediump vec3 in_position;
+layout(location = 1) in mediump vec4 in_color;
+uniform mediump mat4 ctm;
+uniform mediump mat4 projection;
+out mediump vec4 color;
  
 void main()
 {
