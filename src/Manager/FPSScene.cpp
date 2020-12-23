@@ -80,8 +80,6 @@ FPSScene::FPSScene()
     addToScene(groundModel, std::vector<VertexFormat>(), "matShader", "ground");
     groundModel->setPosition(glm::vec3(0,0,0));
 
-    unsigned int texture = textureLoader->LoadTexture("Textures/Crate.bmp", 256, 256);
-
     
     camera->setLookAt(glm::vec3(0,0.5,-3));
 
