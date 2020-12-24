@@ -9,13 +9,15 @@ using namespace Rendering;
 
 Camera::Camera() {}
 
-Camera::Camera(glm::vec3 _position, glm::vec3 _worldUp, float _mouseSensitivity, float _movementSpeed) {
+Camera::Camera(glm::vec3 _position, glm::vec3 _worldUp, float _mouseSensitivity, float _movementSpeed, int windowHeight, int windowWidth) {
     position = _position;
     worldUpVec = _worldUp;
     mouseSensitivity = _mouseSensitivity;
     movementSpeed = _movementSpeed;
     pitch = 0.0f;
     yaw = -90.0f;
+    this->windowHeight = windowHeight;
+    this->windowWidth = windowWidth;
     updateVectors();
 }
 
@@ -109,4 +111,41 @@ void Camera::updateVectors() {
     } else {
         upVec = glm::normalize(upVecTmp);
     }
+}
+
+glm::vec3 Camera::getPickRay(int x, int y) {
+    // They are coming in as screen coords
+    float xNorm = ((2.0 * x) / windowWidth) - 1.0;
+    float yNorm = 1.0 - ((2.0 * y) / windowHeight);
+    glm::vec4 rayClip = glm::vec4(xNorm, yNorm, -1.0, 1.0);
+
+    glm::vec4 rayEyeSpace = glm::inverse(this->projection) * rayClip;
+    rayEyeSpace = glm::vec4(rayEyeSpace.x, rayEyeSpace.y, -1.0, 0.0);
+    glm::vec4 tmpInverse = glm::inverse(this->getModelView()) * rayEyeSpace;
+    glm::vec3 rayWorld = glm::normalize(glm::vec3(tmpInverse.x, tmpInverse.y, tmpInverse.z));
+
+    return rayWorld;
+    // glm::vec3 coord;
+    // coord.x = ((2.0f * x) / this->windowWidth) - 1;
+    // coord.y = (((2.0f * x) / this->windowHeight) - 1) * -1;
+    // coord.z = 1.0f;
+
+    // coord.x /= this->projection[0].x;
+    // coord.x /= this->projection[1].y;
+
+    // glm::mat4 invertedModel = glm::inverse(this->getModelView());
+
+    // float normalized = invertedModel[0].x * coord.x + invertedModel[0].y * coord.y + invertedModel[0].z * coord.z;
+}
+
+void Camera::setProjection(glm::mat4 projection) {
+    this->projection = projection;
+}
+
+glm::vec3 Camera::getPosition() {
+    return this->position;
+}
+
+glm::vec3 Camera::getLookDirection() {
+    return this->lookDirection;
 }

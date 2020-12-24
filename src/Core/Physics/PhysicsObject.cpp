@@ -99,6 +99,12 @@ void PhysicsObject::createBodyWithMass(float mass) {
     body = new btRigidBody(bodyInfo);
     body->setUserPointer((void*) this);
     body->setLinearFactor(btVector3(1,1,1));
+    // if (isStatic) {
+    //     body->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
+    // } else {
+    //     body->setCollisionFlags(btCollisionObject::CF_);
+    // }
+    
 }
 
 btRigidBody* PhysicsObject::getRigidBody() {

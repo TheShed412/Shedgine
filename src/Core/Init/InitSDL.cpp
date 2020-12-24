@@ -99,7 +99,7 @@ void InitSDL::run() {
                 break;
 
                 case SDL_MOUSEBUTTONUP:
-                // mouseCallback(event.button.button, 0, event.motion.xrel, event.motion.yrel);
+                mouseCallback(event.button.button, 0, event.motion.xrel, event.motion.yrel);
                 break;
             }
         }

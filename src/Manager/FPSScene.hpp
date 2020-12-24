@@ -10,6 +10,7 @@
 #include "../Core/Init/WindowInfo.hpp"
 
 #include <btBulletDynamicsCommon.h>
+#include <BulletCollision/NarrowPhaseCollision/btRaycastCallback.h>
 #include <LinearMath/btIDebugDraw.h>
 #include <SDL2/SDL.h>
 
@@ -44,6 +45,7 @@ namespace Graphics {
         void addToScene(Rendering::Models::LoadedObject*, std::string, std::string);
         void addToScene(Game::Actor*, std::vector<VertexFormat>, std::string, std::string);
         void addToScene(Physics::PhysicsObject*, std::vector<VertexFormat>, std::string, std::string);
+        void castRays();
         //void collisionCheck(btDynamicsWorld *dynamicsWorld, btScalar timeStep);
       public:
         FPSScene();
