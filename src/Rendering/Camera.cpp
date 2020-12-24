@@ -142,6 +142,10 @@ void Camera::setProjection(glm::mat4 projection) {
     this->projection = projection;
 }
 
+glm::mat4 Camera::getProjection() {
+    return this->projection;
+}
+
 glm::vec3 Camera::getPosition() {
     return this->position;
 }

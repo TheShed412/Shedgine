@@ -1,4 +1,6 @@
 #pragma once
+#include <btBulletDynamicsCommon.h>
+#include <BulletCollision/NarrowPhaseCollision/btRaycastCallback.h>
 #include "glm/gtc/matrix_transform.hpp"
 
 namespace Rendering {
@@ -25,6 +27,7 @@ namespace Rendering {
             void setProgram(unsigned int program);
             glm::vec3 getPickRay(int x, int y);
             void setProjection(glm::mat4);
+            glm::mat4 getProjection();
             glm::vec3 getPosition();
             glm::vec3 getLookDirection();
 

@@ -246,6 +246,12 @@ void FPSScene::setupCollisions() {
     dynamicsWorld->setDebugDrawer(this->debugDrawer);
 }
 
+/**
+ * This needs to be pulled apart carefully. I need to figure out which parts will be game logic, and what
+ * will be physics manager stuff and what will be scene setup.
+ * 
+ * I need to keep as little game logic in here as possible. It should be all configuration.
+*/
 void FPSScene::castRays() {
     glm::vec4 rayStart(
         (((float)this->windowInfo.width/2)/(float)this->windowInfo.width  - 0.5f) * 2.0f,

@@ -8,7 +8,7 @@
 
 
 /**
- * This will be the wrapper class for physics
+ * This will be the wrapper class for physics objects
  * 
 */
 namespace Physics
