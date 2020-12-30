@@ -125,17 +125,6 @@ glm::vec3 Camera::getPickRay(int x, int y) {
     glm::vec3 rayWorld = glm::normalize(glm::vec3(tmpInverse.x, tmpInverse.y, tmpInverse.z));
 
     return rayWorld;
-    // glm::vec3 coord;
-    // coord.x = ((2.0f * x) / this->windowWidth) - 1;
-    // coord.y = (((2.0f * x) / this->windowHeight) - 1) * -1;
-    // coord.z = 1.0f;
-
-    // coord.x /= this->projection[0].x;
-    // coord.x /= this->projection[1].y;
-
-    // glm::mat4 invertedModel = glm::inverse(this->getModelView());
-
-    // float normalized = invertedModel[0].x * coord.x + invertedModel[0].y * coord.y + invertedModel[0].z * coord.z;
 }
 
 void Camera::setProjection(glm::mat4 projection) {

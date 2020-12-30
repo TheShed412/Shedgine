@@ -1,6 +1,4 @@
 #pragma once
-#include <btBulletDynamicsCommon.h>
-#include <BulletCollision/NarrowPhaseCollision/btRaycastCallback.h>
 #include "glm/gtc/matrix_transform.hpp"
 
 namespace Rendering {

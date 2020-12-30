@@ -55,5 +55,6 @@ namespace Physics
             glm::vec3 getPosition();
             void updateObjectPosition();
             void setScale(glm::vec3);
+            void setID(std::string);
     };
 } // namespace Game

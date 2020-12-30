@@ -147,6 +147,7 @@ void FPSScene::addToScene(Physics::PhysicsObject* newObject, std::vector<VertexF
     newObject->SetModelView(camera->getModelView());
     newObject->SetCamera(this->camera);
     newObject->Create(hitBox);
+    newObject->setID(modelName);
 
     models_manager->AddModel(modelName, newObject);
     physicsObjects[modelName] = newObject;
@@ -300,11 +301,17 @@ void FPSScene::castRays() {
 
             //check if the body isn't static or kinematic so that I know it can be moved
             if (pickedBody->getMass() != 0) {
-                std::cout << "origin:   " << origin.x << " " << origin.y << " " << origin.z << std::endl;
-                std::cout << "end:     " << end.x << " " << end.y << " " << end.z << std::endl;
-                std::cout << std::endl;
+                std::string* shapeID = (std::string*)pickedBody->getUserPointer();
                 btVector3 pickPos = closestResult.m_hitPointWorld;
                 btVector3 localPivot = pickedBody->getCenterOfMassTransform().inverse() * pickPos;
+                // pickedBody.
+                Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
+                glm::vec3 currPos = pickedObject->getPosition();
+                pickedObject->setPosition(end);
+                // std::cout << "pick pos: (" << pickPos.x() << ", " << pickPos.y() << ", " << pickPos.z() << ")" << std::endl;
+                // std::cout << "shape ID: " << *shapeID << std::endl;
+                // std::cout << "current pos: (" << currPos.x << ", " << currPos.y << ", " << currPos.z << ")" << std::endl;
+                // std::cout << std::endl;
             }
         }
     } else if (tmpButton == 1 && tmpState == 0) {  // if the left button is released

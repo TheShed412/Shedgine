@@ -157,3 +157,10 @@ void PhysicsObject::updateObjectPosition() {
     }
 }
 
+void PhysicsObject::setID(std::string newID) {
+
+    std::string* id = new std::string(newID);
+    shape->setUserPointer(id);
+    body->setUserPointer(id);
+}
+
