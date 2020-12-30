@@ -97,14 +97,9 @@ void PhysicsObject::createBodyWithMass(float mass) {
     bodyInfo.m_friction = this->friction;
 
     body = new btRigidBody(bodyInfo);
-    body->setUserPointer((void*) this);
     body->setLinearFactor(btVector3(1,1,1));
-    // if (isStatic) {
-    //     body->setCollisionFlags(btCollisionObject::CF_KINEMATIC_OBJECT);
-    // } else {
-    //     body->setCollisionFlags(btCollisionObject::CF_);
-    // }
-    
+    body->forceActivationState(ACTIVE_TAG);
+    body->activate();
 }
 
 btRigidBody* PhysicsObject::getRigidBody() {
@@ -147,8 +142,7 @@ glm::vec3 PhysicsObject::getPosition() {
 void PhysicsObject::updateObjectPosition() {
 
     if (!isStatic) {
-        btTransform t;
-        body->getMotionState()->getWorldTransform(t);
+        btTransform t = body->getWorldTransform();
         btScalar moveMat[16] = {0};
         t.getOpenGLMatrix(moveMat);
 
