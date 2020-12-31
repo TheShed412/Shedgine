@@ -16,6 +16,12 @@ Commands::Command* InputHandler::handleInput(unsigned char key) {
     if (key == SDLK_d) {
         return d_;
     }
+    if (key == SDL_BUTTON_LEFT) {
+        return lm_;
+    }
+    if (key == SDL_BUTTON_RIGHT) {
+        return rm_;
+    }
 
     return NULL;
 }
@@ -34,4 +40,12 @@ void InputHandler::bindS(Commands::Command* command) {
 
 void InputHandler::bindD(Commands::Command* command) {
     this->d_ = command;
+}
+
+void InputHandler::bindLeftMouse(Commands::Command* command) {
+    this->lm_ = command;
+}
+
+void InputHandler::bindRightMouse(Commands::Command* command) {
+    this->rm_ = command;
 }

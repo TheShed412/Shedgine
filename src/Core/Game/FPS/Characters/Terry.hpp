@@ -15,6 +15,8 @@ namespace Game
                 bool moveBack = false;
                 bool moveLeft = false;
                 bool moveRight = false;
+                bool leftPressed = false;
+                bool rightpressed = false;
             public:
                 Terry();
                 Terry(Rendering::Models::LoadedObject*,
@@ -38,6 +40,8 @@ namespace Game
                 void TurnUp(int deltaTime) override;
                 void TurnDown(int deltaTime) override;
                 void HandleMouseInput(int,int) override;
+                void HandleLeftMouse(bool) override;
+                void HandleRightMouse(bool) override;
                 void HandleInput(int deltaTime);
                 void Action(int deltaTime) override;
                 void LookAtObject(glm::vec3) override;

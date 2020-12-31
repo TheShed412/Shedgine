@@ -122,16 +122,19 @@ void Camera::updateVectors() {
  */
 void Camera::getPickRays(float pickDistance, glm::vec3* outStart, glm::vec3* outEnd) {
     // They are coming in as screen coords
+    float middleX = (((float)windowWidth/2)/(float)windowWidth  - 0.5f) * 2.0f;
+    float middleY = (((float)windowHeight/2)/(float)windowHeight - 0.5f) * -2.0f;
+
     glm::vec4 rayStart(
-        (((float)windowWidth/2)/(float)windowWidth  - 0.5f) * 2.0f,
-        (((float)windowHeight/2)/(float)windowHeight - 0.5f) * -2.0f,
+        middleX,
+        middleY,
         -1.0,
         1.0f
     );
 
     glm::vec4 rayEnd(
-        (((float)windowWidth/2)/(float)windowWidth  - 0.5f) * 2.0f,
-        (((float)windowHeight/2)/(float)windowHeight - 0.5f) * -2.0f,
+        middleX,
+        middleY,
         0.0,
         1.0f
     );

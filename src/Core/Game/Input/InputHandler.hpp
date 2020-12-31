@@ -14,11 +14,15 @@ namespace Input {
             void bindA(Commands::Command*);
             void bindS(Commands::Command*);
             void bindD(Commands::Command*);
+            void bindLeftMouse(Commands::Command*);
+            void bindRightMouse(Commands::Command*);
 
         private:
             Commands::Command* w_;
             Commands::Command* a_;
             Commands::Command* s_;
             Commands::Command* d_;
+            Commands::Command* lm_;
+            Commands::Command* rm_;
     };
 }

@@ -61,42 +61,19 @@ void PhysicsManager::setGravity(float gravity) {
  * keep gamecode with game stuff
 */
 void PhysicsManager::castRays(Rendering::Camera* camera) {
-    float widthValue = ((this->windowWidth / 2.0f) / this->windowWidth  - 0.5f) * 2.0f;
-    float heightValue = ((this->windowHeight / 2) / this->windowHeight - 0.5f) * -2.0f;
+    glm::vec3 end;
+    glm::vec3 origin;
 
-    glm::vec4 rayStart(
-        widthValue,
-        heightValue,
-        -1.0,
-        1.0f
-    ); //= this->camera->getPickRay(windowInfo.width, windowInfo.height);
-    glm::vec4 rayEnd(
-        widthValue,
-        heightValue,
-        0.0,
-        1.0f
-    ); //= this->camera->getPosition();
-    glm::vec3 lookDir = camera->getLookDirection();
-
-    glm::mat4 invertMat = glm::inverse(camera->getProjection() * camera->getModelView());
-    glm::vec4 rayStartWorld = invertMat * rayStart;
-    rayStartWorld /= rayStartWorld.w;
-    glm::vec4 rayEndWorld = invertMat * rayEnd;
-    rayEndWorld /= rayEndWorld.w;
-
-    glm::vec3 rayDirWorld(rayEndWorld - rayStartWorld);
-    rayDirWorld = glm::normalize(rayDirWorld);
-
-    glm::vec3 origin(rayStartWorld);
-    glm::vec3 direction(rayDirWorld);
-
-    glm::vec3 end = origin + (direction * 5.0f);
+    camera->getPickRays(5.0f, &origin, &end);
 
     btVector3 btToRay = btVector3(end.x, end.y, end.z);
     btVector3 btFromRay = btVector3(origin.x, origin.y, origin.z);
 
     dynamicsWorld->updateAabbs();
     dynamicsWorld->computeOverlappingPairs();
+
+    btCollisionWorld::ClosestRayResultCallback closestResult(btFromRay, btToRay);
+    dynamicsWorld->rayTest(btFromRay, btToRay, closestResult);
 
     
     // if the left button is pressed

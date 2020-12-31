@@ -137,3 +137,11 @@ glm::vec3 Terry::GetCoords()
 void Terry::HandleMouseInput(int x, int y) {
     camera->processMouseMovement(x, y);
 }
+
+void Terry::HandleLeftMouse(bool pressed) {
+    this->leftPressed = pressed;
+}
+
+void Terry::HandleRightMouse(bool pressed) {
+    this->rightpressed = pressed;
+}

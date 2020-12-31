@@ -30,6 +30,8 @@ namespace Game
             virtual void Action(int deltaTime) = 0;
             virtual void HandleInput(int deltaTime) = 0;
             virtual void HandleMouseInput(int,int) = 0;
+            virtual void HandleLeftMouse(bool) = 0;
+            virtual void HandleRightMouse(bool) = 0;
     };
     inline Actor::~Actor()
     {//blank

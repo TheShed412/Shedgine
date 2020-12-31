@@ -36,4 +36,13 @@ namespace Commands {
             virtual ~LeftCommand() {}
             void virtual execute(Game::Actor& actor, bool pressed) { actor.MoveLeft(pressed); }
     };
+
+    class LeftMousePress : public Command
+    {
+        public: 
+            virtual ~LeftMousePress() {}
+            void virtual execute(Game::Actor& actor, bool pressed) { 
+                actor.HandleLeftMouse(pressed);
+            }
+    };
 }

@@ -214,17 +214,19 @@ void FPSScene::notifyKeyboardInput(unsigned char key, bool pressed) {
 int tmpButton;
 int tmpState;
 void FPSScene::notifyMouseInput(int button, int state, int x, int y) {
+    if (button >= 0) {
+        Commands::Command* command = this->inputHandler->handleInput(button);
+        if (command) {
+            command->execute(actorManager->GetActor("player"), state);
+        }
+    }
     tmpButton = button;
     tmpState = state;
 }
 
 // TODO: handle mouse input better for picking
-int tmpX;
-int tmpY;
 void FPSScene::notifyMouseMovementInput(int x, int y) {
     actorManager->GetActor("player").HandleMouseInput(x, -y);
-    tmpX = x;
-    tmpY = y;
 }
  
 void FPSScene::notifyReshape(int width,
