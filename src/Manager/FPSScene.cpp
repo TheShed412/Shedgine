@@ -214,8 +214,6 @@ void FPSScene::notifyKeyboardInput(unsigned char key, bool pressed) {
 int tmpButton;
 int tmpState;
 void FPSScene::notifyMouseInput(int button, int state, int x, int y) {
-    glm::vec3 toRay = this->camera->getPickRay(x, y);
-    glm::vec3 fromRay = this->camera->getPosition();
     tmpButton = button;
     tmpState = state;
 }
@@ -257,34 +255,10 @@ void FPSScene::setupCollisions() {
  * I need to keep as little game logic in here as possible. It should be all configuration.
 */
 void FPSScene::castRays() {
-    glm::vec4 rayStart(
-        (((float)this->windowInfo.width/2)/(float)this->windowInfo.width  - 0.5f) * 2.0f,
-        (((float)this->windowInfo.height/2)/(float)this->windowInfo.height - 0.5f) * -2.0f,
-        -1.0,
-        1.0f
-    ); //= this->camera->getPickRay(windowInfo.width, windowInfo.height);
-    glm::vec4 rayEnd(
-        (((float)this->windowInfo.width/2)/(float)this->windowInfo.width  - 0.5f) * 2.0f,
-        (((float)this->windowInfo.height/2)/(float)this->windowInfo.height - 0.5f) * -2.0f,
-        0.0,
-        1.0f
+    glm::vec3 end;
+    glm::vec3 origin;
 
-    ); //= this->camera->getPosition();
-    glm::vec3 lookDir = this->camera->getLookDirection();
-
-    glm::mat4 invertMat = glm::inverse(this->projection * this->camera->getModelView());
-    glm::vec4 rayStartWorld = invertMat * rayStart;
-    rayStartWorld /= rayStartWorld.w;
-    glm::vec4 rayEndWorld = invertMat * rayEnd;
-    rayEndWorld /= rayEndWorld.w;
-
-    glm::vec3 rayDirWorld(rayEndWorld - rayStartWorld);
-    rayDirWorld = glm::normalize(rayDirWorld);
-
-    glm::vec3 origin(rayStartWorld);
-    glm::vec3 direction(rayDirWorld);
-
-    glm::vec3 end = origin + (direction * 5.0f);
+    this->camera->getPickRays(5.0f, &origin, &end);
 
     btVector3 btToRay = btVector3(end.x, end.y, end.z);
     btVector3 btFromRay = btVector3(origin.x, origin.y, origin.z);

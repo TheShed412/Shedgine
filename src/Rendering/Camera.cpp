@@ -113,18 +113,50 @@ void Camera::updateVectors() {
     }
 }
 
-glm::vec3 Camera::getPickRay(int x, int y) {
+/**
+ * Gets the picking rays that the center of the camera sees
+ *
+ * @param pickDistance How far away an object can be picked from
+ * @param outStart The vec3 that will contain the start of the ray
+ * @param outEnd The vec3 that will contain the end of the ray
+ */
+void Camera::getPickRays(float pickDistance, glm::vec3* outStart, glm::vec3* outEnd) {
     // They are coming in as screen coords
-    float xNorm = ((2.0 * x) / windowWidth) - 1.0;
-    float yNorm = 1.0 - ((2.0 * y) / windowHeight);
-    glm::vec4 rayClip = glm::vec4(xNorm, yNorm, -1.0, 1.0);
+    glm::vec4 rayStart(
+        (((float)windowWidth/2)/(float)windowWidth  - 0.5f) * 2.0f,
+        (((float)windowHeight/2)/(float)windowHeight - 0.5f) * -2.0f,
+        -1.0,
+        1.0f
+    );
 
-    glm::vec4 rayEyeSpace = glm::inverse(this->projection) * rayClip;
-    rayEyeSpace = glm::vec4(rayEyeSpace.x, rayEyeSpace.y, -1.0, 0.0);
-    glm::vec4 tmpInverse = glm::inverse(this->getModelView()) * rayEyeSpace;
-    glm::vec3 rayWorld = glm::normalize(glm::vec3(tmpInverse.x, tmpInverse.y, tmpInverse.z));
+    glm::vec4 rayEnd(
+        (((float)windowWidth/2)/(float)windowWidth  - 0.5f) * 2.0f,
+        (((float)windowHeight/2)/(float)windowHeight - 0.5f) * -2.0f,
+        0.0,
+        1.0f
+    );
 
-    return rayWorld;
+    glm::mat4 invertMat = glm::inverse(this->projection * this->getModelView());
+    glm::vec4 rayStartWorld = invertMat * rayStart;
+    rayStartWorld /= rayStartWorld.w;
+    glm::vec4 rayEndWorld = invertMat * rayEnd;
+    rayEndWorld /= rayEndWorld.w;
+
+    glm::vec3 rayDirWorld(rayEndWorld - rayStartWorld);
+    rayDirWorld = glm::normalize(rayDirWorld);
+
+    glm::vec3 origin(rayStartWorld);
+    glm::vec3 direction(rayDirWorld);
+
+    glm::vec3 end(origin + (direction * pickDistance));
+
+    outStart->x = origin.x;
+    outStart->y = origin.y;
+    outStart->z = origin.z;
+
+    outEnd->x = end.x;
+    outEnd->y = end.y;
+    outEnd->z = end.z;
 }
 
 void Camera::setProjection(glm::mat4 projection) {

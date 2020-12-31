@@ -23,7 +23,7 @@ namespace Rendering {
             void addToPosition(glm::vec3 diff);
             glm::mat4 getModelView();
             void setProgram(unsigned int program);
-            glm::vec3 getPickRay(int x, int y);
+            void getPickRays(float pickDistance, glm::vec3* outStart, glm::vec3* outEnd);
             void setProjection(glm::mat4);
             glm::mat4 getProjection();
             glm::vec3 getPosition();
