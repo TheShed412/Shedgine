@@ -2,11 +2,16 @@
 
 using namespace Physics;
 
+void collisionCheck(btDynamicsWorld *dynamicsWorld, btScalar timeStep) {
+    int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
+}
+
 PhysicsManager::PhysicsManager(int width, int height) {
     this->windowHeight = height;
     this->windowWidth = width;
     this->gravity = -15;
     this->debugMode = 0;
+    this->setupCollisions();
 }
 
 PhysicsManager::PhysicsManager(int debugMode, float gravity, int width, int height) {
@@ -14,12 +19,16 @@ PhysicsManager::PhysicsManager(int debugMode, float gravity, int width, int heig
     this->gravity = gravity;
     this->windowHeight = height;
     this->windowWidth = width;
+    this->setupCollisions();
 }
 
 /**
  * Executes the needed physics calculations at the end of frames that are called in the scenes
 */
 void PhysicsManager::endFrameProcess(Rendering::Camera* camera, int elapsedTime) {
+    for (auto physicsObject : physicsObjects){
+        physicsObject.second->updateObjectPosition();
+    }
     dynamicsWorld->stepSimulation(btScalar(elapsedTime/1000.0f), 1, btScalar(1.0)/btScalar(60.0));
     this->castRays(camera);
     if (debugMode != 0) {
@@ -40,10 +49,16 @@ void PhysicsManager::setupCollisions() {
         this->debugDrawer = new GLDebugDrawer();
         dynamicsWorld->setDebugDrawer(this->debugDrawer);
     }
+
+    dynamicsWorld->setGravity(btVector3(0,this->gravity,0));
+    dynamicsWorld->setInternalTickCallback(collisionCheck);
 }
 
 void PhysicsManager::addPhysicsObject(std::string objectName, PhysicsObject* newObject) {
     physicsObjects[objectName] = newObject;
+    dynamicsWorld->addRigidBody(newObject->getRigidBody());
+    
+    collisionShapes.push_back(newObject->getCollisionShape());
 }
 
 void PhysicsManager::setDebugMode(int debugMode) {
@@ -52,6 +67,11 @@ void PhysicsManager::setDebugMode(int debugMode) {
 
 void PhysicsManager::setGravity(float gravity) {
     this->gravity = gravity;
+}
+
+void PhysicsManager::setMouseState(int button, bool state) {
+    this->mouseButton = button;
+    this->mouseButtonPressed = state;
 }
 
 /**
@@ -77,24 +97,31 @@ void PhysicsManager::castRays(Rendering::Camera* camera) {
 
     
     // if the left button is pressed
-    // if (tmpButton == 1 && tmpState == 1) {
-    //     btCollisionWorld::ClosestRayResultCallback closestResult(btFromRay, btToRay);
+    if (closestResult.hasHit()) {
+        const btRigidBody* pickedBody = btRigidBody::upcast(closestResult.m_collisionObject);
+        if (this->mouseButton == 1 && this->mouseButtonPressed) {
+            //check if the body isn't static or kinematic so that I know it can be moved
+            if (pickedBody->getMass() != 0) {
+                // Get the pointer to the ID of the object so I can pull it from the 
+                std::string* shapeID = (std::string*)pickedBody->getUserPointer();
+                Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
 
-    //     dynamicsWorld->rayTest(btFromRay, btToRay, closestResult);
-    //     if (closestResult.hasHit()) {
-    //         const btRigidBody* pickedBody = btRigidBody::upcast(closestResult.m_collisionObject);
+                // Activate the object so physics stuff happens
+                pickedObject->getRigidBody()->activate();
+                // Set the object to the end location of the pick
+                pickedObject->setPosition(end);
+                // Turn gravity off so that it won't build up velocity while being held
+                pickedObject->getRigidBody()->setGravity(btVector3(0.0f, 0.0f, 0.0f));
+            }
+        } else if (this->mouseButton == 1 && !this->mouseButtonPressed) {  // if the left button is released
+            std::string* shapeID = (std::string*)pickedBody->getUserPointer();
+            Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
 
-
-    //         //check if the body isn't static or kinematic so that I know it can be moved
-    //         if (pickedBody->getMass() != 0) {
-    //             std::cout << "origin:   " << origin.x << " " << origin.y << " " << origin.z << std::endl;
-    //             std::cout << "end:     " << end.x << " " << end.y << " " << end.z << std::endl;
-    //             std::cout << std::endl;
-    //             btVector3 pickPos = closestResult.m_hitPointWorld;
-    //             btVector3 localPivot = pickedBody->getCenterOfMassTransform().inverse() * pickPos;
-    //         }
-    //     }
-    // } else if (tmpButton == 1 && tmpState == 0) {  // if the left button is released
-
-    // }
+            // Activate so physics things can happen
+            pickedObject->getRigidBody()->activate();
+            // TODO: Move this logic to the physics object so that I can use other logic to turn gravity on
+            // Turn gravity back on
+            pickedObject->getRigidBody()->setGravity(btVector3(0.0f, -15.0f, 0.0f));
+        }
+    }
 }

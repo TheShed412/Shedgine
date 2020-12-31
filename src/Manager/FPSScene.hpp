@@ -4,10 +4,12 @@
 #include "../Core/Physics/PhysicsObject.hpp"
 #include "../Core/Init/IListener.hpp"
 #include "../Core/Physics/Debugger/GLDebugDrawer.hpp"
+#include "../Core/Physics/PhysicsManager.hpp"
 #include "../Core/Game/Manager/ActorManager.hpp"
 #include "../Core/Game/Input/InputHandler.hpp"
 #include "../Core/Game/Manager/ObjectManager.hpp"
 #include "../Core/Init/WindowInfo.hpp"
+#include "../Core/EventManager.hpp"
 
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/NarrowPhaseCollision/btRaycastCallback.h>
@@ -67,6 +69,8 @@ namespace Graphics {
         Managers::TextureManager* textureManager;
         Managers::ShaderManager* shader_manager;
         Managers::ModelsManager* models_manager;
+        Physics::PhysicsManager* physicsManger;
+        Shed::EventManager* eventManager;
         Rendering::TextureLoader* textureLoader;
         Rendering::Light* light;
         Rendering::Camera* camera;

@@ -12,9 +12,11 @@ namespace Shed
 {
     class EventManager {
         private:
-            std::map<std::string, std::vector<std::function<void()>>> events;
+            std::map<std::string, std::vector<std::function<void(bool, int)>>> events;
         public:
-            void addFunction(std::string, std::function<void()>);
-            void callFunctions(std::string);
+            EventManager();
+            virtual ~EventManager() {};
+            void addFunction(std::string, std::function<void(bool, int)>);
+            void callFunctions(std::string, int button, bool state);
     };
 } // namespace Shed

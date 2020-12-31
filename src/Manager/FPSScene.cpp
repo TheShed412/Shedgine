@@ -11,9 +11,9 @@ using namespace Game::Managers;
 #include "../Core/Physics/Debugger/GLDebugDrawer.hpp"
 #include "../Core/Init/InitSDL.hpp"
 
-void collisionCheck(btDynamicsWorld *dynamicsWorld, btScalar timeStep) {
-    int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
-}
+// void collisionCheck(btDynamicsWorld *dynamicsWorld, btScalar timeStep) {
+//     int numManifolds = dynamicsWorld->getDispatcher()->getNumManifolds();
+// }
 
 FPSScene::FPSScene()
 {
@@ -34,7 +34,9 @@ FPSScene::FPSScene()
     gameObjectManager = new Game::Managers::ObjectManager();
     actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
-    debugDrawer = new GLDebugDrawer();
+    eventManager = new Shed::EventManager();
+    physicsManger = new Physics::PhysicsManager(this->windowInfo.width, this->windowInfo.height);
+
     // TODO: make it so I can control the speed with the player
     camera = new Camera(glm::vec3(10,3,25), glm::vec3(0,1,0), 0.2, 20.0, windowInfo.height, windowInfo.width);
     light = new Light(
@@ -60,13 +62,7 @@ FPSScene::FPSScene()
                                     "src/shaders/crosshair_frag.glsl");
 
     models_manager = new ModelsManager(camera);
-
-    setupCollisions();
-
     Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.4, 1.5,"src/Models/big_floor.obj");
-
-    dynamicsWorld->setGravity(btVector3(0,-15,0));
-    dynamicsWorld->setInternalTickCallback(collisionCheck);
     
 
     for (int i = 0; i < 2; i++) {
@@ -106,12 +102,6 @@ FPSScene::FPSScene()
     elapsedTime = 0;
     currentTime = 0;
     previousTime = 0;
-
-    debugDrawer = new GLDebugDrawer();
-    debugDrawer->setDebugMode(1);
-
-    dynamicsWorld->setDebugDrawer(debugDrawer);
-    dynamicsWorld->getDebugDrawer()->setDebugMode(btIDebugDraw::DBG_DrawAabb | btIDebugDraw::DBG_DrawWireframe);
 }
 
 FPSScene::FPSScene(Core::WindowInfo windowInfo) : FPSScene() {
@@ -153,11 +143,7 @@ void FPSScene::addToScene(Physics::PhysicsObject* newObject, std::vector<VertexF
     newObject->setID(modelName);
 
     models_manager->AddModel(modelName, newObject);
-    physicsObjects[modelName] = newObject;
-
-    dynamicsWorld->addRigidBody(newObject->getRigidBody());
-    
-    collisionShapes.push_back(newObject->getCollisionShape());
+    this->physicsManger->addPhysicsObject(modelName, newObject);
 }
 
 void FPSScene::addToScene(Game::Actor* newObject, std::vector<VertexFormat> hitBox, std::string shaderName, std::string modelName) {
@@ -183,19 +169,11 @@ void FPSScene::notifyDisplayFrame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     models_manager->Draw();
     gameObjectManager->Update();
-
 }
  
 void FPSScene::notifyEndFrame()
 {
-    // TODO: need to change this based on frame rate
-    for (auto physicsObject : physicsObjects){
-        physicsObject.second->updateObjectPosition();
-    }
-    dynamicsWorld->stepSimulation(btScalar(elapsedTime/1000.0f), 1, btScalar(1.0)/btScalar(60.0));
-    this->castRays();
-    debugDrawer->SetMatrices(this->camera->getModelView(), this->projection);
-    dynamicsWorld->debugDrawWorld();
+    this->physicsManger->endFrameProcess(this->camera, this->elapsedTime);
 }
 
 void FPSScene::notifyKeyboardUp(SDL_Keysym key) {
@@ -219,9 +197,8 @@ void FPSScene::notifyMouseInput(int button, int state, int x, int y) {
         if (command) {
             command->execute(actorManager->GetActor("player"), state);
         }
+        this->physicsManger->setMouseState(button, state);
     }
-    tmpButton = button;
-    tmpState = state;
 }
 
 // TODO: handle mouse input better for picking
@@ -236,67 +213,4 @@ void FPSScene::notifyReshape(int width,
 {
  //nothing here for the moment 
  
-}
-
-// Setting up physics stuff here
-void FPSScene::setupCollisions() {
-    collisionConfiguration = new btDefaultCollisionConfiguration();
-    dispatcher = new btCollisionDispatcher(collisionConfiguration);
-
-    overlappingPairCache = new btDbvtBroadphase();
-    solver = new btSequentialImpulseConstraintSolver;
-    dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-
-    dynamicsWorld->setDebugDrawer(this->debugDrawer);
-}
-
-/**
- * This needs to be pulled apart carefully. I need to figure out which parts will be game logic, and what
- * will be physics manager stuff and what will be scene setup.
- * 
- * I need to keep as little game logic in here as possible. It should be all configuration.
-*/
-void FPSScene::castRays() {
-    glm::vec3 end;
-    glm::vec3 origin;
-
-    this->camera->getPickRays(5.0f, &origin, &end);
-
-    btVector3 btToRay = btVector3(end.x, end.y, end.z);
-    btVector3 btFromRay = btVector3(origin.x, origin.y, origin.z);
-
-    dynamicsWorld->updateAabbs();
-    dynamicsWorld->computeOverlappingPairs();
-
-    btCollisionWorld::ClosestRayResultCallback closestResult(btFromRay, btToRay);
-    dynamicsWorld->rayTest(btFromRay, btToRay, closestResult);
-    
-    // if the left button is pressed
-    if (closestResult.hasHit()) {
-        const btRigidBody* pickedBody = btRigidBody::upcast(closestResult.m_collisionObject);
-        if (tmpButton == 1 && tmpState == 1) {
-            //check if the body isn't static or kinematic so that I know it can be moved
-            if (pickedBody->getMass() != 0) {
-                // Get the pointer to the ID of the object so I can pull it from the 
-                std::string* shapeID = (std::string*)pickedBody->getUserPointer();
-                Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
-
-                // Activate the object so physics stuff happens
-                pickedObject->getRigidBody()->activate();
-                // Set the object to the end location of the pick
-                pickedObject->setPosition(end);
-                // Turn gravity off so that it won't build up velocity while being held
-                pickedObject->getRigidBody()->setGravity(btVector3(0.0f, 0.0f, 0.0f));
-            }
-        } else if (tmpButton == 1 && tmpState == 0) {  // if the left button is released
-            std::string* shapeID = (std::string*)pickedBody->getUserPointer();
-            Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
-
-            // Activate so physics things can happen
-            pickedObject->getRigidBody()->activate();
-            // TODO: Move this logic to the physics object so that I can use other logic to turn gravity on
-            // Turn gravity back on
-            pickedObject->getRigidBody()->setGravity(btVector3(0.0f, -15.0f, 0.0f));
-        }
-    }
 }

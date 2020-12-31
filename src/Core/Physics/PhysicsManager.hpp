@@ -36,6 +36,8 @@ namespace Physics
             std::map<std::string, Physics::PhysicsObject*> physicsObjects;
             int windowWidth;
             int windowHeight;
+            int mouseButton;
+            bool mouseButtonPressed;
             float gravity;
             int debugMode;
             void castRays(Rendering::Camera* camera);
@@ -47,5 +49,6 @@ namespace Physics
             void addPhysicsObject(std::string, PhysicsObject*);
             void setDebugMode(int);
             void setGravity(float);
+            void setMouseState(int, bool);
     };
-} // namespace Game
+} // namespace Physics
