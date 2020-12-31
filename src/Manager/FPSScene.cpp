@@ -109,6 +109,9 @@ FPSScene::FPSScene()
 
     debugDrawer = new GLDebugDrawer();
     debugDrawer->setDebugMode(1);
+
+    dynamicsWorld->setDebugDrawer(debugDrawer);
+    dynamicsWorld->getDebugDrawer()->setDebugMode(btIDebugDraw::DBG_DrawAabb | btIDebugDraw::DBG_DrawWireframe);
 }
 
 FPSScene::FPSScene(Core::WindowInfo windowInfo) : FPSScene() {
@@ -191,8 +194,8 @@ void FPSScene::notifyEndFrame()
     }
     dynamicsWorld->stepSimulation(btScalar(elapsedTime/1000.0f), 1, btScalar(1.0)/btScalar(60.0));
     this->castRays();
-    // debugDrawer->SetMatrices(this->camera->getModelView(), this->projection);
-    // dynamicsWorld->debugDrawWorld();
+    debugDrawer->SetMatrices(this->camera->getModelView(), this->projection);
+    dynamicsWorld->debugDrawWorld();
 }
 
 void FPSScene::notifyKeyboardUp(SDL_Keysym key) {
@@ -298,25 +301,25 @@ void FPSScene::castRays() {
         if (tmpButton == 1 && tmpState == 1) {
             //check if the body isn't static or kinematic so that I know it can be moved
             if (pickedBody->getMass() != 0) {
+                // Get the pointer to the ID of the object so I can pull it from the 
                 std::string* shapeID = (std::string*)pickedBody->getUserPointer();
-                btVector3 pickPos = closestResult.m_hitPointWorld;
-                btVector3 localPivot = pickedBody->getCenterOfMassTransform().inverse() * pickPos;
-                // pickedBody.
                 Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
-                glm::vec3 currPos = pickedObject->getPosition();
+
+                // Activate the object so physics stuff happens
+                pickedObject->getRigidBody()->activate();
+                // Set the object to the end location of the pick
                 pickedObject->setPosition(end);
-                // std::cout << "pick pos: (" << pickPos.x() << ", " << pickPos.y() << ", " << pickPos.z() << ")" << std::endl;
-                // std::cout << "shape ID: " << *shapeID << std::endl;
-                // std::cout << "current pos: (" << currPos.x << ", " << currPos.y << ", " << currPos.z << ")" << std::endl;
-                // pickedBody->applyForce();
-                pickedBody->activate();
+                // Turn gravity off so that it won't build up velocity while being held
                 pickedObject->getRigidBody()->setGravity(btVector3(0.0f, 0.0f, 0.0f));
             }
-            // std::cout << std::endl;
         } else if (tmpButton == 1 && tmpState == 0) {  // if the left button is released
             std::string* shapeID = (std::string*)pickedBody->getUserPointer();
             Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
-            pickedBody->activate();
+
+            // Activate so physics things can happen
+            pickedObject->getRigidBody()->activate();
+            // TODO: Move this logic to the physics object so that I can use other logic to turn gravity on
+            // Turn gravity back on
             pickedObject->getRigidBody()->setGravity(btVector3(0.0f, -15.0f, 0.0f));
         }
     }
