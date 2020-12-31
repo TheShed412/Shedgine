@@ -69,7 +69,7 @@ FPSScene::FPSScene()
     dynamicsWorld->setInternalTickCallback(collisionCheck);
     
 
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 1; j++) {
             Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
             addToScene(crate, std::vector<VertexFormat>(), "n64Shader", "crate" + std::to_string(i) + std::to_string(j));
@@ -289,16 +289,13 @@ void FPSScene::castRays() {
     dynamicsWorld->updateAabbs();
     dynamicsWorld->computeOverlappingPairs();
 
+    btCollisionWorld::ClosestRayResultCallback closestResult(btFromRay, btToRay);
+    dynamicsWorld->rayTest(btFromRay, btToRay, closestResult);
     
     // if the left button is pressed
-    if (tmpButton == 1 && tmpState == 1) {
-        btCollisionWorld::ClosestRayResultCallback closestResult(btFromRay, btToRay);
-
-        dynamicsWorld->rayTest(btFromRay, btToRay, closestResult);
-        if (closestResult.hasHit()) {
-            const btRigidBody* pickedBody = btRigidBody::upcast(closestResult.m_collisionObject);
-
-
+    if (closestResult.hasHit()) {
+        const btRigidBody* pickedBody = btRigidBody::upcast(closestResult.m_collisionObject);
+        if (tmpButton == 1 && tmpState == 1) {
             //check if the body isn't static or kinematic so that I know it can be moved
             if (pickedBody->getMass() != 0) {
                 std::string* shapeID = (std::string*)pickedBody->getUserPointer();
@@ -308,17 +305,19 @@ void FPSScene::castRays() {
                 Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
                 glm::vec3 currPos = pickedObject->getPosition();
                 pickedObject->setPosition(end);
-                std::cout << "pick pos: (" << pickPos.x() << ", " << pickPos.y() << ", " << pickPos.z() << ")" << std::endl;
-                std::cout << "shape ID: " << *shapeID << std::endl;
-                std::cout << "current pos: (" << currPos.x << ", " << currPos.y << ", " << currPos.z << ")" << std::endl;
-            } else {
-                std::cout << "no mass" << std::endl;
+                // std::cout << "pick pos: (" << pickPos.x() << ", " << pickPos.y() << ", " << pickPos.z() << ")" << std::endl;
+                // std::cout << "shape ID: " << *shapeID << std::endl;
+                // std::cout << "current pos: (" << currPos.x << ", " << currPos.y << ", " << currPos.z << ")" << std::endl;
+                // pickedBody->applyForce();
+                pickedBody->activate();
+                pickedObject->getRigidBody()->setGravity(btVector3(0.0f, 0.0f, 0.0f));
             }
-        } else {
-            std::cout << "shit..." << std::endl;
+            // std::cout << std::endl;
+        } else if (tmpButton == 1 && tmpState == 0) {  // if the left button is released
+            std::string* shapeID = (std::string*)pickedBody->getUserPointer();
+            Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
+            pickedBody->activate();
+            pickedObject->getRigidBody()->setGravity(btVector3(0.0f, -15.0f, 0.0f));
         }
-        std::cout << std::endl;
-    } else if (tmpButton == 1 && tmpState == 0) {  // if the left button is released
-
     }
 }
