@@ -7,6 +7,7 @@ void collisionCheck(btDynamicsWorld *dynamicsWorld, btScalar timeStep) {
 }
 
 PhysicsManager::PhysicsManager(int width, int height) {
+    this->currPickedObject = NULL;
     this->windowHeight = height;
     this->windowWidth = width;
     this->gravity = -15;
@@ -15,6 +16,7 @@ PhysicsManager::PhysicsManager(int width, int height) {
 }
 
 PhysicsManager::PhysicsManager(int debugMode, float gravity, int width, int height) {
+    this->currPickedObject = NULL;
     this->debugMode = debugMode;
     this->gravity = gravity;
     this->windowHeight = height;
@@ -30,7 +32,7 @@ void PhysicsManager::endFrameProcess(Rendering::Camera* camera, int elapsedTime)
         physicsObject.second->updateObjectPosition();
     }
     dynamicsWorld->stepSimulation(btScalar(elapsedTime/1000.0f), 1, btScalar(1.0)/btScalar(60.0));
-    this->castRays(camera);
+    this->pickObjects(camera);
     if (debugMode != 0) {
         debugDrawer->SetMatrices(camera->getModelView(), camera->getProjection());
         dynamicsWorld->debugDrawWorld();
@@ -80,7 +82,7 @@ void PhysicsManager::setMouseState(int button, bool state) {
  * This will probably need generalized more and need seperated out more tto
  * keep gamecode with game stuff
 */
-void PhysicsManager::castRays(Rendering::Camera* camera) {
+void PhysicsManager::pickObjects(Rendering::Camera* camera) {
     glm::vec3 end;
     glm::vec3 origin;
 
@@ -95,30 +97,29 @@ void PhysicsManager::castRays(Rendering::Camera* camera) {
     btCollisionWorld::ClosestRayResultCallback closestResult(btFromRay, btToRay);
     dynamicsWorld->rayTest(btFromRay, btToRay, closestResult);
 
-    
     // if the left button is pressed
     if (closestResult.hasHit()) {
         const btRigidBody* pickedBody = btRigidBody::upcast(closestResult.m_collisionObject);
 
         // Get the pointer to the ID of the object so I can pull it from the 
         std::string* shapeID = (std::string*)pickedBody->getUserPointer();
-        Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
+        currPickedObject = physicsObjects[*shapeID];
         if (this->mouseButton == 1 && this->mouseButtonPressed) {
             //check if the body isn't static or kinematic so that I know it can be moved
-            if (pickedObject->getTag() == Physics::DYNAMIC) {
+            if (currPickedObject->getTag() == Physics::DYNAMIC) {
                 // Activate the object so physics stuff happens
-                pickedObject->getRigidBody()->activate();
+                currPickedObject->getRigidBody()->activate();
                 // Set the object to the end location of the pick
-                pickedObject->setPosition(end);
-                // Turn gravity off so that it won't build up velocity while being held
-                pickedObject->getRigidBody()->setGravity(btVector3(0.0f, 0.0f, 0.0f));
+                currPickedObject->picked();
+                currPickedObject->setPosition(end);
             }
         } else if (this->mouseButton == 1 && !this->mouseButtonPressed) {  // if the left button is released
-            // Activate so physics things can happen
-            pickedObject->getRigidBody()->activate();
-            // TODO: Move this logic to the physics object so that I can use other logic to turn gravity on
-            // Turn gravity back on
-            pickedObject->getRigidBody()->setGravity(btVector3(0.0f, -15.0f, 0.0f));
+            currPickedObject->dropped(-15.0f);
+        }
+    } else {
+        if (currPickedObject != NULL) {
+            currPickedObject->dropped(-15.0f);
+            currPickedObject = NULL;
         }
     }
 }

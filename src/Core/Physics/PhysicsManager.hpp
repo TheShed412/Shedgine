@@ -34,13 +34,13 @@ namespace Physics
             // TODO: I need to figure out how to get this to work
             GLDebugDrawer* debugDrawer;
             std::map<std::string, Physics::PhysicsObject*> physicsObjects;
+            Physics::PhysicsObject* currPickedObject;
             int windowWidth;
             int windowHeight;
             int mouseButton;
             bool mouseButtonPressed;
             float gravity;
             int debugMode;
-            void castRays(Rendering::Camera* camera);
         public:
             PhysicsManager(int width, int height);
             PhysicsManager(int debugMode, float gravity, int width, int height);
@@ -50,5 +50,6 @@ namespace Physics
             void setDebugMode(int);
             void setGravity(float);
             void setMouseState(int, bool);
+            void pickObjects(Rendering::Camera* camera);
     };
 } // namespace Physics

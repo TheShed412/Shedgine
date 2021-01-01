@@ -163,3 +163,20 @@ Tag PhysicsObject::getTag() {
     return this->tag;
 }
 
+void PhysicsObject::picked() {
+    // only want to do stuff if it is a dynamic object
+    if (this->tag == DYNAMIC) {
+        this->isPicked = true;
+        body->activate();
+        body->setGravity(btVector3(0.0f, 0.0f, 0.0f));
+    }
+}
+
+void PhysicsObject::dropped(float gravity) {
+    // only want to do stuff if it is a dynamic object
+    if (this->tag == DYNAMIC) {
+        this->isPicked = false;
+        body->activate();
+        body->setGravity(btVector3(0.0f, gravity, 0.0f));
+    }
+}

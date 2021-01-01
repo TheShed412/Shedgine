@@ -32,6 +32,7 @@ namespace Physics
             Tag tag;
             bool isStatic; // immovable
             bool isConvex;
+            bool isPicked;
             float mass;
             float restitution;
             float friction;
@@ -57,5 +58,7 @@ namespace Physics
             void setScale(glm::vec3);
             void setID(std::string);
             Tag getTag();
+            void picked();
+            void dropped(float);
     };
 } // namespace Game
