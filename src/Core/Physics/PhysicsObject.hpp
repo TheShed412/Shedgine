@@ -29,7 +29,7 @@ namespace Physics
             btCollisionShape* shape;
             btRigidBody* body;
             // TODO: make an enum for tags so behavior can be defined
-            int tag;
+            Tag tag;
             bool isStatic; // immovable
             bool isConvex;
             float mass;
@@ -56,5 +56,6 @@ namespace Physics
             void updateObjectPosition();
             void setScale(glm::vec3);
             void setID(std::string);
+            Tag getTag();
     };
 } // namespace Game

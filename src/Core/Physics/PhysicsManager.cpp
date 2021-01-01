@@ -99,13 +99,15 @@ void PhysicsManager::castRays(Rendering::Camera* camera) {
     // if the left button is pressed
     if (closestResult.hasHit()) {
         const btRigidBody* pickedBody = btRigidBody::upcast(closestResult.m_collisionObject);
+
+        // Get the pointer to the ID of the object so I can pull it from the 
+        std::string* shapeID = (std::string*)pickedBody->getUserPointer();
+        Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
         if (this->mouseButton == 1 && this->mouseButtonPressed) {
             //check if the body isn't static or kinematic so that I know it can be moved
-            if (pickedBody->getMass() != 0) {
-                // Get the pointer to the ID of the object so I can pull it from the 
-                std::string* shapeID = (std::string*)pickedBody->getUserPointer();
-                Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
-
+            std::cout << "object tag: " << pickedObject->getTag() << std::endl;
+            std::cout << "dynamic tag: " << Physics::DYNAMIC << std::endl;
+            if (pickedObject->getTag() == Physics::DYNAMIC) {
                 // Activate the object so physics stuff happens
                 pickedObject->getRigidBody()->activate();
                 // Set the object to the end location of the pick
@@ -114,9 +116,6 @@ void PhysicsManager::castRays(Rendering::Camera* camera) {
                 pickedObject->getRigidBody()->setGravity(btVector3(0.0f, 0.0f, 0.0f));
             }
         } else if (this->mouseButton == 1 && !this->mouseButtonPressed) {  // if the left button is released
-            std::string* shapeID = (std::string*)pickedBody->getUserPointer();
-            Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
-
             // Activate so physics things can happen
             pickedObject->getRigidBody()->activate();
             // TODO: Move this logic to the physics object so that I can use other logic to turn gravity on

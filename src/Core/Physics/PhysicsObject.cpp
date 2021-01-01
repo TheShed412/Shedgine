@@ -31,6 +31,7 @@ PhysicsObject::PhysicsObject(Tag tag, float mass, bool isConvex, float restituti
 
     this->restitution = restitution;
     this->friction = friction;
+    this->tag = tag;
 }
 
 void PhysicsObject::Create(std::vector<Rendering::VertexFormat> vertecies) {
@@ -156,5 +157,9 @@ void PhysicsObject::setID(std::string newID) {
     std::string* id = new std::string(newID);
     shape->setUserPointer(id);
     body->setUserPointer(id);
+}
+
+Tag PhysicsObject::getTag() {
+    return this->tag;
 }
 
