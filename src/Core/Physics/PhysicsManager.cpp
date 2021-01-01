@@ -105,8 +105,6 @@ void PhysicsManager::castRays(Rendering::Camera* camera) {
         Physics::PhysicsObject* pickedObject = physicsObjects[*shapeID];
         if (this->mouseButton == 1 && this->mouseButtonPressed) {
             //check if the body isn't static or kinematic so that I know it can be moved
-            std::cout << "object tag: " << pickedObject->getTag() << std::endl;
-            std::cout << "dynamic tag: " << Physics::DYNAMIC << std::endl;
             if (pickedObject->getTag() == Physics::DYNAMIC) {
                 // Activate the object so physics stuff happens
                 pickedObject->getRigidBody()->activate();
