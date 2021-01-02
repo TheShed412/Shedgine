@@ -116,11 +116,11 @@ void PhysicsManager::pickObjects(Rendering::Camera* camera) {
                 currPickedObject->setPosition(end);
             }
         } else if (this->mouseButton == 3 && !this->mouseButtonPressed) {  // if the left button is released
-            currPickedObject->dropped(-15.0f);
+            currPickedObject->dropped(this->gravity);
         }
     } else {
         if (currPickedObject != NULL) {
-            currPickedObject->dropped(-15.0f);
+            currPickedObject->dropped(this->gravity);
             currPickedObject = NULL;
         }
     }
@@ -162,5 +162,32 @@ void PhysicsManager::hitObject(Rendering::Camera* camera, float distance, float 
                 currPickedObject->getRigidBody()->applyCentralImpulse(directionVector.normalize() * force);
             }
         }
+    }
+}
+
+PhysicsObject* PhysicsManager::detectObject(Rendering::Camera* camera, float distance) {
+    glm::vec3 end;
+    glm::vec3 origin;
+
+    camera->getPickRays(distance, &origin, &end);
+
+    btVector3 btToRay = btVector3(end.x, end.y, end.z);
+    btVector3 btFromRay = btVector3(origin.x, origin.y, origin.z);
+
+    dynamicsWorld->updateAabbs();
+    dynamicsWorld->computeOverlappingPairs();
+
+    btCollisionWorld::ClosestRayResultCallback closestResult(btFromRay, btToRay);
+    dynamicsWorld->rayTest(btFromRay, btToRay, closestResult);
+
+    // if the left button is pressed
+    if (closestResult.hasHit()) {
+        const btRigidBody* pickedBody = btRigidBody::upcast(closestResult.m_collisionObject);
+
+        // Get the pointer to the ID of the object so I can pull it from the 
+        std::string* shapeID = (std::string*)pickedBody->getUserPointer();
+        return physicsObjects[*shapeID];
+    } else {
+        return NULL;
     }
 }

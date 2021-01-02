@@ -52,5 +52,6 @@ namespace Physics
             void setMouseState(int, bool);
             void pickObjects(Rendering::Camera* camera);
             void hitObject(Rendering::Camera* camera, float, float);
+            PhysicsObject* detectObject(Rendering::Camera* camera, float);
     };
 } // namespace Physics
