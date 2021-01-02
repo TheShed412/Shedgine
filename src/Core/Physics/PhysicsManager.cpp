@@ -33,6 +33,7 @@ void PhysicsManager::endFrameProcess(Rendering::Camera* camera, int elapsedTime)
     }
     dynamicsWorld->stepSimulation(btScalar(elapsedTime/1000.0f), 1, btScalar(1.0)/btScalar(60.0));
     this->pickObjects(camera);
+    this->hitObject(camera, 50.0f, 20.0f);
     if (debugMode != 0) {
         debugDrawer->SetMatrices(camera->getModelView(), camera->getProjection());
         dynamicsWorld->debugDrawWorld();
@@ -104,7 +105,8 @@ void PhysicsManager::pickObjects(Rendering::Camera* camera) {
         // Get the pointer to the ID of the object so I can pull it from the 
         std::string* shapeID = (std::string*)pickedBody->getUserPointer();
         currPickedObject = physicsObjects[*shapeID];
-        if (this->mouseButton == 1 && this->mouseButtonPressed) {
+        // TODO: I need a config file that will describe what buttons do what
+        if (this->mouseButton == 3 && this->mouseButtonPressed) {
             //check if the body isn't static or kinematic so that I know it can be moved
             if (currPickedObject->getTag() == Physics::DYNAMIC) {
                 // Activate the object so physics stuff happens
@@ -113,13 +115,52 @@ void PhysicsManager::pickObjects(Rendering::Camera* camera) {
                 currPickedObject->picked();
                 currPickedObject->setPosition(end);
             }
-        } else if (this->mouseButton == 1 && !this->mouseButtonPressed) {  // if the left button is released
+        } else if (this->mouseButton == 3 && !this->mouseButtonPressed) {  // if the left button is released
             currPickedObject->dropped(-15.0f);
         }
     } else {
         if (currPickedObject != NULL) {
             currPickedObject->dropped(-15.0f);
             currPickedObject = NULL;
+        }
+    }
+}
+
+void PhysicsManager::hitObject(Rendering::Camera* camera, float distance, float force) {
+    glm::vec3 end;
+    glm::vec3 origin;
+
+    camera->getPickRays(distance, &origin, &end);
+
+    btVector3 btToRay = btVector3(end.x, end.y, end.z);
+    btVector3 btFromRay = btVector3(origin.x, origin.y, origin.z);
+
+    dynamicsWorld->updateAabbs();
+    dynamicsWorld->computeOverlappingPairs();
+
+    btCollisionWorld::ClosestRayResultCallback closestResult(btFromRay, btToRay);
+    dynamicsWorld->rayTest(btFromRay, btToRay, closestResult);
+
+    // if the left button is pressed
+    if (closestResult.hasHit()) {
+        const btRigidBody* pickedBody = btRigidBody::upcast(closestResult.m_collisionObject);
+
+        // Get the pointer to the ID of the object so I can pull it from the 
+        std::string* shapeID = (std::string*)pickedBody->getUserPointer();
+        currPickedObject = physicsObjects[*shapeID];
+        // TODO: I need a config file that will describe what buttons do what
+        if (this->mouseButton == 1 && this->mouseButtonPressed) {
+            //check if the body isn't static or kinematic so that I know it can be moved
+            if (currPickedObject->getTag() == Physics::DYNAMIC) {
+                // Activate the object so physics stuff happens
+                // Get the vector from the end point to the point on the object
+                btVector3 hitPos = closestResult.m_hitPointWorld;
+                btVector3 localHitPos =  currPickedObject->getRigidBody()->getCenterOfMassTransform().inverse() * hitPos;
+                btVector3 directionVector = btToRay - localHitPos;
+                
+                currPickedObject->getRigidBody()->activate();
+                currPickedObject->getRigidBody()->applyCentralImpulse(directionVector.normalize() * force);
+            }
         }
     }
 }

@@ -51,5 +51,6 @@ namespace Physics
             void setGravity(float);
             void setMouseState(int, bool);
             void pickObjects(Rendering::Camera* camera);
+            void hitObject(Rendering::Camera* camera, float, float);
     };
 } // namespace Physics
