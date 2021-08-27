@@ -2,10 +2,12 @@
 using namespace Graphics::Managers;
 using namespace Game::Managers;
 
+// TODO: seperate rendering in to opengl/vulkan/metal/directx
 #include "../Rendering/Camera.hpp"
 #include "../Rendering/Models/LoadedObject.hpp"
 #include "../Core/Game/SpaceGame/Characters/Ship.hpp"
 #include "../Core/Game/FPS/Characters/Terry.hpp"
+// TODO: pull opengl in to its own folder in rendering
 #include "../Core/Game/FPS/Crosshairs/OpenGL/SimpleCross.hpp"
 #include "../Core/Game/Commands/Command.hpp"
 #include "../Core/Init/InitSDL.hpp"
@@ -16,6 +18,7 @@ using namespace Game::Managers;
 
 FPSScene::FPSScene()
 {
+    // TODO: uncouple all opengl specifics from this layer
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
     glFrontFace(GL_CCW);  
