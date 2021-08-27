@@ -8,7 +8,6 @@ using namespace Game::Managers;
 #include "../Core/Game/FPS/Characters/Terry.hpp"
 #include "../Core/Game/FPS/Crosshairs/OpenGL/SimpleCross.hpp"
 #include "../Core/Game/Commands/Command.hpp"
-#include "../Core/Physics/Debugger/GLDebugDrawer.hpp"
 #include "../Core/Init/InitSDL.hpp"
 
 // void collisionCheck(btDynamicsWorld *dynamicsWorld, btScalar timeStep) {
@@ -35,7 +34,6 @@ FPSScene::FPSScene()
     actorManager = new Game::Managers::ActorManager();
     shader_manager = new ShaderManager();
     eventManager = new Shed::EventManager();
-    physicsManger = new Physics::PhysicsManager(this->windowInfo.width, this->windowInfo.height);
 
     // TODO: make it so I can control the speed with the player
     camera = new Camera(glm::vec3(10,3,25), glm::vec3(0,1,0), 0.2, 20.0, windowInfo.height, windowInfo.width);
@@ -62,19 +60,19 @@ FPSScene::FPSScene()
                                     "src/shaders/crosshair_frag.glsl");
 
     models_manager = new ModelsManager(camera);
-    Physics::PhysicsObject* groundModel = new Physics::PhysicsObject(Physics::GROUND, 0.0f, true, 0.4, 1.5,"src/Models/big_floor.obj");
+    Models::LoadedObject* groundModel = new Models::LoadedObject("src/Models/big_floor.obj");
     
 
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 1; j++) {
-            Physics::PhysicsObject* crate = new Physics::PhysicsObject(Physics::DYNAMIC, 5.0f, true, 0.4, 1.5,"src/Models/new_crate.obj");
-            addToScene(crate, std::vector<VertexFormat>(), "n64Shader", "crate" + std::to_string(i) + std::to_string(j));
+            Models::LoadedObject* crate = new Models::LoadedObject("src/Models/new_crate.obj");
+            addToScene(crate, "n64Shader", "crate" + std::to_string(i) + std::to_string(j));
             crate->setPosition(glm::vec3(i*5, 2, (j * 5) + 5));
             crate->setScale(glm::vec3(1));
         }
     }
 
-    addToScene(groundModel, std::vector<VertexFormat>(), "matShader", "ground");
+    addToScene(groundModel,"matShader", "ground");
     groundModel->setPosition(glm::vec3(0,0,0));
 
     
@@ -110,28 +108,14 @@ FPSScene::FPSScene(Core::WindowInfo windowInfo) : FPSScene() {
 
  
 FPSScene::~FPSScene()
-{
-    for (size_t i = 0; i < collisionShapes.size(); i++)
-    {
-        delete collisionShapes.at(i);
-    }
-    
+{   
 
     delete shader_manager;
     delete models_manager;
     delete camera;
-    delete dynamicsWorld;
-    delete overlappingPairCache;
-    delete solver;
-    delete dispatcher;
-    delete collisionConfiguration;
 }
  
 void FPSScene::addToScene(Rendering::Models::LoadedObject* newObject, std::string shaderName, std::string modelName) {
-
-}
-
-void FPSScene::addToScene(Physics::PhysicsObject* newObject, std::vector<VertexFormat> hitBox, std::string shaderName, std::string modelName) {
     newObject->setTextureManager(this->textureManager);
     newObject->SetLight(light);
 
@@ -139,11 +123,9 @@ void FPSScene::addToScene(Physics::PhysicsObject* newObject, std::vector<VertexF
     newObject->SetProjection(projection);
     newObject->SetModelView(camera->getModelView());
     newObject->SetCamera(this->camera);
-    newObject->Create(hitBox);
-    newObject->setID(modelName);
+    newObject->Create();
 
     models_manager->AddModel(modelName, newObject);
-    this->physicsManger->addPhysicsObject(modelName, newObject);
 }
 
 void FPSScene::addToScene(Game::Actor* newObject, std::vector<VertexFormat> hitBox, std::string shaderName, std::string modelName) {
@@ -173,7 +155,7 @@ void FPSScene::notifyDisplayFrame()
  
 void FPSScene::notifyEndFrame()
 {
-    this->physicsManger->endFrameProcess(this->camera, this->elapsedTime);
+    // this->physicsManger->endFrameProcess(this->camera, this->elapsedTime);
 }
 
 void FPSScene::notifyKeyboardUp(SDL_Keysym key) {
@@ -197,7 +179,7 @@ void FPSScene::notifyMouseInput(int button, int state, int x, int y) {
         if (command) {
             command->execute(actorManager->GetActor("player"), state);
         }
-        this->physicsManger->setMouseState(button, state);
+        // this->physicsManger->setMouseState(button, state);
     }
 }
 
